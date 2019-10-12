@@ -55,8 +55,10 @@ impl MocapServiceClient {
         self.client.unary_call(&METHOD_MOCAP_SERVICE_SET_VISION_POSITION_ESTIMATE, req, opt)
     }
 
-    pub fn set_vision_position_estimate(&self, req: &super::mocap::SetVisionPositionEstimateRequest) -> ::grpcio::Result<super::mocap::SetVisionPositionEstimateResponse> {
-        self.set_vision_position_estimate_opt(req, ::grpcio::CallOption::default())
+    pub fn set_vision_position_estimate(&self, vision_position_estimate: super::mocap::VisionPositionEstimate) -> ::grpcio::Result<super::mocap::SetVisionPositionEstimateResponse> {
+        let mut req =  super::mocap::SetVisionPositionEstimateRequest::new();
+        req.set_vision_position_estimate(vision_position_estimate);
+        self.set_vision_position_estimate_opt(&req, ::grpcio::CallOption::default())
     }
 
     pub fn set_vision_position_estimate_async_opt(&self, req: &super::mocap::SetVisionPositionEstimateRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::mocap::SetVisionPositionEstimateResponse>> {

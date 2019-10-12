@@ -41,8 +41,9 @@ impl InfoServiceClient {
         self.client.unary_call(&METHOD_INFO_SERVICE_GET_VERSION, req, opt)
     }
 
-    pub fn get_version(&self, req: &super::info::GetVersionRequest) -> ::grpcio::Result<super::info::GetVersionResponse> {
-        self.get_version_opt(req, ::grpcio::CallOption::default())
+    pub fn get_version(&self) -> ::grpcio::Result<super::info::GetVersionResponse> {
+        let req = super::info::GetVersionRequest::new();
+        self.get_version_opt(&req, ::grpcio::CallOption::default())
     }
 
     pub fn get_version_async_opt(&self, req: &super::info::GetVersionRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::info::GetVersionResponse>> {
