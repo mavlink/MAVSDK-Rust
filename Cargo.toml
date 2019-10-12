@@ -1,7 +1,10 @@
 [package]
-name = "MAVSDK-Rust"
+name = "libmavsdk"
 version = "0.1.0"
 authors = ["Ildar Sadykov <irsdkv@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+grpcio = "0.4"
+protobuf = "2.8.1"
+futures = "0.1.29"
