@@ -1,17 +1,13 @@
 mod generated;
 
-use generated::mocap::mocap_grpc;
-pub use generated::mocap::mocap;
-
-use generated::info::info_grpc;
-pub use generated::info::info;
-
+pub use generated::mocap;
+pub use generated::info;
 
 use grpcio::{ChannelBuilder, EnvBuilder};
 
 pub struct System {
-    pub mocap : mocap_grpc::MocapServiceClient,
-    pub info : info_grpc::InfoServiceClient,
+    pub mocap : mocap::Mocap,
+    pub info : info::Info
 }
 
 impl System {
@@ -24,8 +20,8 @@ impl System {
         let ch = ChannelBuilder::new(env).connect(url.as_str());
 
         System {
-            mocap: mocap_grpc::MocapServiceClient::new(ch.clone()),
-            info: info_grpc::InfoServiceClient::new(ch)
+            mocap: mocap::Mocap::new(ch.clone()),
+            info: info::Info::new(ch)
         }
     }
 }
