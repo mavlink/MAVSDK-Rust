@@ -10,6 +10,10 @@ pub struct System {
     pub info: info::Info,
 }
 
+trait FromChannel {
+    fn new(channel: &::grpcio::Channel) -> Self;
+}
+
 impl System {
     pub fn new(url: Option<String>) -> System {
         let env = std::sync::Arc::new(EnvBuilder::new().build());

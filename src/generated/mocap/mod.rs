@@ -418,3 +418,11 @@ impl super::super::FromChannel for Mocap {
         }
     }
 }
+
+impl super::super::FromChannel for Mocap {
+    fn new(channel: &::grpcio::Channel) -> Self {
+        Mocap {
+            service_client: mocap_grpc::MocapServiceClient::new(channel.clone())
+        }
+    }
+}

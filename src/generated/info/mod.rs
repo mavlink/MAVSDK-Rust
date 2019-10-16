@@ -16,8 +16,8 @@ pub struct Version {
     pub os_sw_patch: i32,
 }
 
-impl Version {
-    fn from_grpc(grpc_version: info::Version) -> Self {
+impl From<&info::Version> for Version {
+    fn from(grpc_version: &info::Version) -> Self {
         Version {
             flight_sw_major: grpc_version.flight_sw_major,
             flight_sw_minor: grpc_version.flight_sw_minor,
@@ -92,7 +92,7 @@ impl Info {
 }
 
 impl super::super::FromChannel for Info {
-    fn new(channel: ::grpcio::Channel) -> Self {
+    fn new(channel: &::grpcio::Channel) -> Self {
         Info {
             service_client: info_grpc::InfoServiceClient::new(channel),
         }
