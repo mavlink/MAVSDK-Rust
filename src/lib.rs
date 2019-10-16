@@ -10,6 +10,19 @@ pub struct System {
     pub info: info::Info,
 }
 
+#[derive(Debug)]
+pub struct MavsdkError<ErrT> {
+    pub result: ErrT,
+    pub result_str: String
+}
+
+#[derive(Debug)]
+pub enum MavsdkResult<T, ErrT> {
+    Ok(T),
+    Err(MavsdkError<ErrT>),
+    RpcErr(grpcio::Error)
+}
+
 trait FromChannel {
     fn new(channel: &::grpcio::Channel) -> Self;
 }

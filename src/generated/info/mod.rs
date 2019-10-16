@@ -1,7 +1,8 @@
 mod info_grpc;
 mod info;
 
-use info::InfoResult_Result;
+use super::super::MavsdkResult;
+use super::super::MavsdkError;
 
 #[derive(PartialEq, Clone, Default, Debug)]
 pub struct Version {
@@ -39,16 +40,63 @@ pub enum Result {
     InformationNotReceivedYet,
 }
 
+impl From<info::InfoResult_Result> for Result {
+    fn from(grpc_result: info::InfoResult_Result) -> Self {
+        match grpc_result {
+            info::InfoResult_Result::UNKNOWN => Result::Unknown,
+            info::InfoResult_Result::SUCCESS => Result::Success,
+            info::InfoResult_Result::INFORMATION_NOT_RECEIVED_YET => Result::InformationNotReceivedYet
+        }
+    }
+}
+
+impl Into<info::InfoResult_Result> for Result {
+    fn into(self) -> info::InfoResult_Result {
+        match self {
+            Result::Unknown => info::InfoResult_Result::UNKNOWN,
+            Result::Success => info::InfoResult_Result::SUCCESS,
+            Result::InformationNotReceivedYet => info::InfoResult_Result::INFORMATION_NOT_RECEIVED_YET
+        }
+    }
+}
+
 #[derive(PartialEq, Clone, Debug)]
 pub struct InfoResult {
     result: Result,
     result_str: String,
 }
 
+impl From<&info::InfoResult> for InfoResult {
+    fn from(grpc_info_result: &info::InfoResult) -> Self {
+        Self {
+            result: Result::from(grpc_info_result.get_result()),
+            result_str: String::from(grpc_info_result.get_result_str())
+        }
+    }
+}
+
+impl Into<info::InfoResult> for InfoResult {
+    fn into(self) -> info::InfoResult {
+        let mut rpc_info_result = info::InfoResult::default();
+        rpc_info_result.set_result(self.result.into());
+        rpc_info_result.set_result_str(self.result_str);
+        rpc_info_result
+    }
+}
+
 #[derive(PartialEq, Clone, Debug)]
 pub struct GetVersionResponse {
     info_result: InfoResult,
-    version: Option<Version>,
+    version: Version
+}
+
+impl From<info::GetVersionResponse> for GetVersionResponse {
+    fn from(rpc_get_version_response: info::GetVersionResponse) -> Self {
+        Self {
+            info_result: InfoResult::from(rpc_get_version_response.get_info_result()),
+            version: Version::from(rpc_get_version_response.get_version())
+        }
+    }
 }
 
 #[derive(Clone)]
@@ -57,36 +105,28 @@ pub struct Info {
 }
 
 impl Info {
-    pub fn get_version(&self) -> std::result::Result<GetVersionResponse, grpcio::Error> {
+    pub fn get_version(&self) -> MavsdkResult<GetVersionResponse, Result> {
         let req = info::GetVersionRequest::new();
         let response = self
             .service_client
             .get_version_opt(&req, ::grpcio::CallOption::default());
         match response {
-            Ok(res) => Ok(match res.clone().info_result.unwrap().result {
-                InfoResult_Result::SUCCESS => GetVersionResponse {
-                    info_result: InfoResult {
-                        result: Result::Success,
-                        result_str: res.info_result.unwrap().result_str,
-                    },
-                    version: Some(Version::from_grpc(res.version.unwrap())),
-                },
-                InfoResult_Result::UNKNOWN => GetVersionResponse {
-                    info_result: InfoResult {
-                        result: Result::Unknown,
-                        result_str: res.info_result.unwrap().result_str,
-                    },
-                    version: None,
-                },
-                InfoResult_Result::INFORMATION_NOT_RECEIVED_YET => GetVersionResponse {
-                    info_result: InfoResult {
-                        result: Result::InformationNotReceivedYet,
-                        result_str: res.info_result.unwrap().result_str,
-                    },
-                    version: None,
-                },
-            }),
-            Err(e) => Err(e),
+            Ok(res) => match Result::from(res.get_info_result().get_result()) {
+                Result::Success => MavsdkResult::Ok(GetVersionResponse::from(res)),
+                Result::Unknown => MavsdkResult::Err(
+                        MavsdkError {
+                        result: Result::from(res.get_info_result().get_result()),
+                        result_str: String::from(res.get_info_result().get_result_str())
+                    }
+                ),
+                Result::InformationNotReceivedYet => MavsdkResult::Err(
+                    MavsdkError {
+                        result: Result::from(res.get_info_result().get_result()),
+                        result_str: String::from(res.get_info_result().get_result_str())
+                    }
+                )
+            }
+            Err(e) => MavsdkResult::RpcErr(e)
         }
     }
 }
