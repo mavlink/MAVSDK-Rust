@@ -26,10 +26,10 @@ cargo run --example mocap
 
 - `info`
 ```bash
-cargo run --example info
-Finished dev [unoptimized + debuginfo] target(s) in 3.79s
- Running `target/debug/examples/info`
-Ok(info_result {result: SUCCESS result_str: "Success"} version {flight_sw_major: 1 flight_sw_minor: 10 os_sw_major: 7 os_sw_minor: 29})
+$ cargo run --example info
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/examples/info`
+Ok(GetVersionResponse { info_result: InfoResult { result: Success, result_str: "Success" }, version: Some(Version { flight_sw_major: 1, flight_sw_minor: 10, flight_sw_patch: 0, flight_sw_vendor_major: 0, flight_sw_vendor_minor: 0, flight_sw_vendor_patch: 0, os_sw_major: 7, os_sw_minor: 29, os_sw_patch: 0 }) })
 ```
 - `mocap`
 ```bash
