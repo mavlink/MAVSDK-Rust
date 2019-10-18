@@ -13,14 +13,14 @@ pub struct System {
 #[derive(Debug)]
 pub struct MavsdkError<ErrT> {
     pub result: ErrT,
-    pub result_str: String
+    pub result_str: String,
 }
 
 #[derive(Debug)]
 pub enum MavsdkResult<T, ErrT> {
     Ok(T),
     Err(MavsdkError<ErrT>),
-    RpcErr(grpcio::Error)
+    RpcErr(grpcio::Error),
 }
 
 trait FromChannel {
@@ -37,8 +37,8 @@ impl System {
         let ch = ChannelBuilder::new(env).connect(url.as_str());
 
         System {
-            mocap: mocap::Mocap::new(ch.clone()),
-            info: info::Info::new(ch),
+            mocap: mocap::Mocap::new(&ch),
+            info: info::Info::new(&ch),
         }
     }
 }

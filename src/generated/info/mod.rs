@@ -1,8 +1,8 @@
 mod info_grpc;
 mod info;
 
-use super::super::MavsdkResult;
 use super::super::MavsdkError;
+use super::super::MavsdkResult;
 
 #[derive(PartialEq, Clone, Default, Debug)]
 pub struct Version {
@@ -45,7 +45,9 @@ impl From<info::InfoResult_Result> for Result {
         match grpc_result {
             info::InfoResult_Result::UNKNOWN => Result::Unknown,
             info::InfoResult_Result::SUCCESS => Result::Success,
-            info::InfoResult_Result::INFORMATION_NOT_RECEIVED_YET => Result::InformationNotReceivedYet
+            info::InfoResult_Result::INFORMATION_NOT_RECEIVED_YET => {
+                Result::InformationNotReceivedYet
+            }
         }
     }
 }
@@ -55,7 +57,9 @@ impl Into<info::InfoResult_Result> for Result {
         match self {
             Result::Unknown => info::InfoResult_Result::UNKNOWN,
             Result::Success => info::InfoResult_Result::SUCCESS,
-            Result::InformationNotReceivedYet => info::InfoResult_Result::INFORMATION_NOT_RECEIVED_YET
+            Result::InformationNotReceivedYet => {
+                info::InfoResult_Result::INFORMATION_NOT_RECEIVED_YET
+            }
         }
     }
 }
@@ -70,7 +74,7 @@ impl From<&info::InfoResult> for InfoResult {
     fn from(grpc_info_result: &info::InfoResult) -> Self {
         Self {
             result: Result::from(grpc_info_result.get_result()),
-            result_str: String::from(grpc_info_result.get_result_str())
+            result_str: String::from(grpc_info_result.get_result_str()),
         }
     }
 }
@@ -87,14 +91,14 @@ impl Into<info::InfoResult> for InfoResult {
 #[derive(PartialEq, Clone, Debug)]
 pub struct GetVersionResponse {
     info_result: InfoResult,
-    version: Version
+    version: Version,
 }
 
 impl From<info::GetVersionResponse> for GetVersionResponse {
     fn from(rpc_get_version_response: info::GetVersionResponse) -> Self {
         Self {
             info_result: InfoResult::from(rpc_get_version_response.get_info_result()),
-            version: Version::from(rpc_get_version_response.get_version())
+            version: Version::from(rpc_get_version_response.get_version()),
         }
     }
 }
@@ -113,20 +117,16 @@ impl Info {
         match response {
             Ok(res) => match Result::from(res.get_info_result().get_result()) {
                 Result::Success => MavsdkResult::Ok(GetVersionResponse::from(res)),
-                Result::Unknown => MavsdkResult::Err(
-                        MavsdkError {
-                        result: Result::from(res.get_info_result().get_result()),
-                        result_str: String::from(res.get_info_result().get_result_str())
-                    }
-                ),
-                Result::InformationNotReceivedYet => MavsdkResult::Err(
-                    MavsdkError {
-                        result: Result::from(res.get_info_result().get_result()),
-                        result_str: String::from(res.get_info_result().get_result_str())
-                    }
-                )
-            }
-            Err(e) => MavsdkResult::RpcErr(e)
+                Result::Unknown => MavsdkResult::Err(MavsdkError {
+                    result: Result::from(res.get_info_result().get_result()),
+                    result_str: String::from(res.get_info_result().get_result_str()),
+                }),
+                Result::InformationNotReceivedYet => MavsdkResult::Err(MavsdkError {
+                    result: Result::from(res.get_info_result().get_result()),
+                    result_str: String::from(res.get_info_result().get_result_str()),
+                }),
+            },
+            Err(e) => MavsdkResult::RpcErr(e),
         }
     }
 }
@@ -134,7 +134,7 @@ impl Info {
 impl super::super::FromChannel for Info {
     fn new(channel: &::grpcio::Channel) -> Self {
         Info {
-            service_client: info_grpc::InfoServiceClient::new(channel),
+            service_client: info_grpc::InfoServiceClient::new(channel.clone()),
         }
     }
 }

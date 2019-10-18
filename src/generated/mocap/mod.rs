@@ -84,17 +84,6 @@ impl Into<mocap::Quaternion> for Quaternion {
     }
 }
 
-impl Into<mocap::Quaternion> for Quaternion {
-    fn into(self) -> mocap::Quaternion {
-        let mut rpc_quaternion =  mocap::Quaternion::new();
-        rpc_quaternion.set_w(self.w);
-        rpc_quaternion.set_x(self.x);
-        rpc_quaternion.set_y(self.y);
-        rpc_quaternion.set_z(self.z);
-        rpc_quaternion
-    }
-}
-
 impl From<&mocap::Quaternion> for Quaternion {
     fn from(rpc_quaternion: &mocap::Quaternion) -> Self {
         Self {
@@ -135,23 +124,7 @@ impl From<&mocap::Covariance> for Covariance {
     }
 }
 
-impl Into<mocap::Covariance> for Covariance {
-    fn into(self) -> mocap::Covariance {
-        let mut rpc_covariance =  mocap::Covariance::new();
-        rpc_covariance.set_covariance_matrix(self.covariance_matrix);
-        rpc_covariance
-    }
-}
-
-impl From<&mocap::Covariance> for Covariance {
-    fn from(rpc_covariance: &mocap::Covariance) -> Self {
-        Self {
-            covariance_matrix: rpc_covariance.get_covariance_matrix().to_vec()
-        }
-    }
-}
-
-#[derive(PartialEq,Clone,Default)]
+#[derive(PartialEq, Clone, Default)]
 pub struct AngularVelocityBody {
     pub roll_rad_s: f32,
     pub pitch_rad_s: f32,
@@ -178,26 +151,6 @@ impl From<&mocap::AngularVelocityBody> for AngularVelocityBody {
     }
 }
 
-impl Into<mocap::AngularVelocityBody> for AngularVelocityBody {
-    fn into(self) -> mocap::AngularVelocityBody {
-        let mut rpc_angular_velocity_body =  mocap::AngularVelocityBody::new();
-        rpc_angular_velocity_body.set_roll_rad_s(self.roll_rad_s);
-        rpc_angular_velocity_body.set_pitch_rad_s(self.pitch_rad_s);
-        rpc_angular_velocity_body.set_yaw_rad_s(self.yaw_rad_s);
-        rpc_angular_velocity_body
-    }
-}
-
-impl From<&mocap::AngularVelocityBody> for AngularVelocityBody {
-    fn from(rpc_angular_velocity_body: &mocap::AngularVelocityBody) -> Self {
-        Self {
-            roll_rad_s: rpc_angular_velocity_body.get_roll_rad_s(),
-            pitch_rad_s: rpc_angular_velocity_body.get_pitch_rad_s(),
-            yaw_rad_s: rpc_angular_velocity_body.get_yaw_rad_s()
-        }
-    }
-}
-
 #[derive(PartialEq, Clone, Default)]
 pub struct SpeedBody {
     pub x_m_s: f32,
@@ -208,16 +161,6 @@ pub struct SpeedBody {
 impl Into<mocap::SpeedBody> for SpeedBody {
     fn into(self) -> mocap::SpeedBody {
         let mut rpc_speed_body = mocap::SpeedBody::new();
-        rpc_speed_body.set_x_m_s(self.x_m_s);
-        rpc_speed_body.set_y_m_s(self.y_m_s);
-        rpc_speed_body.set_z_m_s(self.z_m_s);
-        rpc_speed_body
-    }
-}
-
-impl Into<mocap::SpeedBody> for SpeedBody {
-    fn into(self) -> mocap::SpeedBody {
-        let mut rpc_speed_body =  mocap::SpeedBody::new();
         rpc_speed_body.set_x_m_s(self.x_m_s);
         rpc_speed_body.set_y_m_s(self.y_m_s);
         rpc_speed_body.set_z_m_s(self.z_m_s);
@@ -262,26 +205,6 @@ impl From<&mocap::AngleBody> for AngleBody {
     }
 }
 
-impl Into<mocap::AngleBody> for AngleBody {
-    fn into(self) -> mocap::AngleBody {
-        let mut rpc_angle_body =  mocap::AngleBody::new();
-        rpc_angle_body.set_roll_rad(self.roll_rad);
-        rpc_angle_body.set_pitch_rad(self.pitch_rad);
-        rpc_angle_body.set_yaw_rad(self.yaw_rad);
-        rpc_angle_body
-    }
-}
-
-impl From<&mocap::AngleBody> for AngleBody {
-    fn from(rpc_angle_body: &mocap::AngleBody) -> Self {
-        Self {
-            roll_rad: rpc_angle_body.get_roll_rad(),
-            pitch_rad: rpc_angle_body.get_pitch_rad(),
-            yaw_rad: rpc_angle_body.get_yaw_rad()
-        }
-    }
-}
-
 #[derive(PartialEq, Clone, Default)]
 pub struct PositionBody {
     pub x_m: f32,
@@ -319,36 +242,6 @@ impl From<&mocap::PositionBody> for PositionBody {
     }
 }
 
-impl Into<mocap::PositionBody> for PositionBody {
-    fn into(self) -> mocap::PositionBody {
-        let mut rpc_position_body =  mocap::PositionBody::new();
-        rpc_position_body.set_x_m(self.x_m);
-        rpc_position_body.set_y_m(self.y_m);
-        rpc_position_body.set_z_m(self.z_m);
-        rpc_position_body
-    }
-}
-
-impl From<mocap::PositionBody> for PositionBody {
-    fn from(rpc_position_body: mocap::PositionBody) -> Self {
-        Self {
-            x_m: rpc_position_body.get_x_m(),
-            y_m: rpc_position_body.get_y_m(),
-            z_m: rpc_position_body.get_z_m()
-        }
-    }
-}
-
-impl From<&mocap::PositionBody> for PositionBody {
-    fn from(rpc_position_body: &mocap::PositionBody) -> Self {
-        Self {
-            x_m: rpc_position_body.get_x_m(),
-            y_m: rpc_position_body.get_y_m(),
-            z_m: rpc_position_body.get_z_m()
-        }
-    }
-}
-
 #[derive(PartialEq, Clone, Default)]
 pub struct AttitudePositionMocap {
     pub time_usec: u64,
@@ -360,17 +253,6 @@ pub struct AttitudePositionMocap {
 impl Into<mocap::AttitudePositionMocap> for AttitudePositionMocap {
     fn into(self) -> mocap::AttitudePositionMocap {
         let mut rpc_attitude_position_mocap = mocap::AttitudePositionMocap::new();
-        rpc_attitude_position_mocap.set_time_usec(self.time_usec);
-        rpc_attitude_position_mocap.set_q(self.q.into());
-        rpc_attitude_position_mocap.set_position_body(self.position_body.into());
-        rpc_attitude_position_mocap.set_pose_covariance(self.pose_covariance.into());
-        rpc_attitude_position_mocap
-    }
-}
-
-impl Into<mocap::AttitudePositionMocap> for AttitudePositionMocap {
-    fn into(self) -> mocap::AttitudePositionMocap {
-        let mut rpc_attitude_position_mocap =  mocap::AttitudePositionMocap::new();
         rpc_attitude_position_mocap.set_time_usec(self.time_usec);
         rpc_attitude_position_mocap.set_q(self.q.into());
         rpc_attitude_position_mocap.set_position_body(self.position_body.into());
@@ -433,35 +315,6 @@ impl From<&mocap::Odometry> for Odometry {
     }
 }
 
-impl Into<mocap::Odometry> for Odometry {
-    fn into(self) -> mocap::Odometry {
-        let mut rpc_odometry =  mocap::Odometry::new();
-        rpc_odometry.set_time_usec(self.time_usec);
-        rpc_odometry.set_position_body(self.position_body.into());
-        rpc_odometry.set_q(self.q.into());
-        rpc_odometry.set_speed_body(self.speed_body.into());
-        rpc_odometry.set_angular_velocity_body(self.angular_velocity_body.into());
-        rpc_odometry.set_pose_covariance(self.pose_covariance.into());
-        rpc_odometry.set_velocity_covariance(self.velocity_covariance.into());
-        rpc_odometry
-    }
-}
-
-impl From<&mocap::Odometry> for Odometry {
-    fn from(rpc_odometry: &mocap::Odometry) -> Self {
-        Self {
-            time_usec: rpc_odometry.get_time_usec(),
-            frame_id: MavFrame::from(rpc_odometry.get_frame_id()),
-            position_body: PositionBody::from(rpc_odometry.get_position_body()),
-            q: Quaternion::from(rpc_odometry.get_q()),
-            speed_body: SpeedBody::from(rpc_odometry.get_speed_body()),
-            angular_velocity_body: AngularVelocityBody::from(rpc_odometry.get_angular_velocity_body()),
-            pose_covariance: Covariance::from(rpc_odometry.get_pose_covariance()),
-            velocity_covariance: Covariance::from(rpc_odometry.get_velocity_covariance())
-        }
-    }
-}
-
 #[derive(PartialEq, Clone, Default)]
 pub struct VisionPositionEstimate {
     pub time_usec: u64,
@@ -506,10 +359,15 @@ pub struct Response {
 pub type MocapResult = std::result::Result<Response, grpcio::Error>;
 
 impl Mocap {
-    pub fn set_vision_position_estimate(&self, vision_position_estimate: VisionPositionEstimate) -> MocapResult {
-        let mut req =  mocap::SetVisionPositionEstimateRequest::new();
+    pub fn set_vision_position_estimate(
+        &self,
+        vision_position_estimate: VisionPositionEstimate,
+    ) -> MocapResult {
+        let mut req = mocap::SetVisionPositionEstimateRequest::new();
         req.set_vision_position_estimate(vision_position_estimate.into());
-        let response = self.service_client.set_vision_position_estimate_opt(&req, ::grpcio::CallOption::default());
+        let response = self
+            .service_client
+            .set_vision_position_estimate_opt(&req, ::grpcio::CallOption::default());
         match response {
             Ok(res) => Ok(Response {
                 result: res.mocap_result.clone().unwrap().result,
@@ -519,10 +377,15 @@ impl Mocap {
         }
     }
 
-    pub fn set_attitude_position_mocap(&self, attitude_position_mocap: AttitudePositionMocap) -> MocapResult {
-        let mut req =  mocap::SetAttitudePositionMocapRequest::new();
+    pub fn set_attitude_position_mocap(
+        &self,
+        attitude_position_mocap: AttitudePositionMocap,
+    ) -> MocapResult {
+        let mut req = mocap::SetAttitudePositionMocapRequest::new();
         req.set_attitude_position_mocap(attitude_position_mocap.into());
-        let response = self.service_client.set_attitude_position_mocap_opt(&req, ::grpcio::CallOption::default());
+        let response = self
+            .service_client
+            .set_attitude_position_mocap_opt(&req, ::grpcio::CallOption::default());
         match response {
             Ok(res) => Ok(Response {
                 result: res.mocap_result.clone().unwrap().result,
@@ -533,9 +396,11 @@ impl Mocap {
     }
 
     pub fn set_odometry(&self, odometry: Odometry) -> MocapResult {
-        let mut req =  mocap::SetOdometryRequest::new();
+        let mut req = mocap::SetOdometryRequest::new();
         req.set_odometry(odometry.into());
-        let response = self.service_client.set_odometry_opt(&req, ::grpcio::CallOption::default());
+        let response = self
+            .service_client
+            .set_odometry_opt(&req, ::grpcio::CallOption::default());
         match response {
             Ok(res) => Ok(Response {
                 result: res.mocap_result.clone().unwrap().result,
@@ -550,14 +415,6 @@ impl super::super::FromChannel for Mocap {
     fn new(channel: &::grpcio::Channel) -> Self {
         Mocap {
             service_client: mocap_grpc::MocapServiceClient::new(channel.clone()),
-        }
-    }
-}
-
-impl super::super::FromChannel for Mocap {
-    fn new(channel: &::grpcio::Channel) -> Self {
-        Mocap {
-            service_client: mocap_grpc::MocapServiceClient::new(channel.clone())
         }
     }
 }
