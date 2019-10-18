@@ -11,11 +11,13 @@ fn main() {
     }
 
     if args.len() > 1 {
-        io::stderr().write_all(b"Usage: info [connection_url]\n").unwrap();
+        io::stderr()
+            .write_all(b"Usage: info [connection_url]\n")
+            .unwrap();
         std::process::exit(1);
     }
 
-    let url:Option<String> = if args.len() == 0 {
+    let url: Option<String> = if args.len() == 0 {
         Option::None
     } else {
         Option::Some(args[0].clone())

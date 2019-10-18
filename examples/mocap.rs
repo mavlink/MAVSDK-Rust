@@ -1,7 +1,7 @@
 extern crate libmavsdk;
 
-use std::io::{self, Write};
 use libmavsdk::*;
+use std::io::{self, Write};
 
 fn main() {
     let mut args = Vec::new();
@@ -11,11 +11,13 @@ fn main() {
     }
 
     if args.len() > 1 {
-        io::stderr().write_all(b"Usage: info [connection_url]\n").unwrap();
+        io::stderr()
+            .write_all(b"Usage: info [connection_url]\n")
+            .unwrap();
         std::process::exit(1);
     }
 
-    let url:Option<String> = if args.len() == 0 {
+    let url: Option<String> = if args.len() == 0 {
         Option::None
     } else {
         Option::Some(args[0].clone())
@@ -41,7 +43,9 @@ fn main() {
     pose_covariance.set_covariance_matrix(vec![std::f32::NAN]);
     vision_position_estimate.set_pose_covariance(pose_covariance);
 
-    let result = system.mocap.set_vision_position_estimate(vision_position_estimate);
+    let result = system
+        .mocap
+        .set_vision_position_estimate(vision_position_estimate);
 
     println!("{:?}", result);
 }
