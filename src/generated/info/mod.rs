@@ -45,7 +45,7 @@ impl FromRpcResult<info::GetVersionResponse> for GetVersionResult {
         rpc_get_version_response: ::grpcio::Result<info::GetVersionResponse>,
     ) -> Self {
         match rpc_get_version_response {
-            Ok(verison_response) => match verison_response.get_info_result().get_result() {
+            Ok(version_response) => match version_response.get_info_result().get_result() {
                 info::InfoResult_Result::UNKNOWN => Err(super::super::RequestError::MavErr(
                     InfoError::Unknown(verison_response.get_info_result().get_result_str().into()),
                 )),
