@@ -25,7 +25,18 @@ fn main() {
 
     let system = System::new(url);
 
-    let version = system.info.get_version();
+    let get_version_result = system.info.get_version();
 
-    println!("{:?}", version);
+    match get_version_result {
+        Ok(version) => println!("Success: {:?}", version),
+        Err(error) => match error {
+            RequestError::MavErr(mav_err) => match mav_err {
+                info::InfoError::Unknown(s) => println!("Unknown MAVLink error ({:?})", s),
+                info::InfoError::InformationNotReceivedYet(s) => {
+                    println!("Information not received yet ({:?})", s)
+                }
+            },
+            RequestError::RpcErr(rpc_err) => println!("RPC error: {:?}", rpc_err),
+        },
+    }
 }
