@@ -11,17 +11,16 @@ pub struct System {
 }
 
 #[derive(Debug)]
-pub struct MavsdkError<ErrT> {
-    pub result: ErrT,
-    pub result_str: String,
-}
-
-#[derive(Debug)]
-pub enum MavsdkResult<T, ErrT> {
-    Ok(T),
-    Err(MavsdkError<ErrT>),
+pub enum RequestError<PluginMavErr> {
+    MavErr(PluginMavErr),
     RpcErr(grpcio::Error),
 }
+
+trait FromRpcResult<T> {
+    fn from_rpc_result(rpc_result: ::grpcio::Result<T>) -> Self;
+}
+
+pub type RequestResult<SuccessType, PluginMavErr> = Result<SuccessType, RequestError<PluginMavErr>>;
 
 trait FromChannel {
     fn new(channel: &::grpcio::Channel) -> Self;
