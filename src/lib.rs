@@ -10,17 +10,11 @@ pub struct System {
     pub info: info::Info,
 }
 
-#[derive(Debug)]
-pub enum RequestError<PluginMavErr> {
-    MavErr(PluginMavErr),
-    RpcErr(grpcio::Error),
-}
-
 trait FromRpcResult<T> {
     fn from_rpc_result(rpc_result: ::grpcio::Result<T>) -> Self;
 }
 
-pub type RequestResult<SuccessType, PluginMavErr> = Result<SuccessType, RequestError<PluginMavErr>>;
+pub type RequestResult<SuccessType, PluginMavErr> = Result<SuccessType, PluginMavErr>;
 
 trait FromChannel {
     fn new(channel: &::grpcio::Channel) -> Self;

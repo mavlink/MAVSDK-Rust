@@ -32,10 +32,11 @@ impl From<&info::Version> for Version {
     }
 }
 
-#[derive(PartialEq, Clone, Debug)]
+#[derive(Debug)]
 pub enum InfoError {
     Unknown(String),
     InformationNotReceivedYet(String),
+    RpcErr(grpcio::Error),
 }
 
 pub type GetVersionResult = super::super::RequestResult<Version, InfoError>;
@@ -46,19 +47,19 @@ impl FromRpcResult<info::GetVersionResponse> for GetVersionResult {
     ) -> Self {
         match rpc_get_version_response {
             Ok(verison_response) => match verison_response.get_info_result().get_result() {
-                info::InfoResult_Result::UNKNOWN => Err(super::super::RequestError::MavErr(
-                    InfoError::Unknown(verison_response.get_info_result().get_result_str().into()),
+                info::InfoResult_Result::UNKNOWN => Err(InfoError::Unknown(
+                    verison_response.get_info_result().get_result_str().into(),
                 )),
-                info::InfoResult_Result::INFORMATION_NOT_RECEIVED_YET => Err(
-                    super::super::RequestError::MavErr(InfoError::InformationNotReceivedYet(
+                info::InfoResult_Result::INFORMATION_NOT_RECEIVED_YET => {
+                    Err(InfoError::InformationNotReceivedYet(
                         verison_response.get_info_result().get_result_str().into(),
-                    )),
-                ),
+                    ))
+                }
                 info::InfoResult_Result::SUCCESS => {
                     Ok(Version::from(verison_response.get_version()))
                 }
             },
-            Err(e) => Err(super::super::RequestError::RpcErr(e)),
+            Err(e) => Err(InfoError::RpcErr(e)),
         }
     }
 }

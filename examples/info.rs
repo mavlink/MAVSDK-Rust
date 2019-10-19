@@ -30,13 +30,11 @@ fn main() {
     match get_version_result {
         Ok(version) => println!("Success: {:?}", version),
         Err(error) => match error {
-            RequestError::MavErr(mav_err) => match mav_err {
-                info::InfoError::Unknown(s) => println!("Unknown MAVLink error ({:?})", s),
-                info::InfoError::InformationNotReceivedYet(s) => {
-                    println!("Information not received yet ({:?})", s)
-                }
-            },
-            RequestError::RpcErr(rpc_err) => println!("RPC error: {:?}", rpc_err),
+            info::InfoError::Unknown(s) => println!("Unknown MAVLink error ({:?})", s),
+            info::InfoError::InformationNotReceivedYet(s) => {
+                println!("Information not received yet ({:?})", s)
+            }
+            info::InfoError::RpcErr(rpc_err) => println!("RPC error: {:?}", rpc_err),
         },
     }
 }
