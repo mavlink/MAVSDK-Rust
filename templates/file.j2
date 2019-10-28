@@ -1,0 +1,28 @@
+mod {{ plugin_name.lower_snake_case }}_grpc;
+mod {{ plugin_name.lower_snake_case }};
+
+use {{ plugin_name.lower_snake_case }}::{{ plugin_name.upper_camel_case }}Result_Result;
+
+impl {{ plugin_name.upper_camel_case }} {
+
+{%- for enum in enums %}
+{{ indent(enum, 1) }}
+{%- endfor %}
+
+{% for struct in structs %}
+{{ indent(struct, 1) }}
+{% endfor %}
+
+{%- for method in methods %}
+{{ indent(method, 1) }}
+{%- endfor %}
+
+}
+
+impl super::super::FromChannel for {{ plugin_name.upper_camel_case}} {
+    fn new(channel: ::grpcio::Channel) -> Self {
+        {{ plugin_name.upper_camel_case }} {
+            service_client: {{ plugin_name.lower_snake_case }}_grpc::{{ plugin_name.upper_camel_case }}ServiceClient::new(channel),
+        }
+    }
+}
