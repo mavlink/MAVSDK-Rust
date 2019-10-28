@@ -14,7 +14,7 @@ async fn main() {
 
     if args.len() > 1 {
         io::stderr()
-            .write_all(b"Usage: info [connection_url]\n")
+            .write_all(b"Usage: telemetry [connection_url]\n")
             .unwrap();
         std::process::exit(1);
     }
@@ -33,20 +33,15 @@ async fn main() {
         }
     };
 
-    match system.info.get_version().await {
-        Ok(v) => {
-            println!("Version received: {:?}", v);
-        }
-        Err(err) => match err {
-            RequestError::MavErr(mav_err) => match mav_err {
-                info::InfoError::Unknown(s) => {
-                    println!("Unknown MAVLink error ({:?})", s)
-                }
-                info::InfoError::InformationNotReceivedYet(s) => {
-                    println!("{}", s)
-                }
+    let mut odometry_stream = system.telemetry.subscribe_odometry().await.unwrap();
+    while let Some(odometry) = odometry_stream.get_next().await {
+        match odometry {
+            Ok(odometry) => println!("Received: {:?}", odometry),
+            Err(err) => {
+                println!("Error: {:?}", err);
+                break;
             }
-            RequestError::RpcErr(rpc_err) => println!("RPC error: {:?}", rpc_err)
         }
     };
+    println!("Exit");
 }
