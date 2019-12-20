@@ -18,7 +18,7 @@ $ cargo build
 
 # Run examples
 
-1. Run **MAVSDK Backend** on localhost
+1. Run **MAVSDK Backend** on `localhost:50051`
 2. Run examples
 ```bash
 $ cargo run --example info
@@ -46,6 +46,7 @@ Finished dev [unoptimized + debuginfo] target(s) in 0.31s
  Running `target/debug/examples/mocap`
 All sended successfully!
 ```
+- `telemetry`
 ```bash
 $ cargo run --example telemery
    Compiling libmavsdk v0.1.0 (/home/ildar/sw/mavsdk-rust)
