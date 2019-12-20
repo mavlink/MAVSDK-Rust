@@ -1,4 +1,7 @@
 use super::super::FromRpcResponse;
+use super::super::RequestError::{MavErr, RpcErr};
+use super::super::RequestResult;
+use super::super::TonicResult;
 
 mod pb {
     include!("mavsdk.rpc.info.rs");
@@ -48,12 +51,10 @@ pub enum InfoError {
     InformationNotReceivedYet(String),
 }
 
-pub type GetVersionResult = super::super::RequestResult<Version, InfoError>;
+pub type GetVersionResult = RequestResult<Version, InfoError>;
 
-impl super::super::FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
-    fn from_rpc_response(
-        rpc_get_version_response: super::super::TonicResult<pb::GetVersionResponse>,
-    ) -> Self {
+impl FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
+    fn from_rpc_response(rpc_get_version_response: TonicResult<pb::GetVersionResponse>) -> Self {
         match rpc_get_version_response {
             Ok(tonic_response) => {
                 let get_version_response = tonic_response.into_inner();
@@ -64,35 +65,31 @@ impl super::super::FromRpcResponse<pb::GetVersionResponse> for GetVersionResult 
                                 pb::info_result::Result::Success => {
                                     match get_version_response.version {
                                         Some(ref rpc_version) => Ok(Version::from(rpc_version)),
-                                        None => Err(super::super::RequestError::MavErr(
-                                            InfoError::Unknown("Version does not received".into()),
-                                        )),
+                                        None => Err(MavErr(InfoError::Unknown(
+                                            "Version does not received".into(),
+                                        ))),
                                     }
                                 }
-                                pb::info_result::Result::Unknown => {
-                                    Err(super::super::RequestError::MavErr(InfoError::Unknown(
+                                pb::info_result::Result::Unknown => Err(MavErr(
+                                    InfoError::Unknown(rpc_info_result.result_str.clone()),
+                                )),
+                                pb::info_result::Result::InformationNotReceivedYet => {
+                                    Err(MavErr(InfoError::InformationNotReceivedYet(
                                         rpc_info_result.result_str.clone(),
                                     )))
                                 }
-                                pb::info_result::Result::InformationNotReceivedYet => {
-                                    Err(super::super::RequestError::MavErr(
-                                        InfoError::InformationNotReceivedYet(
-                                            rpc_info_result.result_str.clone(),
-                                        ),
-                                    ))
-                                }
                             },
-                            None => Err(super::super::RequestError::MavErr(InfoError::Unknown(
+                            None => Err(MavErr(InfoError::Unknown(
                                 "Unsupported InfoResult.result value".into(),
                             ))),
                         }
                     }
-                    None => Err(super::super::RequestError::MavErr(InfoError::Unknown(
+                    None => Err(MavErr(InfoError::Unknown(
                         "InfoResult does not received".into(),
                     ))),
                 }
             }
-            Err(err) => Err(super::super::RequestError::RpcErr(err)),
+            Err(err) => Err(RpcErr(err)),
         }
     }
 }

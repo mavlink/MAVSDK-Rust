@@ -1,10 +1,9 @@
-use super::super::RequestError;
+use super::super::RequestError::{MavErr, RpcErr};
 use super::super::RequestResult;
 use futures::stream::{Stream, StreamExt};
 use futures::task::{Context, Poll};
 use std::convert::From;
 use std::pin::Pin;
-use RequestError::{MavErr, RpcErr};
 
 mod pb {
     include!("mavsdk.rpc.telemetry.rs");
@@ -226,6 +225,9 @@ pub enum TelemetryError {
     InvalidRequestData(String),
 }
 
+#[doc = ""]
+#[doc = " Allow users to get vehicle telemetry and state information"]
+#[doc = " (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates."]
 pub struct Telemetry {
     service_client: pb::telemetry_service_client::TelemetryServiceClient<tonic::transport::Channel>,
 }
@@ -237,18 +239,6 @@ impl Telemetry {
         Ok(OdometryStream {
             streaming: response.into_inner(),
         })
-    }
-}
-
-#[tonic::async_trait]
-impl super::super::Connect for Telemetry {
-    async fn connect(url: &String) -> std::result::Result<Telemetry, tonic::transport::Error> {
-        match pb::telemetry_service_client::TelemetryServiceClient::connect(url.clone()).await {
-            Ok(client) => Ok(Telemetry {
-                service_client: client,
-            }),
-            Err(err) => Err(err),
-        }
     }
 }
 
@@ -274,6 +264,18 @@ impl Stream for OdometryStream {
                 },
                 Err(err) => Poll::Ready(Some(Err(RpcErr(err)))),
             },
+        }
+    }
+}
+
+#[tonic::async_trait]
+impl super::super::Connect for Telemetry {
+    async fn connect(url: &String) -> std::result::Result<Telemetry, tonic::transport::Error> {
+        match pb::telemetry_service_client::TelemetryServiceClient::connect(url.clone()).await {
+            Ok(client) => Ok(Telemetry {
+                service_client: client,
+            }),
+            Err(err) => Err(err),
         }
     }
 }
