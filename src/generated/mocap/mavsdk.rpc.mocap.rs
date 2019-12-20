@@ -211,8 +211,8 @@ pub mod mocap_result {
         InvalidRequestData = 4,
     }
 }
-#[doc = r" Generated client implementations."]
-pub mod client {
+#[doc = r" Generated server implementations."]
+pub mod mocap_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = "*"]
@@ -239,20 +239,10 @@ pub mod client {
         T::ResponseBody: Body + HttpBody + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-        <T::ResponseBody as HttpBody>::Data: Into<bytes::Bytes> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
-        }
-        #[doc = r" Check if the service is ready."]
-        pub async fn ready(&mut self) -> Result<(), tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })
         }
         #[doc = " Send Global position/attitude estimate from a vision source."]
         pub async fn set_vision_position_estimate(
@@ -260,7 +250,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SetVisionPositionEstimateRequest>,
         ) -> Result<tonic::Response<super::SetVisionPositionEstimateResponse>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mocap.MocapService/SetVisionPositionEstimate",
@@ -273,7 +268,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SetAttitudePositionMocapRequest>,
         ) -> Result<tonic::Response<super::SetAttitudePositionMocapResponse>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mocap.MocapService/SetAttitudePositionMocap",
@@ -285,7 +285,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetOdometryRequest>,
         ) -> Result<tonic::Response<super::SetOdometryResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.mocap.MocapService/SetOdometry");

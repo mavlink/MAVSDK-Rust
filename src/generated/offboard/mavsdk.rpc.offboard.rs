@@ -212,8 +212,8 @@ pub mod offboard_result {
         NoSetpointSet = 7,
     }
 }
-#[doc = r" Generated client implementations."]
-pub mod client {
+#[doc = r" Generated server implementations."]
+pub mod offboard_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = "*"]
@@ -245,20 +245,10 @@ pub mod client {
         T::ResponseBody: Body + HttpBody + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-        <T::ResponseBody as HttpBody>::Data: Into<bytes::Bytes> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
-        }
-        #[doc = r" Check if the service is ready."]
-        pub async fn ready(&mut self) -> Result<(), tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })
         }
         #[doc = ""]
         #[doc = " Start offboard control."]
@@ -266,7 +256,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::StartRequest>,
         ) -> Result<tonic::Response<super::StartResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.offboard.OffboardService/Start");
@@ -280,7 +275,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::StopRequest>,
         ) -> Result<tonic::Response<super::StopResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.offboard.OffboardService/Stop");
@@ -295,7 +295,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::IsActiveRequest>,
         ) -> Result<tonic::Response<super::IsActiveResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.offboard.OffboardService/IsActive",
@@ -308,7 +313,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetAttitudeRequest>,
         ) -> Result<tonic::Response<super::SetAttitudeResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.offboard.OffboardService/SetAttitude",
@@ -324,7 +334,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetActuatorControlRequest>,
         ) -> Result<tonic::Response<super::SetActuatorControlResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.offboard.OffboardService/SetActuatorControl",
@@ -337,7 +352,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetAttitudeRateRequest>,
         ) -> Result<tonic::Response<super::SetAttitudeRateResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.offboard.OffboardService/SetAttitudeRate",
@@ -350,7 +370,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetPositionNedRequest>,
         ) -> Result<tonic::Response<super::SetPositionNedResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.offboard.OffboardService/SetPositionNed",
@@ -363,7 +388,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetVelocityBodyRequest>,
         ) -> Result<tonic::Response<super::SetVelocityBodyResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.offboard.OffboardService/SetVelocityBody",
@@ -376,7 +406,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetVelocityNedRequest>,
         ) -> Result<tonic::Response<super::SetVelocityNedResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.offboard.OffboardService/SetVelocityNed",

@@ -366,8 +366,8 @@ pub enum CameraMode {
     /// Video mode
     Video = 2,
 }
-#[doc = r" Generated client implementations."]
-pub mod client {
+#[doc = r" Generated server implementations."]
+pub mod camera_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = ""]
@@ -398,20 +398,10 @@ pub mod client {
         T::ResponseBody: Body + HttpBody + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-        <T::ResponseBody as HttpBody>::Data: Into<bytes::Bytes> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
-        }
-        #[doc = r" Check if the service is ready."]
-        pub async fn ready(&mut self) -> Result<(), tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })
         }
         #[doc = ""]
         #[doc = " Take one photo."]
@@ -419,7 +409,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::TakePhotoRequest>,
         ) -> Result<tonic::Response<super::TakePhotoResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.camera.CameraService/TakePhoto");
@@ -431,7 +426,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::StartPhotoIntervalRequest>,
         ) -> Result<tonic::Response<super::StartPhotoIntervalResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/StartPhotoInterval",
@@ -444,7 +444,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::StopPhotoIntervalRequest>,
         ) -> Result<tonic::Response<super::StopPhotoIntervalResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/StopPhotoInterval",
@@ -457,7 +462,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::StartVideoRequest>,
         ) -> Result<tonic::Response<super::StartVideoResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.camera.CameraService/StartVideo");
@@ -469,7 +479,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::StopVideoRequest>,
         ) -> Result<tonic::Response<super::StopVideoResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.camera.CameraService/StopVideo");
@@ -481,7 +496,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::StartVideoStreamingRequest>,
         ) -> Result<tonic::Response<super::StartVideoStreamingResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/StartVideoStreaming",
@@ -494,7 +514,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::StopVideoStreamingRequest>,
         ) -> Result<tonic::Response<super::StopVideoStreamingResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/StopVideoStreaming",
@@ -507,7 +532,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetModeRequest>,
         ) -> Result<tonic::Response<super::SetModeResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.camera.CameraService/SetMode");
@@ -520,7 +550,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribeModeRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::ModeResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/SubscribeMode",
@@ -538,7 +573,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::VideoStreamInfoResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/SubscribeVideoStreamInfo",
@@ -556,7 +596,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::CaptureInfoResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/SubscribeCaptureInfo",
@@ -574,7 +619,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::CameraStatusResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/SubscribeCameraStatus",
@@ -592,7 +642,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::CurrentSettingsResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/SubscribeCurrentSettings",
@@ -610,7 +665,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::PossibleSettingOptionsResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.camera.CameraService/SubscribePossibleSettingOptions",
@@ -625,7 +685,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetSettingRequest>,
         ) -> Result<tonic::Response<super::SetSettingResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.camera.CameraService/SetSetting");

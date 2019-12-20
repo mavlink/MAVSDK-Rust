@@ -473,8 +473,8 @@ pub enum LandedState {
     TakingOff = 3,
     Landing = 4,
 }
-#[doc = r" Generated client implementations."]
-pub mod client {
+#[doc = r" Generated server implementations."]
+pub mod telemetry_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = ""]
@@ -500,20 +500,10 @@ pub mod client {
         T::ResponseBody: Body + HttpBody + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-        <T::ResponseBody as HttpBody>::Data: Into<bytes::Bytes> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
-        }
-        #[doc = r" Check if the service is ready."]
-        pub async fn ready(&mut self) -> Result<(), tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })
         }
         #[doc = " Subscribe to 'position' updates."]
         pub async fn subscribe_position(
@@ -521,7 +511,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribePositionRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::PositionResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribePosition",
@@ -536,7 +531,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribeHomeRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::HomeResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeHome",
@@ -551,7 +551,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribeInAirRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::InAirResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeInAir",
@@ -568,7 +573,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::LandedStateResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeLandedState",
@@ -583,7 +593,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribeArmedRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::ArmedResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeArmed",
@@ -600,7 +615,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::AttitudeQuaternionResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeAttitudeQuaternion",
@@ -617,7 +637,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::AttitudeEulerResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeAttitudeEuler",
@@ -634,7 +659,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::AttitudeAngularVelocityBodyResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeAttitudeAngularVelocityBody",
@@ -651,7 +681,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::CameraAttitudeQuaternionResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeCameraAttitudeQuaternion",
@@ -668,7 +703,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::CameraAttitudeEulerResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeCameraAttitudeEuler",
@@ -685,7 +725,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::GroundSpeedNedResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeGroundSpeedNed",
@@ -700,7 +745,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribeGpsInfoRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::GpsInfoResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeGpsInfo",
@@ -715,7 +765,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribeBatteryRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::BatteryResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeBattery",
@@ -732,7 +787,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::FlightModeResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeFlightMode",
@@ -747,7 +807,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribeHealthRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::HealthResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeHealth",
@@ -762,7 +827,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribeRcStatusRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::RcStatusResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeRcStatus",
@@ -779,7 +849,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::StatusTextResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeStatusText",
@@ -796,7 +871,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::ActuatorControlTargetResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeActuatorControlTarget",
@@ -813,7 +893,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::ActuatorOutputStatusResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeActuatorOutputStatus",
@@ -828,7 +913,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SubscribeOdometryRequest>,
         ) -> Result<tonic::Response<tonic::codec::Streaming<super::OdometryResponse>>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.telemetry.TelemetryService/SubscribeOdometry",

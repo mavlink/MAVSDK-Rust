@@ -83,8 +83,8 @@ pub mod param_result {
         ParamNameTooLong = 5,
     }
 }
-#[doc = r" Generated client implementations."]
-pub mod client {
+#[doc = r" Generated server implementations."]
+pub mod param_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = " Provide raw access to get and set parameters."]
@@ -108,20 +108,10 @@ pub mod client {
         T::ResponseBody: Body + HttpBody + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-        <T::ResponseBody as HttpBody>::Data: Into<bytes::Bytes> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
-        }
-        #[doc = r" Check if the service is ready."]
-        pub async fn ready(&mut self) -> Result<(), tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })
         }
         #[doc = ""]
         #[doc = " Get an int parameter."]
@@ -131,7 +121,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::GetIntParamRequest>,
         ) -> Result<tonic::Response<super::GetIntParamResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.param.ParamService/GetIntParam");
@@ -145,7 +140,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetIntParamRequest>,
         ) -> Result<tonic::Response<super::SetIntParamResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.param.ParamService/SetIntParam");
@@ -159,7 +159,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::GetFloatParamRequest>,
         ) -> Result<tonic::Response<super::GetFloatParamResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.param.ParamService/GetFloatParam",
@@ -174,7 +179,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetFloatParamRequest>,
         ) -> Result<tonic::Response<super::SetFloatParamResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.param.ParamService/SetFloatParam",

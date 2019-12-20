@@ -165,8 +165,8 @@ pub mod action_result {
         ParameterError = 11,
     }
 }
-#[doc = r" Generated client implementations."]
-pub mod client {
+#[doc = r" Generated server implementations."]
+pub mod action_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = " Enable simple actions such as arming, taking off, and landing."]
@@ -190,20 +190,10 @@ pub mod client {
         T::ResponseBody: Body + HttpBody + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-        <T::ResponseBody as HttpBody>::Data: Into<bytes::Bytes> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
-        }
-        #[doc = r" Check if the service is ready."]
-        pub async fn ready(&mut self) -> Result<(), tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })
         }
         #[doc = ""]
         #[doc = " Send command to arm the drone."]
@@ -214,7 +204,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::ArmRequest>,
         ) -> Result<tonic::Response<super::ArmResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/mavsdk.rpc.action.ActionService/Arm");
             self.inner.unary(request.into_request(), path, codec).await
@@ -228,7 +223,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::DisarmRequest>,
         ) -> Result<tonic::Response<super::DisarmResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.action.ActionService/Disarm");
@@ -245,7 +245,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::TakeoffRequest>,
         ) -> Result<tonic::Response<super::TakeoffResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.action.ActionService/Takeoff");
@@ -259,7 +264,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::LandRequest>,
         ) -> Result<tonic::Response<super::LandResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.action.ActionService/Land");
@@ -273,7 +283,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::RebootRequest>,
         ) -> Result<tonic::Response<super::RebootResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.action.ActionService/Reboot");
@@ -288,7 +303,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::KillRequest>,
         ) -> Result<tonic::Response<super::KillResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.action.ActionService/Kill");
@@ -304,7 +324,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::ReturnToLaunchRequest>,
         ) -> Result<tonic::Response<super::ReturnToLaunchResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.action.ActionService/ReturnToLaunch",
@@ -321,7 +346,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::TransitionToFixedWingRequest>,
         ) -> Result<tonic::Response<super::TransitionToFixedWingResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.action.ActionService/TransitionToFixedWing",
@@ -339,7 +369,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::TransitionToMulticopterRequest>,
         ) -> Result<tonic::Response<super::TransitionToMulticopterResponse>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.action.ActionService/TransitionToMulticopter",
@@ -352,7 +387,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::GetTakeoffAltitudeRequest>,
         ) -> Result<tonic::Response<super::GetTakeoffAltitudeResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.action.ActionService/GetTakeoffAltitude",
@@ -365,7 +405,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetTakeoffAltitudeRequest>,
         ) -> Result<tonic::Response<super::SetTakeoffAltitudeResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.action.ActionService/SetTakeoffAltitude",
@@ -378,7 +423,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::GetMaximumSpeedRequest>,
         ) -> Result<tonic::Response<super::GetMaximumSpeedResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.action.ActionService/GetMaximumSpeed",
@@ -391,7 +441,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::SetMaximumSpeedRequest>,
         ) -> Result<tonic::Response<super::SetMaximumSpeedResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.action.ActionService/SetMaximumSpeed",
@@ -405,7 +460,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::GetReturnToLaunchAltitudeRequest>,
         ) -> Result<tonic::Response<super::GetReturnToLaunchAltitudeResponse>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.action.ActionService/GetReturnToLaunchAltitude",
@@ -419,7 +479,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SetReturnToLaunchAltitudeRequest>,
         ) -> Result<tonic::Response<super::SetReturnToLaunchAltitudeResponse>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.action.ActionService/SetReturnToLaunchAltitude",

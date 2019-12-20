@@ -203,8 +203,8 @@ pub mod mission_result {
         TransferCancelled = 12,
     }
 }
-#[doc = r" Generated client implementations."]
-pub mod client {
+#[doc = r" Generated server implementations."]
+pub mod mission_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = " Enable waypoint missions."]
@@ -228,20 +228,10 @@ pub mod client {
         T::ResponseBody: Body + HttpBody + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-        <T::ResponseBody as HttpBody>::Data: Into<bytes::Bytes> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
-        }
-        #[doc = r" Check if the service is ready."]
-        pub async fn ready(&mut self) -> Result<(), tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })
         }
         #[doc = ""]
         #[doc = " Upload a list of mission items to the system."]
@@ -252,7 +242,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::UploadMissionRequest>,
         ) -> Result<tonic::Response<super::UploadMissionResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/UploadMission",
@@ -265,7 +260,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::CancelMissionUploadRequest>,
         ) -> Result<tonic::Response<super::CancelMissionUploadResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/CancelMissionUpload",
@@ -281,7 +281,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::DownloadMissionRequest>,
         ) -> Result<tonic::Response<super::DownloadMissionResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/DownloadMission",
@@ -294,7 +299,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::CancelMissionDownloadRequest>,
         ) -> Result<tonic::Response<super::CancelMissionDownloadResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/CancelMissionDownload",
@@ -309,7 +319,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::StartMissionRequest>,
         ) -> Result<tonic::Response<super::StartMissionResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/StartMission",
@@ -327,7 +342,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::PauseMissionRequest>,
         ) -> Result<tonic::Response<super::PauseMissionResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/PauseMission",
@@ -340,7 +360,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::ClearMissionRequest>,
         ) -> Result<tonic::Response<super::ClearMissionResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/ClearMission",
@@ -360,7 +385,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SetCurrentMissionItemIndexRequest>,
         ) -> Result<tonic::Response<super::SetCurrentMissionItemIndexResponse>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/SetCurrentMissionItemIndex",
@@ -373,7 +403,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::IsMissionFinishedRequest>,
         ) -> Result<tonic::Response<super::IsMissionFinishedResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/IsMissionFinished",
@@ -389,7 +424,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::MissionProgressResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/SubscribeMissionProgress",
@@ -408,7 +448,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::GetReturnToLaunchAfterMissionRequest>,
         ) -> Result<tonic::Response<super::GetReturnToLaunchAfterMissionResponse>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/GetReturnToLaunchAfterMission",
@@ -425,7 +470,12 @@ pub mod client {
             request: impl tonic::IntoRequest<super::SetReturnToLaunchAfterMissionRequest>,
         ) -> Result<tonic::Response<super::SetReturnToLaunchAfterMissionResponse>, tonic::Status>
         {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.mission.MissionService/SetReturnToLaunchAfterMission",

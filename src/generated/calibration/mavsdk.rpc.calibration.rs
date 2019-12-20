@@ -98,8 +98,8 @@ pub struct ProgressData {
     #[prost(string, tag = "4")]
     pub status_text: std::string::String,
 }
-#[doc = r" Generated client implementations."]
-pub mod client {
+#[doc = r" Generated server implementations."]
+pub mod calibration_service_client {
     #![allow(unused_variables, dead_code, missing_docs)]
     use tonic::codegen::*;
     #[doc = " Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer."]
@@ -123,20 +123,10 @@ pub mod client {
         T::ResponseBody: Body + HttpBody + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
-        <T::ResponseBody as HttpBody>::Data: Into<bytes::Bytes> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
-        }
-        #[doc = r" Check if the service is ready."]
-        pub async fn ready(&mut self) -> Result<(), tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })
         }
         #[doc = " Perform gyro calibration."]
         pub async fn subscribe_calibrate_gyro(
@@ -146,7 +136,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::CalibrateGyroResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.calibration.CalibrationService/SubscribeCalibrateGyro",
@@ -163,7 +158,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::CalibrateAccelerometerResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.calibration.CalibrationService/SubscribeCalibrateAccelerometer",
@@ -180,7 +180,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::CalibrateMagnetometerResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.calibration.CalibrationService/SubscribeCalibrateMagnetometer",
@@ -197,7 +202,12 @@ pub mod client {
             tonic::Response<tonic::codec::Streaming<super::CalibrateGimbalAccelerometerResponse>>,
             tonic::Status,
         > {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.calibration.CalibrationService/SubscribeCalibrateGimbalAccelerometer",
@@ -211,7 +221,12 @@ pub mod client {
             &mut self,
             request: impl tonic::IntoRequest<super::CancelRequest>,
         ) -> Result<tonic::Response<super::CancelResponse>, tonic::Status> {
-            self.ready().await?;
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/mavsdk.rpc.calibration.CalibrationService/Cancel",
