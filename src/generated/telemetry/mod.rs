@@ -233,11 +233,9 @@ pub struct OdometryStream {
     streaming: tonic::codec::Streaming<pb::OdometryResponse>,
 }
 
-pub type OdometryResult = super::super::RequestResult<Odometry, TelemetryError>;
-
 #[async_trait]
-impl super::super::MavsdkStream<OdometryResult> for OdometryStream {
-    async fn get_next(&mut self) -> Option<OdometryResult> {
+impl super::super::MavsdkStream<Odometry, TelemetryError> for OdometryStream {
+    async fn get_next(&mut self) -> Option<super::super::RequestResult<Odometry, TelemetryError>> {
         let message = match self.streaming.message().await {
             Ok(message) => message,
             Err(err) => return Some(Err(RpcErr(err))),

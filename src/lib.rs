@@ -46,6 +46,6 @@ trait Connect {
 }
 
 #[async_trait]
-pub trait MavsdkStream<StreamRequestResult> {
-    async fn get_next(&mut self) -> Option<StreamRequestResult>;
+pub trait MavsdkStream<Data, PluginError> {
+    async fn get_next(&mut self) -> Option<RequestResult<Data, PluginError>>;
 }
