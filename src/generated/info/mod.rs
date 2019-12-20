@@ -1,5 +1,4 @@
 use super::super::FromRpcResponse;
-use async_trait::async_trait;
 
 mod pb {
     include!("mavsdk.rpc.info.rs");
@@ -100,7 +99,7 @@ impl super::super::FromRpcResponse<pb::GetVersionResponse> for GetVersionResult 
 
 #[doc = " Provide infomation about the hardware and/or software of a system."]
 pub struct Info {
-    service_client: pb::client::InfoServiceClient<tonic::transport::Channel>,
+    service_client: pb::info_service_client::InfoServiceClient<tonic::transport::Channel>,
 }
 
 impl Info {
@@ -111,11 +110,12 @@ impl Info {
     }
 }
 
-#[async_trait]
+#[tonic::async_trait]
 impl super::super::Connect for Info {
     async fn connect(url: &String) -> std::result::Result<Info, tonic::transport::Error> {
         Ok(Info {
-            service_client: pb::client::InfoServiceClient::connect(url.clone()).await?,
+            service_client: pb::info_service_client::InfoServiceClient::connect(url.clone())
+                .await?,
         })
     }
 }

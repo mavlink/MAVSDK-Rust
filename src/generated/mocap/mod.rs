@@ -1,5 +1,4 @@
 use super::super::FromRpcResponse;
-use async_trait::async_trait;
 use std::convert::Into;
 
 mod pb {
@@ -297,7 +296,7 @@ impl super::super::FromRpcResponse<pb::SetVisionPositionEstimateResponse>
 #[doc = " position source is unavailable or unreliable"]
 #[doc = " (e.g. indoors, or when flying under a bridge. etc.)."]
 pub struct Mocap {
-    service_client: pb::client::MocapServiceClient<tonic::transport::Channel>,
+    service_client: pb::mocap_service_client::MocapServiceClient<tonic::transport::Channel>,
 }
 
 impl Mocap {
@@ -316,11 +315,12 @@ impl Mocap {
     }
 }
 
-#[async_trait]
+#[tonic::async_trait]
 impl super::super::Connect for Mocap {
     async fn connect(url: &String) -> std::result::Result<Mocap, tonic::transport::Error> {
         Ok(Mocap {
-            service_client: pb::client::MocapServiceClient::connect(url.clone()).await?,
+            service_client: pb::mocap_service_client::MocapServiceClient::connect(url.clone())
+                .await?,
         })
     }
 }

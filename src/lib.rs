@@ -1,7 +1,5 @@
 mod generated;
 
-use async_trait::async_trait;
-
 pub use generated::info;
 pub use generated::mocap;
 pub use generated::telemetry;
@@ -40,12 +38,7 @@ impl System {
     }
 }
 
-#[async_trait]
+#[tonic::async_trait]
 trait Connect {
     async fn connect(url: &String) -> Result<Self, tonic::transport::Error> where Self: Sized;
-}
-
-#[async_trait]
-pub trait MavsdkStream<Data, PluginError> {
-    async fn get_next(&mut self) -> Option<RequestResult<Data, PluginError>>;
 }

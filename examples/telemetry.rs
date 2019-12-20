@@ -2,6 +2,7 @@ extern crate libmavsdk;
 
 use libmavsdk::*;
 use std::io::{self, Write};
+use futures::stream::StreamExt;
 
 #[tokio::main]
 async fn main() {
@@ -33,12 +34,12 @@ async fn main() {
         }
     };
 
-    let mut odometry_stream = system.telemetry.subscribe_odometry().await.unwrap();
-    while let Some(odometry) = odometry_stream.get_next().await {
+    let mut stream_odometry = system.telemetry.subscribe_odometry().await.unwrap();
+    while let Some(odometry) = stream_odometry.next().await {
         match odometry {
             Ok(odometry) => println!("Received: {:?}", odometry),
             Err(err) => {
-                println!("Error: {:?}", err);
+                println!("Break: {:?}", err);
                 break;
             }
         }

@@ -1,7 +1,10 @@
-use async_trait::async_trait;
+use super::super::RequestError;
+use super::super::RequestResult;
+use futures::stream::{Stream, StreamExt};
+use futures::task::{Context, Poll};
 use std::convert::From;
-
-use super::super::RequestError::{MavErr, RpcErr};
+use std::pin::Pin;
+use RequestError::{MavErr, RpcErr};
 
 mod pb {
     include!("mavsdk.rpc.telemetry.rs");
@@ -10,11 +13,14 @@ mod pb {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 pub enum MavFrame {
     Undef = 0,
-    /// Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.
+    /// Setpoint in body NED frame. This makes sense if all position control is
+    /// externalized - e.g. useful to command 2 m/s^2 acceleration to the right.
     BodyNed = 8,
-    /// Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).
+    /// Odometry local coordinate frame of data given by a vision estimation system,
+    /// Z-down (x: north, y: east, z: down).
     VisionNed = 16,
-    /// Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).
+    /// Odometry local coordinate frame of data given by an estimator running
+    /// onboard the vehicle, Z-down (x: north, y: east, z: down).
     EstimNed = 18,
 }
 
@@ -220,42 +226,8 @@ pub enum TelemetryError {
     InvalidRequestData(String),
 }
 
-pub type SetVisionPositionEstimateResult = super::super::RequestResult<(), TelemetryError>;
-
-#[doc = " Motion Capture allow vehicles to navigate when a global"]
-#[doc = " position source is unavailable or unreliable"]
-#[doc = " (e.g. indoors, or when flying under a bridge. etc.)."]
 pub struct Telemetry {
-    service_client: pb::client::TelemetryServiceClient<tonic::transport::Channel>,
-}
-
-pub struct OdometryStream {
-    streaming: tonic::codec::Streaming<pb::OdometryResponse>,
-}
-
-#[async_trait]
-impl super::super::MavsdkStream<Odometry, TelemetryError> for OdometryStream {
-    async fn get_next(&mut self) -> Option<super::super::RequestResult<Odometry, TelemetryError>> {
-        let message = match self.streaming.message().await {
-            Ok(message) => message,
-            Err(err) => return Some(Err(RpcErr(err))),
-        };
-        match message {
-            Some(odometry_response) => match odometry_response.odometry {
-                Some(rpc_odometry) => return Some(Ok(Odometry::from(rpc_odometry))),
-                None => {
-                    return Some(Err(MavErr(TelemetryError::Unknown(
-                        "Unexpected value".into(),
-                    ))))
-                }
-            },
-            None => {
-                return Some(Err(MavErr(TelemetryError::Unknown(
-                    "Unexpected value".into(),
-                ))))
-            }
-        }
-    }
+    service_client: pb::telemetry_service_client::TelemetryServiceClient<tonic::transport::Channel>,
 }
 
 impl Telemetry {
@@ -268,14 +240,40 @@ impl Telemetry {
     }
 }
 
-#[async_trait]
+#[tonic::async_trait]
 impl super::super::Connect for Telemetry {
     async fn connect(url: &String) -> std::result::Result<Telemetry, tonic::transport::Error> {
-        match pb::client::TelemetryServiceClient::connect(url.clone()).await {
+        match pb::telemetry_service_client::TelemetryServiceClient::connect(url.clone()).await {
             Ok(client) => Ok(Telemetry {
                 service_client: client,
             }),
             Err(err) => Err(err),
+        }
+    }
+}
+
+pub struct OdometryStream {
+    streaming: tonic::codec::Streaming<pb::OdometryResponse>,
+}
+
+pub type OdometryResult = RequestResult<Odometry, TelemetryError>;
+
+impl Stream for OdometryStream {
+    type Item = OdometryResult;
+
+    fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
+        match self.streaming.poll_next_unpin(cx) {
+            Poll::Pending => Poll::Pending,
+            Poll::Ready(None) => Poll::Ready(None),
+            Poll::Ready(Some(rpc_result)) => match rpc_result {
+                Ok(odometry_response) => match odometry_response.odometry {
+                    Some(rpc_odometry) => Poll::Ready(Some(Ok(Odometry::from(rpc_odometry)))),
+                    None => Poll::Ready(Some(Err(MavErr(TelemetryError::Unknown(
+                        "Unexpected value".into(),
+                    ))))),
+                },
+                Err(err) => Poll::Ready(Some(Err(RpcErr(err)))),
+            },
         }
     }
 }

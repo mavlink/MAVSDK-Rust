@@ -3,7 +3,6 @@ extern crate libmavsdk;
 use libmavsdk::*;
 use std::io::{self, Write};
 use std::time::Duration;
-
 use async_std::task;
 
 #[tokio::main]
@@ -39,7 +38,7 @@ async fn main() {
     vision_position_estimate.pose_covariance.covariance_matrix = vec![std::f32::NAN];
 
 
-    let mut counter = 500;
+    let mut counter: i32 = 500;
 
     while counter > 0 {
         match system.mocap.set_vision_position_estimate(vision_position_estimate.clone()).await {
