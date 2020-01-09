@@ -23,6 +23,12 @@ pub enum MavFrame {
     EstimNed = 18,
 }
 
+impl From<&i32> for MavFrame {
+    fn from(rpc_mav_frame: &i32) -> Self {
+        MavFrame::from_i32(*rpc_mav_frame).unwrap()
+    }
+}
+
 /// Odometry message type.
 #[derive(Clone, PartialEq, Debug, Default)]
 pub struct Odometry {
@@ -138,26 +144,30 @@ pub struct Covariance {
     pub covariance_matrix: ::std::vec::Vec<f32>,
 }
 
-impl From<pb::Odometry> for Odometry {
-    fn from(rpc_odometry: pb::Odometry) -> Odometry {
+impl From<&pb::Covariance> for Covariance {
+    fn from(rpc_covariance: &pb::Covariance) -> Self {
+        Covariance {
+            covariance_matrix: rpc_covariance.covariance_matrix.clone(),
+        }
+    }
+}
+
+impl From<&pb::Odometry> for Odometry {
+    fn from(rpc_odometry: &pb::Odometry) -> Odometry {
         Odometry {
-            time_usec: 0,
-            frame_id: MavFrame::from_i32(rpc_odometry.frame_id).unwrap(),
-            child_frame_id: MavFrame::from_i32(rpc_odometry.child_frame_id).unwrap(),
-            position_body: PositionBody::from(&rpc_odometry.position_body.unwrap()),
-            q: Quaternion::from(&rpc_odometry.q.unwrap()),
-            speed_body: SpeedBody::from(
-                &rpc_odometry.speed_body.unwrap_or(pb::SpeedBody::default()),
-            ),
+            time_usec: rpc_odometry.time_usec,
+            frame_id: MavFrame::from(&rpc_odometry.frame_id),
+            child_frame_id: MavFrame::from(&rpc_odometry.child_frame_id),
+            position_body: PositionBody::from(rpc_odometry.position_body.as_ref().unwrap()),
+            q: Quaternion::from(rpc_odometry.q.as_ref().unwrap()),
+            speed_body: SpeedBody::from(rpc_odometry.speed_body.as_ref().unwrap()),
             angular_velocity_body: AngularVelocityBody::from(
-                &rpc_odometry.angular_velocity_body.unwrap(),
+                rpc_odometry.angular_velocity_body.as_ref().unwrap(),
             ),
-            pose_covariance: Covariance {
-                covariance_matrix: rpc_odometry.pose_covariance.unwrap().covariance_matrix,
-            },
-            velocity_covariance: Covariance {
-                covariance_matrix: rpc_odometry.velocity_covariance.unwrap().covariance_matrix,
-            },
+            pose_covariance: Covariance::from(rpc_odometry.pose_covariance.as_ref().unwrap()),
+            velocity_covariance: Covariance::from(
+                rpc_odometry.velocity_covariance.as_ref().unwrap(),
+            ),
         }
     }
 }
@@ -257,7 +267,7 @@ impl Stream for OdometryStream {
             Poll::Ready(None) => Poll::Ready(None),
             Poll::Ready(Some(rpc_result)) => match rpc_result {
                 Ok(odometry_response) => match odometry_response.odometry {
-                    Some(rpc_odometry) => Poll::Ready(Some(Ok(Odometry::from(rpc_odometry)))),
+                    Some(rpc_odometry) => Poll::Ready(Some(Ok(Odometry::from(&rpc_odometry)))),
                     None => Poll::Ready(Some(Err(MavErr(TelemetryError::Unknown(
                         "Unexpected value".into(),
                     ))))),
