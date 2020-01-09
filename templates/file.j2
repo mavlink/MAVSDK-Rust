@@ -1,9 +1,16 @@
-mod {{ plugin_name.lower_snake_case }}_grpc;
-mod {{ plugin_name.lower_snake_case }};
+use super::super::FromRpcResponse;
+use super::super::RequestError::{MavErr, RpcErr};
+use super::super::RequestResult;
+use super::super::TonicResult;
+use futures::stream::{Stream, StreamExt};
+use futures::task::{Context, Poll};
+use std::convert::From;
+use std::convert::Into;
+use std::pin::Pin;
 
-use {{ plugin_name.lower_snake_case }}::{{ plugin_name.upper_camel_case }}Result_Result;
-
-impl {{ plugin_name.upper_camel_case }} {
+mod pb {
+    include!("mavsdk.rpc.{{ plugin_name.lower_snake_case }}.rs");
+}
 
 {%- for enum in enums %}
 {{ indent(enum, 1) }}
@@ -17,7 +24,6 @@ impl {{ plugin_name.upper_camel_case }} {
 {{ indent(method, 1) }}
 {%- endfor %}
 
-}
 
 impl super::super::FromChannel for {{ plugin_name.upper_camel_case}} {
     fn new(channel: ::grpcio::Channel) -> Self {

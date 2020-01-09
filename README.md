@@ -42,14 +42,13 @@ Version received: Version { flight_sw_major: 1, flight_sw_minor: 10, flight_sw_p
 - `mocap`
 ```bash
 $ cargo run --example mocap
-Finished dev [unoptimized + debuginfo] target(s) in 0.31s
- Running `target/debug/examples/mocap`
+    Finished dev [unoptimized + debuginfo] target(s) in 0.31s
+     Running `target/debug/examples/mocap`
 All sended successfully!
 ```
 - `telemetry`
 ```bash
 $ cargo run --example telemery
-   Compiling libmavsdk v0.1.0 (/home/ildar/sw/mavsdk-rust)
     Finished dev [unoptimized + debuginfo] target(s) in 4.92s
      Running `target/debug/examples/telemetry`
 Odometry: Odometry { time_usec: 0, frame_id: EstimNed, child_frame_id: Undef, position_body: PositionBody { x_m: 0.0, y_m: 0.0, z_m: -3.483048 }, q: Quaternion { w: 0.6384722, x: -0.004061609, y: 0.079110526, z: 0.76555747 }, speed_body: SpeedBody { velocity_x_m_s: 0.0042169667, velocity_y_m_s: -0.0015938352, velocity_z_m_s: -0.014632007 }, angular_velocity_body: AngularVelocityBody { roll_rad_s: 0.0005086092, pitch_rad_s: 0.00023366197, yaw_rad_s: -0.0002803828 }, pose_covariance: Covariance { covariance_matrix: [0.0079130605, 0.0, 0.0, 0.0, 0.0, 0.0, 0.007913225, 0.0, 0.0, 0.0, 0.0, 0.044821125, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] }, velocity_covariance: Covariance { covariance_matrix: [0.0052988436, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0052990587, 0.0, 0.0, 0.0, 0.0, 0.0045366324, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] } }
