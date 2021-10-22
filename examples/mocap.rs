@@ -1,7 +1,5 @@
-extern crate libmavsdk;
-
 use async_std::task;
-use libmavsdk::*;
+use libmavsdk::{mocap, RequestError, System};
 use std::io::{self, Write};
 use std::time::Duration;
 

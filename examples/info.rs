@@ -1,6 +1,4 @@
-extern crate libmavsdk;
-
-use libmavsdk::*;
+use libmavsdk::{info, RequestError, System};
 use std::io::{self, Write};
 
 #[tokio::main]

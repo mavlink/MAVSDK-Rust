@@ -1,7 +1,5 @@
-extern crate libmavsdk;
-
 use futures::stream::StreamExt;
-use libmavsdk::*;
+use libmavsdk::System;
 use std::io::{self, Write};
 
 #[tokio::main]

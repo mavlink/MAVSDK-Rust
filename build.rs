@@ -1,4 +1,4 @@
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> std::io::Result<()> {
     let plugins = vec![
         "action",
         "calibration",
@@ -16,36 +16,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ];
 
     for plugin in plugins {
-        let proto_path = vec![proto_path(plugin)];
-        let proto_include_paths = proto_include_paths(plugin);
+        let proto_path = proto_path(plugin);
+        let proto_include_path = proto_include_path(plugin);
         let proto_out_dir = proto_generated_path(plugin);
         tonic_build::configure()
             .build_server(false)
             .out_dir(proto_out_dir)
-            .compile(&proto_path, &proto_include_paths)?;
+            .compile(&[proto_path], &[proto_include_path])?;
     }
     Ok(())
 }
 
 fn proto_path(plugin_name: &str) -> String {
-    let protos_path = "proto/protos";
-    format!(
-        "{path}/{name}/{name}.proto",
-        path = protos_path,
-        name = plugin_name
-    )
+    format!("proto/protos/{name}/{name}.proto", name = plugin_name)
 }
 
 fn proto_generated_path(plugin_name: &str) -> String {
-    let generated_path = "src/generated";
-    format!("{root}/{name}", root = generated_path, name = plugin_name)
+    format!("src/generated/{name}", name = plugin_name)
 }
 
-fn proto_include_paths(plugin_name: &str) -> Vec<String> {
-    let protos_path = "proto/protos";
-    vec![format!(
-        "{root}/{name}",
-        root = protos_path,
-        name = plugin_name
-    )]
+fn proto_include_path(plugin_name: &str) -> String {
+    format!("proto/protos/{name}", name = plugin_name)
 }
