@@ -1,6 +1,7 @@
 #[allow(clippy::all)]
 mod generated;
 
+use futures::future::try_join3;
 pub use generated::info;
 pub use generated::mocap;
 pub use generated::telemetry;
@@ -11,10 +12,9 @@ pub enum RequestError<PluginMavErr> {
     RpcErr(tonic::Status),
 }
 
-pub type RequestResult<SuccessType, PluginMavErr> =
-    std::result::Result<SuccessType, RequestError<PluginMavErr>>;
+pub type RequestResult<SuccessType, PluginMavErr> = Result<SuccessType, RequestError<PluginMavErr>>;
 
-type TonicResult<T> = std::result::Result<tonic::Response<T>, tonic::Status>;
+type TonicResult<T> = Result<tonic::Response<T>, tonic::Status>;
 
 trait FromRpcResponse<T> {
     fn from_rpc_response(rpc_result: TonicResult<T>) -> Self;
@@ -27,15 +27,19 @@ pub struct System {
 
 impl System {
     pub async fn connect(url: Option<String>) -> Result<System, tonic::transport::Error> {
-        let url = match url {
-            Some(x) => x,
-            None => String::from("http://0.0.0.0:50051"),
-        };
+        let url = url.unwrap_or_else(|| String::from("http://0.0.0.0:50051"));
+
+        let (mocap, info, telemetry) = try_join3(
+            mocap::Mocap::connect(&url),
+            info::Info::connect(&url),
+            telemetry::Telemetry::connect(&url),
+        )
+        .await?;
 
         Ok(System {
-            mocap: mocap::Mocap::connect(&url).await?,
-            info: info::Info::connect(&url).await?,
-            telemetry: telemetry::Telemetry::connect(&url).await?,
+            mocap,
+            info,
+            telemetry,
         })
     }
 }
