@@ -12,7 +12,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "offboard",
         "param",
         "shell",
-        "telemetry"
+        "telemetry",
     ];
 
     for plugin in plugins {
@@ -29,23 +29,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 fn proto_path(plugin_name: &str) -> String {
     let protos_path = "proto/protos";
-    String::from(format!(
+    format!(
         "{path}/{name}/{name}.proto",
         path = protos_path,
         name = plugin_name
-    ))
+    )
 }
 
 fn proto_generated_path(plugin_name: &str) -> String {
     let generated_path = "src/generated";
-    String::from(format!(
-        "{root}/{name}",
-        root = generated_path,
-        name = plugin_name
-    ))
+    format!("{root}/{name}", root = generated_path, name = plugin_name)
 }
 
 fn proto_include_paths(plugin_name: &str) -> Vec<String> {
     let protos_path = "proto/protos";
-    vec![String::from(format!("{root}/{name}", root = protos_path, name = plugin_name))]
+    vec![format!(
+        "{root}/{name}",
+        root = protos_path,
+        name = plugin_name
+    )]
 }
