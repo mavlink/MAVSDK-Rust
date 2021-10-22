@@ -1,17 +1,12 @@
 extern crate libmavsdk;
 
+use futures::stream::StreamExt;
 use libmavsdk::*;
 use std::io::{self, Write};
-use futures::stream::StreamExt;
 
 #[tokio::main]
 async fn main() {
-
-    let mut args = Vec::new();
-
-    for arg in std::env::args().skip(1) {
-        args.push(arg.clone());
-    }
+    let args: Vec<String> = std::env::args().skip(1).collect();
 
     if args.len() > 1 {
         io::stderr()
@@ -20,17 +15,13 @@ async fn main() {
         std::process::exit(1);
     }
 
-    let url: Option<String> = if args.len() == 0 {
-        Option::None
-    } else {
-        Option::Some(args[0].clone())
-    };
+    let url = args.get(0).cloned();
 
     let mut system = match System::connect(url).await {
         Ok(system) => system,
         Err(err) => {
             println!("Connection error: {:?}", err);
-            return
+            return;
         }
     };
 
@@ -43,6 +34,6 @@ async fn main() {
                 break;
             }
         }
-    };
+    }
     println!("Exit");
 }

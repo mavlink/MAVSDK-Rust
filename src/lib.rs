@@ -1,3 +1,4 @@
+#[allow(clippy::all)]
 mod generated;
 
 pub use generated::info;
@@ -10,7 +11,8 @@ pub enum RequestError<PluginMavErr> {
     RpcErr(tonic::Status),
 }
 
-pub type RequestResult<SuccessType, PluginMavErr> = std::result::Result<SuccessType, RequestError<PluginMavErr>>;
+pub type RequestResult<SuccessType, PluginMavErr> =
+    std::result::Result<SuccessType, RequestError<PluginMavErr>>;
 
 type TonicResult<T> = std::result::Result<tonic::Response<T>, tonic::Status>;
 
@@ -40,5 +42,7 @@ impl System {
 
 #[tonic::async_trait]
 trait Connect {
-    async fn connect(url: &String) -> Result<Self, tonic::transport::Error> where Self: Sized;
+    async fn connect(url: &String) -> Result<Self, tonic::transport::Error>
+    where
+        Self: Sized;
 }
