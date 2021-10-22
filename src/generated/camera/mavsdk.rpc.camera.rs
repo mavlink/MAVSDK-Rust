@@ -3,7 +3,7 @@ pub struct TakePhotoRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TakePhotoResponse {
     #[prost(message, optional, tag = "1")]
-    pub camera_result: ::std::option::Option<CameraResult>,
+    pub camera_result: ::core::option::Option<CameraResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartPhotoIntervalRequest {
@@ -14,42 +14,42 @@ pub struct StartPhotoIntervalRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartPhotoIntervalResponse {
     #[prost(message, optional, tag = "1")]
-    pub camera_result: ::std::option::Option<CameraResult>,
+    pub camera_result: ::core::option::Option<CameraResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopPhotoIntervalRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopPhotoIntervalResponse {
     #[prost(message, optional, tag = "1")]
-    pub camera_result: ::std::option::Option<CameraResult>,
+    pub camera_result: ::core::option::Option<CameraResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartVideoRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartVideoResponse {
     #[prost(message, optional, tag = "1")]
-    pub camera_result: ::std::option::Option<CameraResult>,
+    pub camera_result: ::core::option::Option<CameraResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopVideoRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopVideoResponse {
     #[prost(message, optional, tag = "1")]
-    pub camera_result: ::std::option::Option<CameraResult>,
+    pub camera_result: ::core::option::Option<CameraResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartVideoStreamingRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartVideoStreamingResponse {
     #[prost(message, optional, tag = "1")]
-    pub camera_result: ::std::option::Option<CameraResult>,
+    pub camera_result: ::core::option::Option<CameraResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopVideoStreamingRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopVideoStreamingResponse {
     #[prost(message, optional, tag = "1")]
-    pub camera_result: ::std::option::Option<CameraResult>,
+    pub camera_result: ::core::option::Option<CameraResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetModeRequest {
@@ -60,7 +60,7 @@ pub struct SetModeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetModeResponse {
     #[prost(message, optional, tag = "1")]
-    pub camera_result: ::std::option::Option<CameraResult>,
+    pub camera_result: ::core::option::Option<CameraResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeModeRequest {}
@@ -76,7 +76,7 @@ pub struct SubscribeVideoStreamInfoRequest {}
 pub struct VideoStreamInfoResponse {
     /// Video stream info
     #[prost(message, optional, tag = "1")]
-    pub video_stream_info: ::std::option::Option<VideoStreamInfo>,
+    pub video_stream_info: ::core::option::Option<VideoStreamInfo>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeCaptureInfoRequest {}
@@ -84,7 +84,7 @@ pub struct SubscribeCaptureInfoRequest {}
 pub struct CaptureInfoResponse {
     /// Capture info
     #[prost(message, optional, tag = "1")]
-    pub capture_info: ::std::option::Option<CaptureInfo>,
+    pub capture_info: ::core::option::Option<CaptureInfo>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeCameraStatusRequest {}
@@ -92,7 +92,7 @@ pub struct SubscribeCameraStatusRequest {}
 pub struct CameraStatusResponse {
     /// Camera status
     #[prost(message, optional, tag = "1")]
-    pub camera_status: ::std::option::Option<CameraStatus>,
+    pub camera_status: ::core::option::Option<CameraStatus>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeCurrentSettingsRequest {}
@@ -100,7 +100,7 @@ pub struct SubscribeCurrentSettingsRequest {}
 pub struct CurrentSettingsResponse {
     /// List of current settings
     #[prost(message, repeated, tag = "1")]
-    pub current_settings: ::std::vec::Vec<Setting>,
+    pub current_settings: ::prost::alloc::vec::Vec<Setting>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribePossibleSettingOptionsRequest {}
@@ -108,18 +108,18 @@ pub struct SubscribePossibleSettingOptionsRequest {}
 pub struct PossibleSettingOptionsResponse {
     /// List of settings that can be changed
     #[prost(message, repeated, tag = "1")]
-    pub setting_options: ::std::vec::Vec<SettingOptions>,
+    pub setting_options: ::prost::alloc::vec::Vec<SettingOptions>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSettingRequest {
     /// Desired setting
     #[prost(message, optional, tag = "1")]
-    pub setting: ::std::option::Option<Setting>,
+    pub setting: ::core::option::Option<Setting>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSettingResponse {
     #[prost(message, optional, tag = "1")]
-    pub camera_result: ::std::option::Option<CameraResult>,
+    pub camera_result: ::core::option::Option<CameraResult>,
 }
 /// Result type.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -129,8 +129,9 @@ pub struct CameraResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `CameraResult`.
 pub mod camera_result {
     /// Possible results returned for camera commands
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -159,13 +160,13 @@ pub mod camera_result {
 pub struct CaptureInfo {
     /// Location where the picture was taken
     #[prost(message, optional, tag = "1")]
-    pub position: ::std::option::Option<Position>,
+    pub position: ::core::option::Option<Position>,
     /// Attitude of the camera when the picture was taken (quaternion)
     #[prost(message, optional, tag = "2")]
-    pub attitude_quaternion: ::std::option::Option<Quaternion>,
+    pub attitude_quaternion: ::core::option::Option<Quaternion>,
     /// Attitude of the camera when the picture was taken (euler angle)
     #[prost(message, optional, tag = "3")]
-    pub attitude_euler_angle: ::std::option::Option<EulerAngle>,
+    pub attitude_euler_angle: ::core::option::Option<EulerAngle>,
     /// Timestamp in UTC (since UNIX epoch) in microseconds
     #[prost(uint64, tag = "4")]
     pub time_utc_us: u64,
@@ -177,7 +178,7 @@ pub struct CaptureInfo {
     pub index: i32,
     /// Download URL of this image
     #[prost(string, tag = "7")]
-    pub file_url: std::string::String,
+    pub file_url: ::prost::alloc::string::String,
 }
 /// Position type in global coordinates.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -258,18 +259,19 @@ pub struct VideoStreamSettings {
     pub rotation_deg: u32,
     /// Video stream URI
     #[prost(string, tag = "6")]
-    pub uri: std::string::String,
+    pub uri: ::prost::alloc::string::String,
 }
 /// Information about the video stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoStreamInfo {
     /// Video stream settings
     #[prost(message, optional, tag = "1")]
-    pub video_stream_settings: ::std::option::Option<VideoStreamSettings>,
+    pub video_stream_settings: ::core::option::Option<VideoStreamSettings>,
     /// Current status of video streaming
     #[prost(enumeration = "video_stream_info::VideoStreamStatus", tag = "2")]
     pub video_stream_status: i32,
 }
+/// Nested message and enum types in `VideoStreamInfo`.
 pub mod video_stream_info {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -301,11 +303,12 @@ pub struct CameraStatus {
     pub recording_time_s: f32,
     /// Current folder name where media are saved
     #[prost(string, tag = "7")]
-    pub media_folder_name: std::string::String,
+    pub media_folder_name: ::prost::alloc::string::String,
     /// Storage status
     #[prost(enumeration = "camera_status::StorageStatus", tag = "8")]
     pub storage_status: i32,
 }
+/// Nested message and enum types in `CameraStatus`.
 pub mod camera_status {
     /// Storage status type.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -324,36 +327,36 @@ pub mod camera_status {
 pub struct Setting {
     /// Name of a setting (machine readable)
     #[prost(string, tag = "1")]
-    pub setting_id: std::string::String,
+    pub setting_id: ::prost::alloc::string::String,
     /// Description of the setting (human readable)
     #[prost(string, tag = "2")]
-    pub setting_description: std::string::String,
+    pub setting_description: ::prost::alloc::string::String,
     /// Selected option
     #[prost(message, optional, tag = "3")]
-    pub option: ::std::option::Option<Option>,
+    pub option: ::core::option::Option<Option>,
 }
 /// Type to represent a setting option.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Option {
     /// Name of the option (machine readable)
     #[prost(string, tag = "1")]
-    pub option_id: std::string::String,
+    pub option_id: ::prost::alloc::string::String,
     /// Description of the option (human readable)
     #[prost(string, tag = "2")]
-    pub option_description: std::string::String,
+    pub option_description: ::prost::alloc::string::String,
 }
 /// Type to represent a setting with a list of options to choose from.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SettingOptions {
     /// Name of the setting (machine readable)
     #[prost(string, tag = "1")]
-    pub setting_id: std::string::String,
+    pub setting_id: ::prost::alloc::string::String,
     /// Description of the setting (human readable)
     #[prost(string, tag = "2")]
-    pub setting_description: std::string::String,
+    pub setting_description: ::prost::alloc::string::String,
     /// List of options
     #[prost(message, repeated, tag = "3")]
-    pub options: ::std::vec::Vec<Option>,
+    pub options: ::prost::alloc::vec::Vec<Option>,
 }
 /// Camera mode type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -366,9 +369,9 @@ pub enum CameraMode {
     /// Video mode
     Video = 2,
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod camera_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = ""]
     #[doc = " Can be used to manage cameras that implement the MAVLink"]
@@ -378,6 +381,7 @@ pub mod camera_service_client {
     #[doc = " When multiple cameras are supported the plugin will need to be"]
     #[doc = " instantiated separately for every camera and the camera selected using"]
     #[doc = " `select_camera`."]
+    #[derive(Debug, Clone)]
     pub struct CameraServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -395,13 +399,43 @@ pub mod camera_service_client {
     impl<T> CameraServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CameraServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            CameraServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = ""]
         #[doc = " Take one photo."]
@@ -695,13 +729,6 @@ pub mod camera_service_client {
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.camera.CameraService/SetSetting");
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for CameraServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

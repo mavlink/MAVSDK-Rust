@@ -2,12 +2,12 @@
 pub struct UploadMissionRequest {
     /// List of mission items
     #[prost(message, repeated, tag = "1")]
-    pub mission_items: ::std::vec::Vec<MissionItem>,
+    pub mission_items: ::prost::alloc::vec::Vec<MissionItem>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadMissionResponse {
     #[prost(message, optional, tag = "1")]
-    pub mission_result: ::std::option::Option<MissionResult>,
+    pub mission_result: ::core::option::Option<MissionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelMissionUploadRequest {}
@@ -18,10 +18,10 @@ pub struct DownloadMissionRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DownloadMissionResponse {
     #[prost(message, optional, tag = "1")]
-    pub mission_result: ::std::option::Option<MissionResult>,
+    pub mission_result: ::core::option::Option<MissionResult>,
     /// List of downloaded mission items
     #[prost(message, repeated, tag = "2")]
-    pub mission_items: ::std::vec::Vec<MissionItem>,
+    pub mission_items: ::prost::alloc::vec::Vec<MissionItem>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelMissionDownloadRequest {}
@@ -32,21 +32,21 @@ pub struct StartMissionRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMissionResponse {
     #[prost(message, optional, tag = "1")]
-    pub mission_result: ::std::option::Option<MissionResult>,
+    pub mission_result: ::core::option::Option<MissionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseMissionRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseMissionResponse {
     #[prost(message, optional, tag = "1")]
-    pub mission_result: ::std::option::Option<MissionResult>,
+    pub mission_result: ::core::option::Option<MissionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClearMissionRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClearMissionResponse {
     #[prost(message, optional, tag = "1")]
-    pub mission_result: ::std::option::Option<MissionResult>,
+    pub mission_result: ::core::option::Option<MissionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetCurrentMissionItemIndexRequest {
@@ -57,7 +57,7 @@ pub struct SetCurrentMissionItemIndexRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetCurrentMissionItemIndexResponse {
     #[prost(message, optional, tag = "1")]
-    pub mission_result: ::std::option::Option<MissionResult>,
+    pub mission_result: ::core::option::Option<MissionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IsMissionFinishedRequest {}
@@ -73,7 +73,7 @@ pub struct SubscribeMissionProgressRequest {}
 pub struct MissionProgressResponse {
     /// Mission progress
     #[prost(message, optional, tag = "1")]
-    pub mission_progress: ::std::option::Option<MissionProgress>,
+    pub mission_progress: ::core::option::Option<MissionProgress>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReturnToLaunchAfterMissionRequest {}
@@ -131,6 +131,7 @@ pub struct MissionItem {
     #[prost(double, tag = "10")]
     pub camera_photo_interval_s: f64,
 }
+/// Nested message and enum types in `MissionItem`.
 pub mod mission_item {
     /// Possible camera actions at a mission item.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -168,8 +169,9 @@ pub struct MissionResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `MissionResult`.
 pub mod mission_result {
     /// Possible results returned for action requests.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -203,11 +205,12 @@ pub mod mission_result {
         TransferCancelled = 12,
     }
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod mission_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Enable waypoint missions."]
+    #[derive(Debug, Clone)]
     pub struct MissionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -225,13 +228,43 @@ pub mod mission_service_client {
     impl<T> MissionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> MissionServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            MissionServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = ""]
         #[doc = " Upload a list of mission items to the system."]
@@ -481,13 +514,6 @@ pub mod mission_service_client {
                 "/mavsdk.rpc.mission.MissionService/SetReturnToLaunchAfterMission",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for MissionServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

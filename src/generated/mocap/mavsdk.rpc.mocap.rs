@@ -1,32 +1,32 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetVisionPositionEstimateRequest {
     #[prost(message, optional, tag = "1")]
-    pub vision_position_estimate: ::std::option::Option<VisionPositionEstimate>,
+    pub vision_position_estimate: ::core::option::Option<VisionPositionEstimate>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetVisionPositionEstimateResponse {
     #[prost(message, optional, tag = "1")]
-    pub mocap_result: ::std::option::Option<MocapResult>,
+    pub mocap_result: ::core::option::Option<MocapResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetAttitudePositionMocapRequest {
     #[prost(message, optional, tag = "1")]
-    pub attitude_position_mocap: ::std::option::Option<AttitudePositionMocap>,
+    pub attitude_position_mocap: ::core::option::Option<AttitudePositionMocap>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetAttitudePositionMocapResponse {
     #[prost(message, optional, tag = "1")]
-    pub mocap_result: ::std::option::Option<MocapResult>,
+    pub mocap_result: ::core::option::Option<MocapResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetOdometryRequest {
     #[prost(message, optional, tag = "1")]
-    pub odometry: ::std::option::Option<Odometry>,
+    pub odometry: ::core::option::Option<Odometry>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetOdometryResponse {
     #[prost(message, optional, tag = "1")]
-    pub mocap_result: ::std::option::Option<MocapResult>,
+    pub mocap_result: ::core::option::Option<MocapResult>,
 }
 /// Global position/attitude estimate from a vision source.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -36,13 +36,13 @@ pub struct VisionPositionEstimate {
     pub time_usec: u64,
     /// Global position (m)
     #[prost(message, optional, tag = "2")]
-    pub position_body: ::std::option::Option<PositionBody>,
+    pub position_body: ::core::option::Option<PositionBody>,
     /// Body angle (rad).
     #[prost(message, optional, tag = "3")]
-    pub angle_body: ::std::option::Option<AngleBody>,
+    pub angle_body: ::core::option::Option<AngleBody>,
     /// Pose cross-covariance matrix.
     #[prost(message, optional, tag = "4")]
-    pub pose_covariance: ::std::option::Option<Covariance>,
+    pub pose_covariance: ::core::option::Option<Covariance>,
 }
 /// Motion capture attitude and position
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -52,13 +52,13 @@ pub struct AttitudePositionMocap {
     pub time_usec: u64,
     /// Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
     #[prost(message, optional, tag = "2")]
-    pub q: ::std::option::Option<Quaternion>,
+    pub q: ::core::option::Option<Quaternion>,
     /// Body Position (NED)
     #[prost(message, optional, tag = "3")]
-    pub position_body: ::std::option::Option<PositionBody>,
+    pub position_body: ::core::option::Option<PositionBody>,
     /// Pose cross-covariance matrix.
     #[prost(message, optional, tag = "4")]
-    pub pose_covariance: ::std::option::Option<Covariance>,
+    pub pose_covariance: ::core::option::Option<Covariance>,
 }
 /// Odometry message to communicate odometry information with an external interface.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -71,23 +71,24 @@ pub struct Odometry {
     pub frame_id: i32,
     /// Body Position.
     #[prost(message, optional, tag = "3")]
-    pub position_body: ::std::option::Option<PositionBody>,
+    pub position_body: ::core::option::Option<PositionBody>,
     /// Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
     #[prost(message, optional, tag = "4")]
-    pub q: ::std::option::Option<Quaternion>,
+    pub q: ::core::option::Option<Quaternion>,
     /// Linear speed (m/s).
     #[prost(message, optional, tag = "5")]
-    pub speed_body: ::std::option::Option<SpeedBody>,
+    pub speed_body: ::core::option::Option<SpeedBody>,
     /// Angular speed (rad/s).
     #[prost(message, optional, tag = "6")]
-    pub angular_velocity_body: ::std::option::Option<AngularVelocityBody>,
+    pub angular_velocity_body: ::core::option::Option<AngularVelocityBody>,
     /// Pose cross-covariance matrix.
     #[prost(message, optional, tag = "7")]
-    pub pose_covariance: ::std::option::Option<Covariance>,
+    pub pose_covariance: ::core::option::Option<Covariance>,
     /// Velocity cross-covariance matrix.
     #[prost(message, optional, tag = "8")]
-    pub velocity_covariance: ::std::option::Option<Covariance>,
+    pub velocity_covariance: ::core::option::Option<Covariance>,
 }
+/// Nested message and enum types in `Odometry`.
 pub mod odometry {
     /// Mavlink frame id
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -158,7 +159,7 @@ pub struct AngularVelocityBody {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Covariance {
     #[prost(float, repeated, tag = "1")]
-    pub covariance_matrix: ::std::vec::Vec<f32>,
+    pub covariance_matrix: ::prost::alloc::vec::Vec<f32>,
 }
 ///
 /// Quaternion type.
@@ -192,8 +193,9 @@ pub struct MocapResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `MocapResult`.
 pub mod mocap_result {
     /// Possible results returned for mocap requests
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -211,14 +213,15 @@ pub mod mocap_result {
         InvalidRequestData = 4,
     }
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod mocap_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = "*"]
     #[doc = " Motion Capture allow vehicles to navigate when a global"]
     #[doc = " position source is unavailable or unreliable"]
     #[doc = " (e.g. indoors, or when flying under a bridge. etc.)."]
+    #[derive(Debug, Clone)]
     pub struct MocapServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -236,13 +239,43 @@ pub mod mocap_service_client {
     impl<T> MocapServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> MocapServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            MocapServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Send Global position/attitude estimate from a vision source."]
         pub async fn set_vision_position_estimate(
@@ -295,13 +328,6 @@ pub mod mocap_service_client {
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.mocap.MocapService/SetOdometry");
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for MocapServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

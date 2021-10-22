@@ -1,15 +1,15 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendRequest {
     #[prost(message, optional, tag = "1")]
-    pub shell_message: ::std::option::Option<ShellMessage>,
+    pub shell_message: ::core::option::Option<ShellMessage>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendResponse {
     #[prost(message, optional, tag = "1")]
-    pub shell_result: ::std::option::Option<ShellResult>,
+    pub shell_result: ::core::option::Option<ShellResult>,
     /// Response message data (if available)
     #[prost(string, tag = "2")]
-    pub response_message_data: std::string::String,
+    pub response_message_data: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShellMessage {
@@ -21,7 +21,7 @@ pub struct ShellMessage {
     pub timeout_ms: u32,
     /// Serial data.
     #[prost(string, tag = "3")]
-    pub data: std::string::String,
+    pub data: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShellResult {
@@ -30,8 +30,9 @@ pub struct ShellResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ShellResult`.
 pub mod shell_result {
     /// Possible results returned for shell requests
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -51,12 +52,13 @@ pub mod shell_result {
         Busy = 5,
     }
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod shell_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = "*"]
     #[doc = " Allow to communicate with the vehicle's system shell."]
+    #[derive(Debug, Clone)]
     pub struct ShellServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -74,13 +76,43 @@ pub mod shell_service_client {
     impl<T> ShellServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ShellServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ShellServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Communicate with a vehicle's Shell."]
         pub async fn send(
@@ -96,13 +128,6 @@ pub mod shell_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/mavsdk.rpc.shell.ShellService/Send");
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ShellServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

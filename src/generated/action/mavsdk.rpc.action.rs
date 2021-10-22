@@ -3,70 +3,70 @@ pub struct ArmRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArmResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisarmRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisarmResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TakeoffRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TakeoffResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LandRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LandResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RebootRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RebootResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KillRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KillResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReturnToLaunchRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReturnToLaunchResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitionToFixedWingRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitionToFixedWingResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitionToMulticopterRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransitionToMulticopterResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTakeoffAltitudeRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTakeoffAltitudeResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
     /// Takeoff altitude relative to ground/takeoff location (in meters)
     #[prost(float, tag = "2")]
     pub altitude: f32,
@@ -80,14 +80,14 @@ pub struct SetTakeoffAltitudeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetTakeoffAltitudeResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMaximumSpeedRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMaximumSpeedResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
     /// Maximum speed (in metres/second)
     #[prost(float, tag = "2")]
     pub speed: f32,
@@ -101,14 +101,14 @@ pub struct SetMaximumSpeedRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMaximumSpeedResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReturnToLaunchAltitudeRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReturnToLaunchAltitudeResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
     /// Return altitude relative to takeoff location (in meters)
     #[prost(float, tag = "2")]
     pub relative_altitude_m: f32,
@@ -122,7 +122,7 @@ pub struct SetReturnToLaunchAltitudeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetReturnToLaunchAltitudeResponse {
     #[prost(message, optional, tag = "1")]
-    pub action_result: ::std::option::Option<ActionResult>,
+    pub action_result: ::core::option::Option<ActionResult>,
 }
 /// Result type.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -132,8 +132,9 @@ pub struct ActionResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ActionResult`.
 pub mod action_result {
     /// Possible results returned for action requests.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -165,11 +166,12 @@ pub mod action_result {
         ParameterError = 11,
     }
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod action_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Enable simple actions such as arming, taking off, and landing."]
+    #[derive(Debug, Clone)]
     pub struct ActionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -187,13 +189,43 @@ pub mod action_service_client {
     impl<T> ActionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ActionServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ActionServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = ""]
         #[doc = " Send command to arm the drone."]
@@ -490,13 +522,6 @@ pub mod action_service_client {
                 "/mavsdk.rpc.action.ActionService/SetReturnToLaunchAltitude",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ActionServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

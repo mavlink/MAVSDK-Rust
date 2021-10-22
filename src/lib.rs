@@ -5,7 +5,7 @@ pub use generated::info;
 pub use generated::mocap;
 pub use generated::telemetry;
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub enum RequestError<PluginMavErr> {
     MavErr(PluginMavErr),
     RpcErr(tonic::Status),
