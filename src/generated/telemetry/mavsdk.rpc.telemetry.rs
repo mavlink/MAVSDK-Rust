@@ -4,7 +4,7 @@ pub struct SubscribePositionRequest {}
 pub struct PositionResponse {
     /// The next position
     #[prost(message, optional, tag = "1")]
-    pub position: ::std::option::Option<Position>,
+    pub position: ::core::option::Option<Position>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeHomeRequest {}
@@ -12,7 +12,7 @@ pub struct SubscribeHomeRequest {}
 pub struct HomeResponse {
     /// The next home position
     #[prost(message, optional, tag = "1")]
-    pub home: ::std::option::Option<Position>,
+    pub home: ::core::option::Option<Position>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeInAirRequest {}
@@ -43,7 +43,7 @@ pub struct SubscribeAttitudeQuaternionRequest {}
 pub struct AttitudeQuaternionResponse {
     /// The next attitude (quaternion)
     #[prost(message, optional, tag = "1")]
-    pub attitude_quaternion: ::std::option::Option<Quaternion>,
+    pub attitude_quaternion: ::core::option::Option<Quaternion>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeAttitudeEulerRequest {}
@@ -51,7 +51,7 @@ pub struct SubscribeAttitudeEulerRequest {}
 pub struct AttitudeEulerResponse {
     /// The next attitude (euler)
     #[prost(message, optional, tag = "1")]
-    pub attitude_euler: ::std::option::Option<EulerAngle>,
+    pub attitude_euler: ::core::option::Option<EulerAngle>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeAttitudeAngularVelocityBodyRequest {}
@@ -59,7 +59,7 @@ pub struct SubscribeAttitudeAngularVelocityBodyRequest {}
 pub struct AttitudeAngularVelocityBodyResponse {
     /// The next angular velocity (rad/s)
     #[prost(message, optional, tag = "1")]
-    pub attitude_angular_velocity_body: ::std::option::Option<AngularVelocityBody>,
+    pub attitude_angular_velocity_body: ::core::option::Option<AngularVelocityBody>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeCameraAttitudeQuaternionRequest {}
@@ -67,7 +67,7 @@ pub struct SubscribeCameraAttitudeQuaternionRequest {}
 pub struct CameraAttitudeQuaternionResponse {
     /// The next camera attitude (quaternion)
     #[prost(message, optional, tag = "1")]
-    pub attitude_quaternion: ::std::option::Option<Quaternion>,
+    pub attitude_quaternion: ::core::option::Option<Quaternion>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeCameraAttitudeEulerRequest {}
@@ -75,7 +75,7 @@ pub struct SubscribeCameraAttitudeEulerRequest {}
 pub struct CameraAttitudeEulerResponse {
     /// The next camera attitude (euler)
     #[prost(message, optional, tag = "1")]
-    pub attitude_euler: ::std::option::Option<EulerAngle>,
+    pub attitude_euler: ::core::option::Option<EulerAngle>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeGroundSpeedNedRequest {}
@@ -83,7 +83,7 @@ pub struct SubscribeGroundSpeedNedRequest {}
 pub struct GroundSpeedNedResponse {
     /// The next ground speed (NED)
     #[prost(message, optional, tag = "1")]
-    pub ground_speed_ned: ::std::option::Option<SpeedNed>,
+    pub ground_speed_ned: ::core::option::Option<SpeedNed>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeGpsInfoRequest {}
@@ -91,7 +91,7 @@ pub struct SubscribeGpsInfoRequest {}
 pub struct GpsInfoResponse {
     /// The next 'GPS info' state
     #[prost(message, optional, tag = "1")]
-    pub gps_info: ::std::option::Option<GpsInfo>,
+    pub gps_info: ::core::option::Option<GpsInfo>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeBatteryRequest {}
@@ -99,7 +99,7 @@ pub struct SubscribeBatteryRequest {}
 pub struct BatteryResponse {
     /// The next 'battery' state
     #[prost(message, optional, tag = "1")]
-    pub battery: ::std::option::Option<Battery>,
+    pub battery: ::core::option::Option<Battery>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeFlightModeRequest {}
@@ -115,7 +115,7 @@ pub struct SubscribeHealthRequest {}
 pub struct HealthResponse {
     /// The next 'health' state
     #[prost(message, optional, tag = "1")]
-    pub health: ::std::option::Option<Health>,
+    pub health: ::core::option::Option<Health>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeRcStatusRequest {}
@@ -123,7 +123,7 @@ pub struct SubscribeRcStatusRequest {}
 pub struct RcStatusResponse {
     /// The next RC status
     #[prost(message, optional, tag = "1")]
-    pub rc_status: ::std::option::Option<RcStatus>,
+    pub rc_status: ::core::option::Option<RcStatus>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeStatusTextRequest {}
@@ -131,7 +131,7 @@ pub struct SubscribeStatusTextRequest {}
 pub struct StatusTextResponse {
     /// The next 'status text'
     #[prost(message, optional, tag = "1")]
-    pub status_text: ::std::option::Option<StatusText>,
+    pub status_text: ::core::option::Option<StatusText>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeActuatorControlTargetRequest {}
@@ -139,7 +139,7 @@ pub struct SubscribeActuatorControlTargetRequest {}
 pub struct ActuatorControlTargetResponse {
     /// Actuator control target
     #[prost(message, optional, tag = "1")]
-    pub actuator_control_target: ::std::option::Option<ActuatorControlTarget>,
+    pub actuator_control_target: ::core::option::Option<ActuatorControlTarget>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeActuatorOutputStatusRequest {}
@@ -147,7 +147,7 @@ pub struct SubscribeActuatorOutputStatusRequest {}
 pub struct ActuatorOutputStatusResponse {
     /// Actuator output status
     #[prost(message, optional, tag = "1")]
-    pub actuator_output_status: ::std::option::Option<ActuatorOutputStatus>,
+    pub actuator_output_status: ::core::option::Option<ActuatorOutputStatus>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeOdometryRequest {}
@@ -155,7 +155,7 @@ pub struct SubscribeOdometryRequest {}
 pub struct OdometryResponse {
     /// Odometry
     #[prost(message, optional, tag = "1")]
-    pub odometry: ::std::option::Option<Odometry>,
+    pub odometry: ::core::option::Option<Odometry>,
 }
 /// Position type in global coordinates.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -308,8 +308,9 @@ pub struct StatusText {
     pub r#type: i32,
     /// MAVLink status message
     #[prost(string, tag = "2")]
-    pub text: std::string::String,
+    pub text: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `StatusText`.
 pub mod status_text {
     /// Status types.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -328,14 +329,14 @@ pub struct ActuatorControlTarget {
     #[prost(int32, tag = "1")]
     pub group: i32,
     #[prost(float, repeated, tag = "2")]
-    pub controls: ::std::vec::Vec<f32>,
+    pub controls: ::prost::alloc::vec::Vec<f32>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActuatorOutputStatus {
     #[prost(uint32, tag = "1")]
     pub active: u32,
     #[prost(float, repeated, tag = "2")]
-    pub actuator: ::std::vec::Vec<f32>,
+    pub actuator: ::prost::alloc::vec::Vec<f32>,
 }
 /// Odometry message type.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -351,23 +352,24 @@ pub struct Odometry {
     pub child_frame_id: i32,
     /// Position.
     #[prost(message, optional, tag = "4")]
-    pub position_body: ::std::option::Option<PositionBody>,
+    pub position_body: ::core::option::Option<PositionBody>,
     /// Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
     #[prost(message, optional, tag = "5")]
-    pub q: ::std::option::Option<Quaternion>,
+    pub q: ::core::option::Option<Quaternion>,
     /// Linear speed (m/s).
     #[prost(message, optional, tag = "6")]
-    pub speed_body: ::std::option::Option<SpeedBody>,
+    pub speed_body: ::core::option::Option<SpeedBody>,
     /// Angular speed (rad/s).
     #[prost(message, optional, tag = "7")]
-    pub angular_velocity_body: ::std::option::Option<AngularVelocityBody>,
+    pub angular_velocity_body: ::core::option::Option<AngularVelocityBody>,
     /// Pose cross-covariance matrix.
     #[prost(message, optional, tag = "8")]
-    pub pose_covariance: ::std::option::Option<Covariance>,
+    pub pose_covariance: ::core::option::Option<Covariance>,
     /// Velocity cross-covariance matrix.
     #[prost(message, optional, tag = "9")]
-    pub velocity_covariance: ::std::option::Option<Covariance>,
+    pub velocity_covariance: ::core::option::Option<Covariance>,
 }
+/// Nested message and enum types in `Odometry`.
 pub mod odometry {
     /// Mavlink frame id
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -389,7 +391,7 @@ pub mod odometry {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Covariance {
     #[prost(float, repeated, tag = "1")]
-    pub covariance_matrix: ::std::vec::Vec<f32>,
+    pub covariance_matrix: ::prost::alloc::vec::Vec<f32>,
 }
 /// Speed type, represented in the Body (X Y Z) frame and in metres/second.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -473,13 +475,14 @@ pub enum LandedState {
     TakingOff = 3,
     Landing = 4,
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod telemetry_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = ""]
     #[doc = " Allow users to get vehicle telemetry and state information"]
     #[doc = " (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates."]
+    #[derive(Debug, Clone)]
     pub struct TelemetryServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -497,13 +500,43 @@ pub mod telemetry_service_client {
     impl<T> TelemetryServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> TelemetryServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            TelemetryServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Subscribe to 'position' updates."]
         pub async fn subscribe_position(
@@ -926,13 +959,6 @@ pub mod telemetry_service_client {
             self.inner
                 .server_streaming(request.into_request(), path, codec)
                 .await
-        }
-    }
-    impl<T: Clone> Clone for TelemetryServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

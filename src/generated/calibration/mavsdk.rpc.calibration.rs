@@ -3,40 +3,40 @@ pub struct SubscribeCalibrateGyroRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalibrateGyroResponse {
     #[prost(message, optional, tag = "1")]
-    pub calibration_result: ::std::option::Option<CalibrationResult>,
+    pub calibration_result: ::core::option::Option<CalibrationResult>,
     /// Progress data
     #[prost(message, optional, tag = "2")]
-    pub progress_data: ::std::option::Option<ProgressData>,
+    pub progress_data: ::core::option::Option<ProgressData>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeCalibrateAccelerometerRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalibrateAccelerometerResponse {
     #[prost(message, optional, tag = "1")]
-    pub calibration_result: ::std::option::Option<CalibrationResult>,
+    pub calibration_result: ::core::option::Option<CalibrationResult>,
     /// Progress data
     #[prost(message, optional, tag = "2")]
-    pub progress_data: ::std::option::Option<ProgressData>,
+    pub progress_data: ::core::option::Option<ProgressData>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeCalibrateMagnetometerRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalibrateMagnetometerResponse {
     #[prost(message, optional, tag = "1")]
-    pub calibration_result: ::std::option::Option<CalibrationResult>,
+    pub calibration_result: ::core::option::Option<CalibrationResult>,
     /// Progress data
     #[prost(message, optional, tag = "2")]
-    pub progress_data: ::std::option::Option<ProgressData>,
+    pub progress_data: ::core::option::Option<ProgressData>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeCalibrateGimbalAccelerometerRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalibrateGimbalAccelerometerResponse {
     #[prost(message, optional, tag = "1")]
-    pub calibration_result: ::std::option::Option<CalibrationResult>,
+    pub calibration_result: ::core::option::Option<CalibrationResult>,
     /// Progress data
     #[prost(message, optional, tag = "2")]
-    pub progress_data: ::std::option::Option<ProgressData>,
+    pub progress_data: ::core::option::Option<ProgressData>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelRequest {}
@@ -50,8 +50,9 @@ pub struct CalibrationResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `CalibrationResult`.
 pub mod calibration_result {
     /// Possible results returned for calibration commands
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -96,13 +97,14 @@ pub struct ProgressData {
     pub has_status_text: bool,
     /// Instruction text
     #[prost(string, tag = "4")]
-    pub status_text: std::string::String,
+    pub status_text: ::prost::alloc::string::String,
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod calibration_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Enable to calibrate sensors of a drone such as gyro, accelerometer, and magnetometer."]
+    #[derive(Debug, Clone)]
     pub struct CalibrationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -120,13 +122,43 @@ pub mod calibration_service_client {
     impl<T> CalibrationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CalibrationServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            CalibrationServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Perform gyro calibration."]
         pub async fn subscribe_calibrate_gyro(
@@ -232,13 +264,6 @@ pub mod calibration_service_client {
                 "/mavsdk.rpc.calibration.CalibrationService/Cancel",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for CalibrationServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

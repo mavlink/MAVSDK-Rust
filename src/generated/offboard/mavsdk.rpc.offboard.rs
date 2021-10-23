@@ -3,14 +3,14 @@ pub struct StartRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResponse {
     #[prost(message, optional, tag = "1")]
-    pub offboard_result: ::std::option::Option<OffboardResult>,
+    pub offboard_result: ::core::option::Option<OffboardResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopRequest {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopResponse {
     #[prost(message, optional, tag = "1")]
-    pub offboard_result: ::std::option::Option<OffboardResult>,
+    pub offboard_result: ::core::option::Option<OffboardResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IsActiveRequest {}
@@ -24,7 +24,7 @@ pub struct IsActiveResponse {
 pub struct SetAttitudeRequest {
     /// Attitude roll, pitch and yaw along with thrust
     #[prost(message, optional, tag = "1")]
-    pub attitude: ::std::option::Option<Attitude>,
+    pub attitude: ::core::option::Option<Attitude>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetAttitudeResponse {}
@@ -32,7 +32,7 @@ pub struct SetAttitudeResponse {}
 pub struct SetActuatorControlRequest {
     /// Actuator control values
     #[prost(message, optional, tag = "1")]
-    pub actuator_control: ::std::option::Option<ActuatorControl>,
+    pub actuator_control: ::core::option::Option<ActuatorControl>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetActuatorControlResponse {}
@@ -40,7 +40,7 @@ pub struct SetActuatorControlResponse {}
 pub struct SetAttitudeRateRequest {
     /// Attitude rate roll, pitch and yaw angular rate along with thrust
     #[prost(message, optional, tag = "1")]
-    pub attitude_rate: ::std::option::Option<AttitudeRate>,
+    pub attitude_rate: ::core::option::Option<AttitudeRate>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetAttitudeRateResponse {}
@@ -48,7 +48,7 @@ pub struct SetAttitudeRateResponse {}
 pub struct SetPositionNedRequest {
     /// Position and yaw
     #[prost(message, optional, tag = "1")]
-    pub position_ned_yaw: ::std::option::Option<PositionNedYaw>,
+    pub position_ned_yaw: ::core::option::Option<PositionNedYaw>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetPositionNedResponse {}
@@ -56,7 +56,7 @@ pub struct SetPositionNedResponse {}
 pub struct SetVelocityBodyRequest {
     /// Velocity and yaw angular rate
     #[prost(message, optional, tag = "1")]
-    pub velocity_body_yawspeed: ::std::option::Option<VelocityBodyYawspeed>,
+    pub velocity_body_yawspeed: ::core::option::Option<VelocityBodyYawspeed>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetVelocityBodyResponse {}
@@ -64,7 +64,7 @@ pub struct SetVelocityBodyResponse {}
 pub struct SetVelocityNedRequest {
     /// Velocity and yaw
     #[prost(message, optional, tag = "1")]
-    pub velocity_ned_yaw: ::std::option::Option<VelocityNedYaw>,
+    pub velocity_ned_yaw: ::core::option::Option<VelocityNedYaw>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetVelocityNedResponse {}
@@ -91,7 +91,7 @@ pub struct Attitude {
 pub struct ActuatorControlGroup {
     /// Controls in the group
     #[prost(float, repeated, tag = "1")]
-    pub controls: ::std::vec::Vec<f32>,
+    pub controls: ::prost::alloc::vec::Vec<f32>,
 }
 ///
 /// Type for actuator control.
@@ -113,7 +113,7 @@ pub struct ActuatorControlGroup {
 pub struct ActuatorControl {
     /// Control groups.
     #[prost(message, repeated, tag = "1")]
-    pub groups: ::std::vec::Vec<ActuatorControlGroup>,
+    pub groups: ::prost::alloc::vec::Vec<ActuatorControlGroup>,
 }
 /// Type for attitude rate commands in body coordinates (roll, pitch, yaw angular rate and thrust)
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -187,8 +187,9 @@ pub struct OffboardResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `OffboardResult`.
 pub mod offboard_result {
     /// Possible results returned for offboard requests
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -212,9 +213,9 @@ pub mod offboard_result {
         NoSetpointSet = 7,
     }
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod offboard_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = "*"]
     #[doc = " Control a drone with position, velocity, attitude or motor commands."]
@@ -225,6 +226,7 @@ pub mod offboard_service_client {
     #[doc = " Client code must specify a setpoint before starting offboard mode."]
     #[doc = " Mavsdk automatically sends setpoints at 20Hz (PX4 Offboard mode requires that setpoints"]
     #[doc = " are minimally sent at 2Hz)."]
+    #[derive(Debug, Clone)]
     pub struct OffboardServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -242,13 +244,43 @@ pub mod offboard_service_client {
     impl<T> OffboardServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> OffboardServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            OffboardServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = ""]
         #[doc = " Start offboard control."]
@@ -417,13 +449,6 @@ pub mod offboard_service_client {
                 "/mavsdk.rpc.offboard.OffboardService/SetVelocityNed",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for OffboardServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

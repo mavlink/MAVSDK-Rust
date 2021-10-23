@@ -2,12 +2,12 @@
 pub struct GetIntParamRequest {
     /// Name of the parameter
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIntParamResponse {
     #[prost(message, optional, tag = "1")]
-    pub param_result: ::std::option::Option<ParamResult>,
+    pub param_result: ::core::option::Option<ParamResult>,
     /// Value of the requested parameter
     #[prost(int32, tag = "2")]
     pub value: i32,
@@ -16,7 +16,7 @@ pub struct GetIntParamResponse {
 pub struct SetIntParamRequest {
     /// Name of the parameter to set
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Value the parameter should be set to
     #[prost(int32, tag = "2")]
     pub value: i32,
@@ -24,18 +24,18 @@ pub struct SetIntParamRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIntParamResponse {
     #[prost(message, optional, tag = "1")]
-    pub param_result: ::std::option::Option<ParamResult>,
+    pub param_result: ::core::option::Option<ParamResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFloatParamRequest {
     /// Name of the parameter
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFloatParamResponse {
     #[prost(message, optional, tag = "1")]
-    pub param_result: ::std::option::Option<ParamResult>,
+    pub param_result: ::core::option::Option<ParamResult>,
     /// Value of the requested parameter
     #[prost(float, tag = "2")]
     pub value: f32,
@@ -44,7 +44,7 @@ pub struct GetFloatParamResponse {
 pub struct SetFloatParamRequest {
     /// Name of the parameter to set
     #[prost(string, tag = "1")]
-    pub name: std::string::String,
+    pub name: ::prost::alloc::string::String,
     /// Value the parameter should be set to
     #[prost(float, tag = "2")]
     pub value: f32,
@@ -52,7 +52,7 @@ pub struct SetFloatParamRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetFloatParamResponse {
     #[prost(message, optional, tag = "1")]
-    pub param_result: ::std::option::Option<ParamResult>,
+    pub param_result: ::core::option::Option<ParamResult>,
 }
 /// Result type.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -62,8 +62,9 @@ pub struct ParamResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `ParamResult`.
 pub mod param_result {
     /// Possible results returned for param requests.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -83,11 +84,12 @@ pub mod param_result {
         ParamNameTooLong = 5,
     }
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod param_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Provide raw access to get and set parameters."]
+    #[derive(Debug, Clone)]
     pub struct ParamServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -105,13 +107,43 @@ pub mod param_service_client {
     impl<T> ParamServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ParamServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ParamServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = ""]
         #[doc = " Get an int parameter."]
@@ -190,13 +222,6 @@ pub mod param_service_client {
                 "/mavsdk.rpc.param.ParamService/SetFloatParam",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ParamServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

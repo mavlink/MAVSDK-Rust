@@ -13,11 +13,12 @@ pub struct Point {
 pub struct Polygon {
     /// Points defining the polygon
     #[prost(message, repeated, tag = "1")]
-    pub points: ::std::vec::Vec<Point>,
+    pub points: ::prost::alloc::vec::Vec<Point>,
     /// Fence type
     #[prost(enumeration = "polygon::Type", tag = "2")]
     pub r#type: i32,
 }
+/// Nested message and enum types in `Polygon`.
 pub mod polygon {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -32,12 +33,12 @@ pub mod polygon {
 pub struct UploadGeofenceRequest {
     /// Polygon(s) representing the geofence(s)
     #[prost(message, repeated, tag = "1")]
-    pub polygons: ::std::vec::Vec<Polygon>,
+    pub polygons: ::prost::alloc::vec::Vec<Polygon>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadGeofenceResponse {
     #[prost(message, optional, tag = "1")]
-    pub geofence_result: ::std::option::Option<GeofenceResult>,
+    pub geofence_result: ::core::option::Option<GeofenceResult>,
 }
 /// Result type.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -47,8 +48,9 @@ pub struct GeofenceResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `GeofenceResult`.
 pub mod geofence_result {
     /// Possible results returned for geofence requests.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -70,11 +72,12 @@ pub mod geofence_result {
         InvalidArgument = 6,
     }
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod geofence_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Enable setting a geofence."]
+    #[derive(Debug, Clone)]
     pub struct GeofenceServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -92,13 +95,43 @@ pub mod geofence_service_client {
     impl<T> GeofenceServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GeofenceServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            GeofenceServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = ""]
         #[doc = " Upload a geofence."]
@@ -120,13 +153,6 @@ pub mod geofence_service_client {
                 "/mavsdk.rpc.geofence.GeofenceService/UploadGeofence",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for GeofenceServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }

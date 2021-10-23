@@ -10,7 +10,7 @@ pub struct SetPitchAndYawRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetPitchAndYawResponse {
     #[prost(message, optional, tag = "1")]
-    pub gimbal_result: ::std::option::Option<GimbalResult>,
+    pub gimbal_result: ::core::option::Option<GimbalResult>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetModeRequest {
@@ -21,7 +21,7 @@ pub struct SetModeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetModeResponse {
     #[prost(message, optional, tag = "1")]
-    pub gimbal_result: ::std::option::Option<GimbalResult>,
+    pub gimbal_result: ::core::option::Option<GimbalResult>,
 }
 /// Result type.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -31,8 +31,9 @@ pub struct GimbalResult {
     pub result: i32,
     /// Human-readable English string describing the result
     #[prost(string, tag = "2")]
-    pub result_str: std::string::String,
+    pub result_str: ::prost::alloc::string::String,
 }
+/// Nested message and enum types in `GimbalResult`.
 pub mod gimbal_result {
     /// Possible results returned for gimbal commands.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -57,11 +58,12 @@ pub enum GimbalMode {
     /// Yaw lock will fix the gimbal poiting to an absolute direction
     YawLock = 1,
 }
-#[doc = r" Generated server implementations."]
+#[doc = r" Generated client implementations."]
 pub mod gimbal_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Provide control over a gimbal."]
+    #[derive(Debug, Clone)]
     pub struct GimbalServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
@@ -79,13 +81,43 @@ pub mod gimbal_service_client {
     impl<T> GimbalServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> GimbalServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            GimbalServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = ""]
         #[doc = ""]
@@ -130,13 +162,6 @@ pub mod gimbal_service_client {
             let path =
                 http::uri::PathAndQuery::from_static("/mavsdk.rpc.gimbal.GimbalService/SetMode");
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for GimbalServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
         }
     }
 }
