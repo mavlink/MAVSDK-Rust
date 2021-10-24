@@ -178,7 +178,7 @@ impl Into<pb::Covariance> for Covariance {
 /// A zero-rotation quaternion is represented by (1,0,0,0).
 /// The quaternion could also be written as w + xi + yj + zk.
 ///
-/// For more info see: https://en.wikipedia.org/wiki/Quaternion
+/// For more info see: <https://en.wikipedia.org/wiki/Quaternion>
 #[derive(Clone, PartialEq, Debug, Default)]
 pub struct Quaternion {
     /// Quaternion entry 0, also denoted as a

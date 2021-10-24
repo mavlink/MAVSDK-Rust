@@ -1,3 +1,5 @@
+#![deny(clippy::all)]
+
 #[allow(clippy::all)]
 mod generated;
 
@@ -46,6 +48,7 @@ impl System {
 
 #[tonic::async_trait]
 trait Connect {
+    #[allow(clippy::ptr_arg)]
     async fn connect(url: &String) -> Result<Self, tonic::transport::Error>
     where
         Self: Sized;
