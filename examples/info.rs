@@ -25,10 +25,10 @@ async fn main() {
     match system.info.get_version().await {
         Ok(v) => println!("Version received: {:?}", v),
         Err(RequestError::MavErr(info::InfoError::Unknown(s))) => {
-            println!("Unknown MAVLink error ({:?})", s)
+            println!("Unknown MAVLink error ({:?})", s);
         }
         Err(RequestError::MavErr(info::InfoError::InformationNotReceivedYet(s))) => {
-            println!("{}", s)
+            println!("{}", s);
         }
         Err(RequestError::RpcErr(rpc_err)) => println!("RPC error: {:?}", rpc_err),
     };
