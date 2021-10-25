@@ -1,4 +1,4 @@
-use futures::stream::StreamExt;
+use futures_util::stream::StreamExt;
 use libmavsdk::System;
 use std::io::{self, Write};
 

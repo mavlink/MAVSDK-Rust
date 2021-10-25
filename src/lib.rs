@@ -3,7 +3,7 @@
 #[allow(clippy::all)]
 mod generated;
 
-use futures::future::try_join3;
+use futures_util::future::try_join3;
 pub use generated::info;
 pub use generated::mocap;
 pub use generated::telemetry;

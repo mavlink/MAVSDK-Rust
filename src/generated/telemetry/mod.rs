@@ -1,9 +1,8 @@
 use super::super::RequestError::{MavErr, RpcErr};
 use super::super::RequestResult;
-use futures::stream::{Stream, StreamExt};
-use futures::task::{Context, Poll};
-use std::convert::From;
+use futures_util::stream::{Stream, StreamExt};
 use std::pin::Pin;
+use std::task::{Context, Poll};
 
 mod pb {
     include!("mavsdk.rpc.telemetry.rs");
