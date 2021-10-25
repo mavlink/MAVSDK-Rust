@@ -1,11 +1,10 @@
 #![deny(clippy::all)]
 
-mod generated;
-
 use futures_util::future::try_join3;
-pub use generated::info;
-pub use generated::mocap;
-pub use generated::telemetry;
+
+pub mod info;
+pub mod mocap;
+pub mod telemetry;
 
 #[derive(Debug, thiserror::Error)]
 pub enum RequestError<PluginMavErr>
