@@ -1,4 +1,4 @@
-use super::super::RequestError::{MavErr, RpcErr};
+use super::super::RequestError;
 use super::super::RequestResult;
 use futures_util::stream::{Stream, StreamExt};
 use std::pin::Pin;
@@ -212,15 +212,19 @@ impl Into<pb::Quaternion> for Quaternion {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, thiserror::Error)]
 pub enum TelemetryError {
     /// Unknown error
+    #[error("Unknown error: {0}")]
     Unknown(String),
     /// No system is connected
+    #[error("No system is connected: {0}")]
     NoSystem(String),
     /// Connection error
+    #[error("Connection error: {0}")]
     ConnectionError(String),
     /// Invalid request data
+    #[error("Invalid request: {0}")]
     InvalidRequestData(String),
 }
 
@@ -257,11 +261,11 @@ impl Stream for OdometryStream {
             Poll::Ready(Some(rpc_result)) => match rpc_result {
                 Ok(odometry_response) => match odometry_response.odometry {
                     Some(rpc_odometry) => Poll::Ready(Some(Ok(Odometry::from(rpc_odometry)))),
-                    None => Poll::Ready(Some(Err(MavErr(TelemetryError::Unknown(
+                    None => Poll::Ready(Some(Err(RequestError::Mav(TelemetryError::Unknown(
                         "Unexpected value".into(),
                     ))))),
                 },
-                Err(err) => Poll::Ready(Some(Err(RpcErr(err)))),
+                Err(err) => Poll::Ready(Some(Err(RequestError::Rpc(err)))),
             },
         }
     }

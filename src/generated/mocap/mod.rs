@@ -1,5 +1,5 @@
 use super::super::FromRpcResponse;
-use super::super::RequestError::{MavErr, RpcErr};
+use super::super::RequestError;
 use super::super::RequestResult;
 use super::super::TonicResult;
 use std::convert::Into;
@@ -225,15 +225,19 @@ impl Into<pb::Quaternion> for Quaternion {
     }
 }
 
-#[derive(PartialEq, Clone, Debug)]
+#[derive(PartialEq, Clone, Debug, thiserror::Error)]
 pub enum MocapError {
     /// Unknown error
+    #[error("Unknown error: {0}")]
     Unknown(String),
     /// No system is connected
+    #[error("No system is connected: {0}")]
     NoSystem(String),
     /// Connection error
+    #[error("Connection error: {0}")]
     ConnectionError(String),
     /// Invalid request data
+    #[error("Invalid request: {0}")]
     InvalidRequestData(String),
 }
 
@@ -245,31 +249,32 @@ impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositio
             pb::SetVisionPositionEstimateResponse,
         >,
     ) -> Self {
-        let rpc_mocap_result = rpc_set_vision_position_estimate_response
-            .map_err(RpcErr)?
+        let rpc_mocap_result = rpc_set_vision_position_estimate_response?
             .into_inner()
             .mocap_result
-            .ok_or_else(|| MavErr(MocapError::Unknown("MocapResult does not received".into())))?;
+            .ok_or_else(|| {
+                RequestError::Mav(MocapError::Unknown("MocapResult does not received".into()))
+            })?;
 
         let mocap_result =
             pb::mocap_result::Result::from_i32(rpc_mocap_result.result).ok_or_else(|| {
-                MavErr(MocapError::Unknown(
+                RequestError::Mav(MocapError::Unknown(
                     "Unsupported MocapResult.result value".into(),
                 ))
             })?;
 
         match mocap_result {
             pb::mocap_result::Result::Success => Ok(()),
-            pb::mocap_result::Result::Unknown => {
-                Err(MavErr(MocapError::Unknown(rpc_mocap_result.result_str)))
-            }
-            pb::mocap_result::Result::NoSystem => {
-                Err(MavErr(MocapError::NoSystem(rpc_mocap_result.result_str)))
-            }
-            pb::mocap_result::Result::ConnectionError => Err(MavErr(MocapError::ConnectionError(
+            pb::mocap_result::Result::Unknown => Err(RequestError::Mav(MocapError::Unknown(
                 rpc_mocap_result.result_str,
             ))),
-            pb::mocap_result::Result::InvalidRequestData => Err(MavErr(
+            pb::mocap_result::Result::NoSystem => Err(RequestError::Mav(MocapError::NoSystem(
+                rpc_mocap_result.result_str,
+            ))),
+            pb::mocap_result::Result::ConnectionError => Err(RequestError::Mav(
+                MocapError::ConnectionError(rpc_mocap_result.result_str),
+            )),
+            pb::mocap_result::Result::InvalidRequestData => Err(RequestError::Mav(
                 MocapError::InvalidRequestData(rpc_mocap_result.result_str),
             )),
         }

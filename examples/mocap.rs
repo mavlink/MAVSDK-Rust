@@ -1,4 +1,4 @@
-use libmavsdk::{mocap, RequestError, System};
+use libmavsdk::{mocap, System};
 use std::io::{self, Write};
 use std::time::Duration;
 
@@ -34,10 +34,7 @@ async fn main() {
             .set_vision_position_estimate(vision_position_estimate.clone())
             .await
         {
-            match error {
-                RequestError::MavErr(mav_err) => println!("MAVLink error: {:?}", mav_err),
-                RequestError::RpcErr(rpc_err) => println!("RPC error: {:?}", rpc_err.message()),
-            }
+            println!("{}", error);
             return;
         };
         counter -= 1;

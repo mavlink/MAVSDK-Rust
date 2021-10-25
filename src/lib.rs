@@ -8,10 +8,15 @@ pub use generated::info;
 pub use generated::mocap;
 pub use generated::telemetry;
 
-#[derive(Debug)]
-pub enum RequestError<PluginMavErr> {
-    MavErr(PluginMavErr),
-    RpcErr(tonic::Status),
+#[derive(Debug, thiserror::Error)]
+pub enum RequestError<PluginMavErr>
+where
+    PluginMavErr: std::error::Error,
+{
+    #[error("MAVLink error: {0}")]
+    Mav(PluginMavErr),
+    #[error("RPC error: {0}")]
+    Rpc(#[from] tonic::Status),
 }
 
 pub type RequestResult<SuccessType, PluginMavErr> = Result<SuccessType, RequestError<PluginMavErr>>;

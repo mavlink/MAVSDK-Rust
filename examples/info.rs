@@ -1,4 +1,4 @@
-use libmavsdk::{info, RequestError, System};
+use libmavsdk::System;
 use std::io::{self, Write};
 
 #[tokio::main]
@@ -24,12 +24,6 @@ async fn main() {
 
     match system.info.get_version().await {
         Ok(v) => println!("Version received: {:?}", v),
-        Err(RequestError::MavErr(info::InfoError::Unknown(s))) => {
-            println!("Unknown MAVLink error ({:?})", s);
-        }
-        Err(RequestError::MavErr(info::InfoError::InformationNotReceivedYet(s))) => {
-            println!("{}", s);
-        }
-        Err(RequestError::RpcErr(rpc_err)) => println!("RPC error: {:?}", rpc_err),
+        Err(e) => println!("{}", e),
     };
 }
