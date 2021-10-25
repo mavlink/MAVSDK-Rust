@@ -3,7 +3,7 @@ use libmavsdk::System;
 use std::io::{self, Write};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().skip(1).collect();
 
     if args.len() > 1 {
@@ -15,23 +15,12 @@ async fn main() {
 
     let url = args.get(0).cloned();
 
-    let mut system = match System::connect(url).await {
-        Ok(system) => system,
-        Err(err) => {
-            println!("Connection error: {:?}", err);
-            return;
-        }
-    };
+    let mut system = System::connect(url).await?;
 
-    let mut stream_odometry = system.telemetry.subscribe_odometry().await.unwrap();
+    let mut stream_odometry = system.telemetry.subscribe_odometry().await?;
     while let Some(odometry) = stream_odometry.next().await {
-        match odometry {
-            Ok(odometry) => println!("Received: {:?}", odometry),
-            Err(err) => {
-                println!("Break: {:?}", err);
-                break;
-            }
-        }
+        println!("Received: {:?}", odometry?);
     }
     println!("Exit");
+    Ok(())
 }

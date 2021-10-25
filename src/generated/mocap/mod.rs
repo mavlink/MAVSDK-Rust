@@ -241,6 +241,12 @@ pub enum MocapError {
     InvalidRequestData(String),
 }
 
+impl From<MocapError> for RequestError<MocapError> {
+    fn from(e: MocapError) -> Self {
+        Self::Mav(e)
+    }
+}
+
 pub type SetVisionPositionEstimateResult = RequestResult<(), MocapError>;
 
 impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositionEstimateResult {
@@ -252,31 +258,25 @@ impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositio
         let rpc_mocap_result = rpc_set_vision_position_estimate_response?
             .into_inner()
             .mocap_result
-            .ok_or_else(|| {
-                RequestError::Mav(MocapError::Unknown("MocapResult does not received".into()))
-            })?;
+            .ok_or_else(|| MocapError::Unknown("MocapResult does not received".into()))?;
 
-        let mocap_result =
-            pb::mocap_result::Result::from_i32(rpc_mocap_result.result).ok_or_else(|| {
-                RequestError::Mav(MocapError::Unknown(
-                    "Unsupported MocapResult.result value".into(),
-                ))
-            })?;
+        let mocap_result = pb::mocap_result::Result::from_i32(rpc_mocap_result.result)
+            .ok_or_else(|| MocapError::Unknown("Unsupported MocapResult.result value".into()))?;
 
         match mocap_result {
             pb::mocap_result::Result::Success => Ok(()),
-            pb::mocap_result::Result::Unknown => Err(RequestError::Mav(MocapError::Unknown(
-                rpc_mocap_result.result_str,
-            ))),
-            pb::mocap_result::Result::NoSystem => Err(RequestError::Mav(MocapError::NoSystem(
-                rpc_mocap_result.result_str,
-            ))),
-            pb::mocap_result::Result::ConnectionError => Err(RequestError::Mav(
-                MocapError::ConnectionError(rpc_mocap_result.result_str),
-            )),
-            pb::mocap_result::Result::InvalidRequestData => Err(RequestError::Mav(
-                MocapError::InvalidRequestData(rpc_mocap_result.result_str),
-            )),
+            pb::mocap_result::Result::Unknown => {
+                Err(MocapError::Unknown(rpc_mocap_result.result_str).into())
+            }
+            pb::mocap_result::Result::NoSystem => {
+                Err(MocapError::NoSystem(rpc_mocap_result.result_str).into())
+            }
+            pb::mocap_result::Result::ConnectionError => {
+                Err(MocapError::ConnectionError(rpc_mocap_result.result_str).into())
+            }
+            pb::mocap_result::Result::InvalidRequestData => {
+                Err(MocapError::InvalidRequestData(rpc_mocap_result.result_str).into())
+            }
         }
     }
 }

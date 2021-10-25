@@ -2,7 +2,7 @@ use libmavsdk::System;
 use std::io::{self, Write};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().skip(1).collect();
 
     if args.len() > 1 {
@@ -14,16 +14,11 @@ async fn main() {
 
     let url = args.get(0).cloned();
 
-    let mut system = match System::connect(url).await {
-        Ok(system) => system,
-        Err(err) => {
-            println!("Connection error: {:?}", err);
-            return;
-        }
-    };
+    let mut system = System::connect(url).await?;
 
-    match system.info.get_version().await {
-        Ok(v) => println!("Version received: {:?}", v),
-        Err(e) => println!("{}", e),
-    };
+    let version = system.info.get_version().await?;
+
+    println!("Version received: {:?}", version);
+
+    Ok(())
 }
