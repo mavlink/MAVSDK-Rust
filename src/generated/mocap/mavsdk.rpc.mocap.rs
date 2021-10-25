@@ -169,7 +169,7 @@ pub struct Covariance {
 /// A zero-rotation quaternion is represented by (1,0,0,0).
 /// The quaternion could also be written as w + xi + yj + zk.
 ///
-/// For more info see: https://en.wikipedia.org/wiki/Quaternion
+/// For more info see: <https://en.wikipedia.org/wiki/Quaternion>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Quaternion {
     /// Quaternion entry 0, also denoted as a
@@ -239,7 +239,7 @@ pub mod mocap_service_client {
     impl<T> MocapServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {

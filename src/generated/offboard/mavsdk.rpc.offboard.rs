@@ -108,7 +108,7 @@ pub struct ActuatorControlGroup {
 /// MAVLink messages are actually sent.
 ///
 /// In PX4 v1.9.0 Only first four Control Groups are supported
-/// (https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980).
+/// (<https://github.com/PX4/Firmware/blob/v1.9.0/src/modules/mavlink/mavlink_receiver.cpp#L980>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActuatorControl {
     /// Control groups.
@@ -244,7 +244,7 @@ pub mod offboard_service_client {
     impl<T> OffboardServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {

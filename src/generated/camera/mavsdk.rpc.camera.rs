@@ -204,7 +204,7 @@ pub struct Position {
 /// A zero-rotation quaternion is represented by (1,0,0,0).
 /// The quaternion could also be written as w + xi + yj + zk.
 ///
-/// For more info see: https://en.wikipedia.org/wiki/Quaternion
+/// For more info see: <https://en.wikipedia.org/wiki/Quaternion>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Quaternion {
     /// Quaternion entry 0, also denoted as a
@@ -226,7 +226,7 @@ pub struct Quaternion {
 /// All rotations and axis systems follow the right-hand rule.
 /// The Euler angles follow the convention of a 3-2-1 intrinsic Tait-Bryan rotation sequence.
 ///
-/// For more info see https://en.wikipedia.org/wiki/Euler_angles
+/// For more info see <https://en.wikipedia.org/wiki/Euler_angles>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EulerAngle {
     /// Roll angle in degrees, positive is banking to the right
@@ -399,7 +399,7 @@ pub mod camera_service_client {
     impl<T> CameraServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
