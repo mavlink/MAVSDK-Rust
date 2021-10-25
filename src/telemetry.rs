@@ -1,7 +1,6 @@
 use crate::RequestError;
 use crate::RequestResult;
-use futures_util::stream::Stream;
-use futures_util::StreamExt;
+use futures_util::stream::{Stream, StreamExt};
 
 mod pb {
     tonic::include_proto!("mavsdk.rpc.telemetry");

@@ -2,7 +2,6 @@ use crate::FromRpcResponse;
 use crate::RequestError;
 use crate::RequestResult;
 use crate::TonicResult;
-use std::convert::Into;
 
 mod pb {
     tonic::include_proto!("mavsdk.rpc.mocap");
