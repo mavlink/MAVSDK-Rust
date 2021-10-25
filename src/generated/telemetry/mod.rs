@@ -86,12 +86,12 @@ impl From<&pb::SpeedBody> for SpeedBody {
     }
 }
 
-impl Into<pb::SpeedBody> for SpeedBody {
-    fn into(self) -> pb::SpeedBody {
-        pb::SpeedBody {
-            velocity_x_m_s: self.velocity_x_m_s,
-            velocity_y_m_s: self.velocity_y_m_s,
-            velocity_z_m_s: self.velocity_z_m_s,
+impl From<SpeedBody> for pb::SpeedBody {
+    fn from(speed: SpeedBody) -> Self {
+        Self {
+            velocity_x_m_s: speed.velocity_x_m_s,
+            velocity_y_m_s: speed.velocity_y_m_s,
+            velocity_z_m_s: speed.velocity_z_m_s,
         }
     }
 }
@@ -117,12 +117,12 @@ impl From<&pb::AngularVelocityBody> for AngularVelocityBody {
     }
 }
 
-impl Into<pb::AngularVelocityBody> for AngularVelocityBody {
-    fn into(self) -> pb::AngularVelocityBody {
-        pb::AngularVelocityBody {
-            roll_rad_s: self.roll_rad_s,
-            pitch_rad_s: self.pitch_rad_s,
-            yaw_rad_s: self.yaw_rad_s,
+impl From<AngularVelocityBody> for pb::AngularVelocityBody {
+    fn from(angular_velocity: AngularVelocityBody) -> Self {
+        Self {
+            roll_rad_s: angular_velocity.roll_rad_s,
+            pitch_rad_s: angular_velocity.pitch_rad_s,
+            yaw_rad_s: angular_velocity.yaw_rad_s,
         }
     }
 }
@@ -133,7 +133,7 @@ impl Into<pb::AngularVelocityBody> for AngularVelocityBody {
 /// Set first to NaN if unknown.
 #[derive(Clone, PartialEq, Debug, Default)]
 pub struct Covariance {
-    pub covariance_matrix: ::std::vec::Vec<f32>,
+    pub covariance_matrix: Vec<f32>,
 }
 
 impl From<pb::Odometry> for Odometry {
@@ -144,9 +144,7 @@ impl From<pb::Odometry> for Odometry {
             child_frame_id: MavFrame::from_i32(rpc_odometry.child_frame_id).unwrap(),
             position_body: PositionBody::from(&rpc_odometry.position_body.unwrap()),
             q: Quaternion::from(&rpc_odometry.q.unwrap()),
-            speed_body: SpeedBody::from(
-                &rpc_odometry.speed_body.unwrap_or(pb::SpeedBody::default()),
-            ),
+            speed_body: SpeedBody::from(&rpc_odometry.speed_body.unwrap_or_default()),
             angular_velocity_body: AngularVelocityBody::from(
                 &rpc_odometry.angular_velocity_body.unwrap(),
             ),
@@ -160,10 +158,10 @@ impl From<pb::Odometry> for Odometry {
     }
 }
 
-impl Into<pb::Covariance> for Covariance {
-    fn into(self) -> pb::Covariance {
-        pb::Covariance {
-            covariance_matrix: self.covariance_matrix,
+impl From<Covariance> for pb::Covariance {
+    fn from(covariance: Covariance) -> Self {
+        Self {
+            covariance_matrix: covariance.covariance_matrix,
         }
     }
 }
@@ -200,13 +198,13 @@ impl From<&pb::Quaternion> for Quaternion {
     }
 }
 
-impl Into<pb::Quaternion> for Quaternion {
-    fn into(self) -> pb::Quaternion {
-        pb::Quaternion {
-            w: self.w,
-            x: self.x,
-            y: self.y,
-            z: self.z,
+impl From<Quaternion> for pb::Quaternion {
+    fn from(quarternion: Quaternion) -> Self {
+        Self {
+            w: quarternion.w,
+            x: quarternion.x,
+            y: quarternion.y,
+            z: quarternion.z,
         }
     }
 }

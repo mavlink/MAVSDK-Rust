@@ -1,6 +1,5 @@
 #![deny(clippy::all)]
 
-#[allow(clippy::all)]
 mod generated;
 
 use futures_util::future::try_join3;
