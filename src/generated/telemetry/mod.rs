@@ -210,7 +210,7 @@ impl From<Quaternion> for pb::Quaternion {
 }
 
 #[derive(Clone, Debug, thiserror::Error)]
-pub enum TelemetryError {
+pub enum Error {
     /// Unknown error
     #[error("Unknown error: {0}")]
     Unknown(String),
@@ -225,8 +225,8 @@ pub enum TelemetryError {
     InvalidRequestData(String),
 }
 
-impl From<TelemetryError> for RequestError<TelemetryError> {
-    fn from(e: TelemetryError) -> Self {
+impl From<Error> for RequestError<Error> {
+    fn from(e: Error) -> Self {
         Self::Mav(e)
     }
 }
@@ -244,22 +244,23 @@ impl Telemetry {
     ) -> Result<impl Stream<Item = OdometryResult> + Unpin, tonic::Status> {
         let request = pb::SubscribeOdometryRequest {};
 
-        let stream =
-            self.service_client
-                .subscribe_odometry(request)
-                .await?
-                .into_inner()
-                .map(|rpc_odometry| {
-                    rpc_odometry?.odometry.map(Odometry::from).ok_or_else(|| {
-                        TelemetryError::Unknown(String::from("Unexpected value")).into()
-                    })
-                });
+        let stream = self
+            .service_client
+            .subscribe_odometry(request)
+            .await?
+            .into_inner()
+            .map(|rpc_odometry| {
+                rpc_odometry?
+                    .odometry
+                    .map(Odometry::from)
+                    .ok_or_else(|| Error::Unknown(String::from("Unexpected value")).into())
+            });
 
         Ok(stream)
     }
 }
 
-pub type OdometryResult = RequestResult<Odometry, TelemetryError>;
+pub type OdometryResult = RequestResult<Odometry, Error>;
 
 #[tonic::async_trait]
 impl super::super::Connect for Telemetry {

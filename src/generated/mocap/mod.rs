@@ -34,7 +34,7 @@ impl From<VisionPositionEstimate> for pb::VisionPositionEstimate {
 
 /// Motion capture attitude and position
 #[derive(Clone, PartialEq, Debug)]
-pub struct AttitudePositionMocap {
+pub struct AttitudePosition {
     /// PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
     pub time_usec: u64,
     /// Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
@@ -45,8 +45,8 @@ pub struct AttitudePositionMocap {
     pub pose_covariance: Covariance,
 }
 
-impl From<AttitudePositionMocap> for pb::AttitudePositionMocap {
-    fn from(attitude_position: AttitudePositionMocap) -> Self {
+impl From<AttitudePosition> for pb::AttitudePositionMocap {
+    fn from(attitude_position: AttitudePosition) -> Self {
         Self {
             time_usec: attitude_position.time_usec,
             q: Some(attitude_position.q.into()),
@@ -226,7 +226,7 @@ impl From<Quaternion> for pb::Quaternion {
 }
 
 #[derive(PartialEq, Clone, Debug, thiserror::Error)]
-pub enum MocapError {
+pub enum Error {
     /// Unknown error
     #[error("Unknown error: {0}")]
     Unknown(String),
@@ -241,13 +241,13 @@ pub enum MocapError {
     InvalidRequestData(String),
 }
 
-impl From<MocapError> for RequestError<MocapError> {
-    fn from(e: MocapError) -> Self {
+impl From<Error> for RequestError<Error> {
+    fn from(e: Error) -> Self {
         Self::Mav(e)
     }
 }
 
-pub type SetVisionPositionEstimateResult = RequestResult<(), MocapError>;
+pub type SetVisionPositionEstimateResult = RequestResult<(), Error>;
 
 impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositionEstimateResult {
     fn from_rpc_response(
@@ -258,24 +258,24 @@ impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositio
         let rpc_mocap_result = rpc_set_vision_position_estimate_response?
             .into_inner()
             .mocap_result
-            .ok_or_else(|| MocapError::Unknown("MocapResult does not received".into()))?;
+            .ok_or_else(|| Error::Unknown("MocapResult does not received".into()))?;
 
         let mocap_result = pb::mocap_result::Result::from_i32(rpc_mocap_result.result)
-            .ok_or_else(|| MocapError::Unknown("Unsupported MocapResult.result value".into()))?;
+            .ok_or_else(|| Error::Unknown("Unsupported MocapResult.result value".into()))?;
 
         match mocap_result {
             pb::mocap_result::Result::Success => Ok(()),
             pb::mocap_result::Result::Unknown => {
-                Err(MocapError::Unknown(rpc_mocap_result.result_str).into())
+                Err(Error::Unknown(rpc_mocap_result.result_str).into())
             }
             pb::mocap_result::Result::NoSystem => {
-                Err(MocapError::NoSystem(rpc_mocap_result.result_str).into())
+                Err(Error::NoSystem(rpc_mocap_result.result_str).into())
             }
             pb::mocap_result::Result::ConnectionError => {
-                Err(MocapError::ConnectionError(rpc_mocap_result.result_str).into())
+                Err(Error::ConnectionError(rpc_mocap_result.result_str).into())
             }
             pb::mocap_result::Result::InvalidRequestData => {
-                Err(MocapError::InvalidRequestData(rpc_mocap_result.result_str).into())
+                Err(Error::InvalidRequestData(rpc_mocap_result.result_str).into())
             }
         }
     }
