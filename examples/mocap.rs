@@ -1,4 +1,3 @@
-use async_std::task;
 use libmavsdk::{mocap, RequestError, System};
 use std::io::{self, Write};
 use std::time::Duration;
@@ -46,7 +45,7 @@ async fn main() {
         vision_position_estimate.position_body.y_m -= 0.1;
         vision_position_estimate.position_body.z_m -= 0.01;
 
-        task::sleep(Duration::from_millis(20)).await;
+        tokio::time::sleep(Duration::from_millis(20)).await;
     }
 
     println!("All sended successfully!");
