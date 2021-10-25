@@ -51,6 +51,8 @@ pub enum Error {
     Unknown(String),
     #[error("Information not yet received: {0}")]
     InformationNotReceivedYet(String),
+    #[error("No system available")]
+    NoSystem(String),
 }
 
 impl From<Error> for RequestError<Error> {
@@ -82,6 +84,9 @@ impl FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
             }
             pb::info_result::Result::InformationNotReceivedYet => {
                 Err(Error::InformationNotReceivedYet(rpc_info_result.result_str).into())
+            }
+            pb::info_result::Result::NoSystem => {
+                Err(Error::NoSystem(rpc_info_result.result_str).into())
             }
         }
     }

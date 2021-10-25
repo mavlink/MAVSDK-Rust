@@ -1,34 +1,28 @@
-fn main() -> std::io::Result<()> {
-    let plugins = vec![
-        //"action",
-        //"calibration",
-        //"camera",
-        //"core",
-        //"geofence",
-        //"gimbal",
-        "info",
-        //"mission",
-        "mocap",
-        //"offboard",
-        //"param",
-        //"shell",
-        "telemetry",
-    ];
+const PROTO_INCLUDE_PATH: &str = "proto/protos";
 
-    for plugin in plugins {
-        let proto_path = proto_path(plugin);
-        let proto_include_path = proto_include_path(plugin);
+const PLUGINS: &[&str] = &[
+    //"action",
+    //"calibration",
+    //"camera",
+    //"core",
+    //"geofence",
+    //"gimbal",
+    "info",
+    //"mission",
+    "mocap",
+    //"offboard",
+    //"param",
+    //"shell",
+    "telemetry",
+];
+
+fn main() -> std::io::Result<()> {
+    for plugin in PLUGINS {
+        let proto_path = format!("{0}/{1}/{1}.proto", PROTO_INCLUDE_PATH, plugin);
+
         tonic_build::configure()
             .build_server(false)
-            .compile(&[proto_path], &[proto_include_path])?;
+            .compile(&[proto_path.as_str()], &[PROTO_INCLUDE_PATH])?;
     }
     Ok(())
-}
-
-fn proto_path(plugin_name: &str) -> String {
-    format!("proto/protos/{name}/{name}.proto", name = plugin_name)
-}
-
-fn proto_include_path(plugin_name: &str) -> String {
-    format!("proto/protos/{}", plugin_name)
 }
