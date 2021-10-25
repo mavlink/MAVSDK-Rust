@@ -55,41 +55,32 @@ pub type GetVersionResult = RequestResult<Version, InfoError>;
 
 impl FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
     fn from_rpc_response(rpc_get_version_response: TonicResult<pb::GetVersionResponse>) -> Self {
-        match rpc_get_version_response {
-            Ok(tonic_response) => {
-                let get_version_response = tonic_response.into_inner();
-                match &get_version_response.info_result {
-                    Some(ref rpc_info_result) => {
-                        match pb::info_result::Result::from_i32(rpc_info_result.result) {
-                            Some(info_result) => match info_result {
-                                pb::info_result::Result::Success => {
-                                    match get_version_response.version {
-                                        Some(ref rpc_version) => Ok(Version::from(rpc_version)),
-                                        None => Err(MavErr(InfoError::Unknown(
-                                            "Version does not received".into(),
-                                        ))),
-                                    }
-                                }
-                                pb::info_result::Result::Unknown => Err(MavErr(
-                                    InfoError::Unknown(rpc_info_result.result_str.clone()),
-                                )),
-                                pb::info_result::Result::InformationNotReceivedYet => {
-                                    Err(MavErr(InfoError::InformationNotReceivedYet(
-                                        rpc_info_result.result_str.clone(),
-                                    )))
-                                }
-                            },
-                            None => Err(MavErr(InfoError::Unknown(
-                                "Unsupported InfoResult.result value".into(),
-                            ))),
-                        }
-                    }
-                    None => Err(MavErr(InfoError::Unknown(
-                        "InfoResult does not received".into(),
-                    ))),
-                }
+        let get_version_response = rpc_get_version_response.map_err(RpcErr)?.into_inner();
+
+        let rpc_info_result = get_version_response
+            .info_result
+            .ok_or_else(|| MavErr(InfoError::Unknown("InfoResult does not received".into())))?;
+
+        let info_result =
+            pb::info_result::Result::from_i32(rpc_info_result.result).ok_or_else(|| {
+                MavErr(InfoError::Unknown(
+                    "Unsupported InfoResult.result value".into(),
+                ))
+            })?;
+
+        match info_result {
+            pb::info_result::Result::Success => match get_version_response.version {
+                Some(ref rpc_version) => Ok(Version::from(rpc_version)),
+                None => Err(MavErr(InfoError::Unknown(
+                    "Version does not received".into(),
+                ))),
+            },
+            pb::info_result::Result::Unknown => {
+                Err(MavErr(InfoError::Unknown(rpc_info_result.result_str)))
             }
-            Err(err) => Err(RpcErr(err)),
+            pb::info_result::Result::InformationNotReceivedYet => Err(MavErr(
+                InfoError::InformationNotReceivedYet(rpc_info_result.result_str),
+            )),
         }
     }
 }

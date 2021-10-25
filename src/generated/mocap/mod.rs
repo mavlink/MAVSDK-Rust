@@ -245,42 +245,33 @@ impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositio
             pb::SetVisionPositionEstimateResponse,
         >,
     ) -> Self {
-        match rpc_set_vision_position_estimate_response {
-            Ok(tonic_response) => {
-                let set_vision_position_estimate_response = tonic_response.into_inner();
-                match &set_vision_position_estimate_response.mocap_result {
-                    Some(ref rpc_mocap_result) => {
-                        match pb::mocap_result::Result::from_i32(rpc_mocap_result.result) {
-                            Some(mocap_result) => match mocap_result {
-                                pb::mocap_result::Result::Success => Ok(()),
-                                pb::mocap_result::Result::Unknown => Err(MavErr(
-                                    MocapError::Unknown(rpc_mocap_result.result_str.clone()),
-                                )),
-                                pb::mocap_result::Result::NoSystem => Err(MavErr(
-                                    MocapError::NoSystem(rpc_mocap_result.result_str.clone()),
-                                )),
-                                pb::mocap_result::Result::ConnectionError => {
-                                    Err(MavErr(MocapError::ConnectionError(
-                                        rpc_mocap_result.result_str.clone(),
-                                    )))
-                                }
-                                pb::mocap_result::Result::InvalidRequestData => {
-                                    Err(MavErr(MocapError::InvalidRequestData(
-                                        rpc_mocap_result.result_str.clone(),
-                                    )))
-                                }
-                            },
-                            None => Err(MavErr(MocapError::Unknown(
-                                "Unsupported MocapResult.result value".into(),
-                            ))),
-                        }
-                    }
-                    None => Err(MavErr(MocapError::Unknown(
-                        "MocapResult does not received".into(),
-                    ))),
-                }
+        let rpc_mocap_result = rpc_set_vision_position_estimate_response
+            .map_err(RpcErr)?
+            .into_inner()
+            .mocap_result
+            .ok_or_else(|| MavErr(MocapError::Unknown("MocapResult does not received".into())))?;
+
+        let mocap_result =
+            pb::mocap_result::Result::from_i32(rpc_mocap_result.result).ok_or_else(|| {
+                MavErr(MocapError::Unknown(
+                    "Unsupported MocapResult.result value".into(),
+                ))
+            })?;
+
+        match mocap_result {
+            pb::mocap_result::Result::Success => Ok(()),
+            pb::mocap_result::Result::Unknown => {
+                Err(MavErr(MocapError::Unknown(rpc_mocap_result.result_str)))
             }
-            Err(err) => Err(RpcErr(err)),
+            pb::mocap_result::Result::NoSystem => {
+                Err(MavErr(MocapError::NoSystem(rpc_mocap_result.result_str)))
+            }
+            pb::mocap_result::Result::ConnectionError => Err(MavErr(MocapError::ConnectionError(
+                rpc_mocap_result.result_str,
+            ))),
+            pb::mocap_result::Result::InvalidRequestData => Err(MavErr(
+                MocapError::InvalidRequestData(rpc_mocap_result.result_str),
+            )),
         }
     }
 }
