@@ -306,10 +306,9 @@ impl Mocap {
 
 #[tonic::async_trait]
 impl super::super::Connect for Mocap {
-    async fn connect(url: &String) -> std::result::Result<Mocap, tonic::transport::Error> {
+    async fn connect(url: String) -> std::result::Result<Mocap, tonic::transport::Error> {
         Ok(Mocap {
-            service_client: pb::mocap_service_client::MocapServiceClient::connect(url.clone())
-                .await?,
+            service_client: pb::mocap_service_client::MocapServiceClient::connect(url).await?,
         })
     }
 }

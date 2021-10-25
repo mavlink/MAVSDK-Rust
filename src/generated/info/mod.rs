@@ -102,10 +102,9 @@ impl Info {
 
 #[tonic::async_trait]
 impl super::super::Connect for Info {
-    async fn connect(url: &String) -> std::result::Result<Info, tonic::transport::Error> {
+    async fn connect(url: String) -> std::result::Result<Info, tonic::transport::Error> {
         Ok(Info {
-            service_client: pb::info_service_client::InfoServiceClient::connect(url.clone())
-                .await?,
+            service_client: pb::info_service_client::InfoServiceClient::connect(url).await?,
         })
     }
 }
