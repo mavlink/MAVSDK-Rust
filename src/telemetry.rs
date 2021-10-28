@@ -34,7 +34,7 @@ pub struct Odometry {
     /// Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation).
     pub q: Quaternion,
     /// Linear speed (m/s).
-    pub speed_body: SpeedBody,
+    pub velocity_body: VelocityBody,
     /// Angular speed (rad/s).
     pub angular_velocity_body: AngularVelocityBody,
     /// Pose cross-covariance matrix.
@@ -66,31 +66,31 @@ impl From<&pb::PositionBody> for PositionBody {
 
 /// Speed type, represented in the Body (X Y Z) frame and in metres/second.
 #[derive(Clone, PartialEq, Debug, Default)]
-pub struct SpeedBody {
+pub struct VelocityBody {
     /// Velocity in X in metres/second.
-    pub velocity_x_m_s: f32,
+    pub x_m_s: f32,
     /// Velocity in Y in metres/second.
-    pub velocity_y_m_s: f32,
+    pub y_m_s: f32,
     /// Velocity in Z in metres/second.
-    pub velocity_z_m_s: f32,
+    pub z_m_s: f32,
 }
 
-impl From<&pb::SpeedBody> for SpeedBody {
-    fn from(rpc_speed_body: &pb::SpeedBody) -> Self {
-        SpeedBody {
-            velocity_x_m_s: rpc_speed_body.velocity_x_m_s,
-            velocity_y_m_s: rpc_speed_body.velocity_y_m_s,
-            velocity_z_m_s: rpc_speed_body.velocity_z_m_s,
+impl From<&pb::VelocityBody> for VelocityBody {
+    fn from(rpc_velocity_body: &pb::VelocityBody) -> Self {
+        Self {
+            x_m_s: rpc_velocity_body.x_m_s,
+            y_m_s: rpc_velocity_body.y_m_s,
+            z_m_s: rpc_velocity_body.z_m_s,
         }
     }
 }
 
-impl From<SpeedBody> for pb::SpeedBody {
-    fn from(speed: SpeedBody) -> Self {
+impl From<VelocityBody> for pb::VelocityBody {
+    fn from(velocity: VelocityBody) -> Self {
         Self {
-            velocity_x_m_s: speed.velocity_x_m_s,
-            velocity_y_m_s: speed.velocity_y_m_s,
-            velocity_z_m_s: speed.velocity_z_m_s,
+            x_m_s: velocity.x_m_s,
+            y_m_s: velocity.y_m_s,
+            z_m_s: velocity.z_m_s,
         }
     }
 }
@@ -143,7 +143,7 @@ impl From<pb::Odometry> for Odometry {
             child_frame_id: MavFrame::from_i32(rpc_odometry.child_frame_id).unwrap(),
             position_body: PositionBody::from(&rpc_odometry.position_body.unwrap()),
             q: Quaternion::from(&rpc_odometry.q.unwrap()),
-            speed_body: SpeedBody::from(&rpc_odometry.speed_body.unwrap_or_default()),
+            velocity_body: VelocityBody::from(&rpc_odometry.velocity_body.unwrap_or_default()),
             angular_velocity_body: AngularVelocityBody::from(
                 &rpc_odometry.angular_velocity_body.unwrap(),
             ),
@@ -184,15 +184,18 @@ pub struct Quaternion {
     pub y: f32,
     /// Quaternion entry 3, also denoted as d
     pub z: f32,
+    /// Timestamp in microseconds
+    pub timestamp_us: u64,
 }
 
 impl From<&pb::Quaternion> for Quaternion {
     fn from(rpc_quaternion: &pb::Quaternion) -> Self {
-        Quaternion {
+        Self {
             w: rpc_quaternion.w,
             x: rpc_quaternion.x,
             y: rpc_quaternion.y,
             z: rpc_quaternion.z,
+            timestamp_us: rpc_quaternion.timestamp_us,
         }
     }
 }
@@ -204,6 +207,7 @@ impl From<Quaternion> for pb::Quaternion {
             x: quarternion.x,
             y: quarternion.y,
             z: quarternion.z,
+            timestamp_us: quarternion.timestamp_us,
         }
     }
 }
