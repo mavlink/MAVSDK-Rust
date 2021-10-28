@@ -16,7 +16,7 @@ jobs:
         include:
           - build: msrv
             os: ubuntu-latest
-            rust: 1.46
+            rust: 1.56
           - build: stable
             os: ubuntu-latest
             rust: stable
