@@ -21,20 +21,20 @@ pub struct VisionPositionEstimate {
     pub pose_covariance: Covariance,
 }
 
-impl Into<pb::VisionPositionEstimate> for VisionPositionEstimate {
-    fn into(self) -> pb::VisionPositionEstimate {
-        pb::VisionPositionEstimate {
-            time_usec: self.time_usec,
-            position_body: Some(self.position_body.into()),
-            angle_body: Some(self.angle_body.into()),
-            pose_covariance: Some(self.pose_covariance.into()),
+impl From<VisionPositionEstimate> for pb::VisionPositionEstimate {
+    fn from(est: VisionPositionEstimate) -> Self {
+        Self {
+            time_usec: est.time_usec,
+            position_body: Some(est.position_body.into()),
+            angle_body: Some(est.angle_body.into()),
+            pose_covariance: Some(est.pose_covariance.into()),
         }
     }
 }
 
 /// Motion capture attitude and position
 #[derive(Clone, PartialEq, Debug)]
-pub struct AttitudePositionMocap {
+pub struct AttitudePosition {
     /// PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
     pub time_usec: u64,
     /// Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
@@ -45,13 +45,13 @@ pub struct AttitudePositionMocap {
     pub pose_covariance: Covariance,
 }
 
-impl Into<pb::AttitudePositionMocap> for AttitudePositionMocap {
-    fn into(self) -> pb::AttitudePositionMocap {
-        pb::AttitudePositionMocap {
-            time_usec: self.time_usec,
-            q: Some(self.q.into()),
-            position_body: Some(self.position_body.into()),
-            pose_covariance: Some(self.pose_covariance.into()),
+impl From<AttitudePosition> for pb::AttitudePositionMocap {
+    fn from(attitude_position: AttitudePosition) -> Self {
+        Self {
+            time_usec: attitude_position.time_usec,
+            q: Some(attitude_position.q.into()),
+            position_body: Some(attitude_position.position_body.into()),
+            pose_covariance: Some(attitude_position.pose_covariance.into()),
         }
     }
 }
@@ -77,17 +77,17 @@ pub struct Odometry {
     pub velocity_covariance: Covariance,
 }
 
-impl Into<pb::Odometry> for Odometry {
-    fn into(self) -> pb::Odometry {
-        pb::Odometry {
-            time_usec: self.time_usec,
-            frame_id: self.frame_id,
-            position_body: Some(self.position_body.into()),
-            q: Some(self.q.into()),
-            speed_body: Some(self.speed_body.into()),
-            angular_velocity_body: Some(self.angular_velocity_body.into()),
-            pose_covariance: Some(self.pose_covariance.into()),
-            velocity_covariance: Some(self.velocity_covariance.into()),
+impl From<Odometry> for pb::Odometry {
+    fn from(odometry: Odometry) -> Self {
+        Self {
+            time_usec: odometry.time_usec,
+            frame_id: odometry.frame_id,
+            position_body: Some(odometry.position_body.into()),
+            q: Some(odometry.q.into()),
+            speed_body: Some(odometry.speed_body.into()),
+            angular_velocity_body: Some(odometry.angular_velocity_body.into()),
+            pose_covariance: Some(odometry.pose_covariance.into()),
+            velocity_covariance: Some(odometry.velocity_covariance.into()),
         }
     }
 }
@@ -103,12 +103,12 @@ pub struct PositionBody {
     pub z_m: f32,
 }
 
-impl Into<pb::PositionBody> for PositionBody {
-    fn into(self) -> pb::PositionBody {
-        pb::PositionBody {
-            x_m: self.x_m,
-            y_m: self.y_m,
-            z_m: self.z_m,
+impl From<PositionBody> for pb::PositionBody {
+    fn from(position: PositionBody) -> Self {
+        Self {
+            x_m: position.x_m,
+            y_m: position.y_m,
+            z_m: position.z_m,
         }
     }
 }
@@ -124,12 +124,12 @@ pub struct AngleBody {
     pub yaw_rad: f32,
 }
 
-impl Into<pb::AngleBody> for AngleBody {
-    fn into(self) -> pb::AngleBody {
-        pb::AngleBody {
-            roll_rad: self.roll_rad,
-            pitch_rad: self.pitch_rad,
-            yaw_rad: self.yaw_rad,
+impl From<AngleBody> for pb::AngleBody {
+    fn from(angle: AngleBody) -> Self {
+        Self {
+            roll_rad: angle.roll_rad,
+            pitch_rad: angle.pitch_rad,
+            yaw_rad: angle.yaw_rad,
         }
     }
 }
@@ -145,12 +145,12 @@ pub struct SpeedBody {
     pub z_m_s: f32,
 }
 
-impl Into<pb::SpeedBody> for SpeedBody {
-    fn into(self) -> pb::SpeedBody {
-        pb::SpeedBody {
-            x_m_s: self.x_m_s,
-            y_m_s: self.y_m_s,
-            z_m_s: self.z_m_s,
+impl From<SpeedBody> for pb::SpeedBody {
+    fn from(speed: SpeedBody) -> Self {
+        Self {
+            x_m_s: speed.x_m_s,
+            y_m_s: speed.y_m_s,
+            z_m_s: speed.z_m_s,
         }
     }
 }
@@ -166,12 +166,12 @@ pub struct AngularVelocityBody {
     pub yaw_rad_s: f32,
 }
 
-impl Into<pb::AngularVelocityBody> for AngularVelocityBody {
-    fn into(self) -> pb::AngularVelocityBody {
-        pb::AngularVelocityBody {
-            roll_rad_s: self.roll_rad_s,
-            pitch_rad_s: self.pitch_rad_s,
-            yaw_rad_s: self.yaw_rad_s,
+impl From<AngularVelocityBody> for pb::AngularVelocityBody {
+    fn from(angular_velocity: AngularVelocityBody) -> Self {
+        Self {
+            roll_rad_s: angular_velocity.roll_rad_s,
+            pitch_rad_s: angular_velocity.pitch_rad_s,
+            yaw_rad_s: angular_velocity.yaw_rad_s,
         }
     }
 }
@@ -185,10 +185,10 @@ pub struct Covariance {
     pub covariance_matrix: ::std::vec::Vec<f32>,
 }
 
-impl Into<pb::Covariance> for Covariance {
-    fn into(self) -> pb::Covariance {
-        pb::Covariance {
-            covariance_matrix: self.covariance_matrix,
+impl From<Covariance> for pb::Covariance {
+    fn from(covariance: Covariance) -> Self {
+        Self {
+            covariance_matrix: covariance.covariance_matrix,
         }
     }
 }
@@ -201,7 +201,7 @@ impl Into<pb::Covariance> for Covariance {
 /// A zero-rotation quaternion is represented by (1,0,0,0).
 /// The quaternion could also be written as w + xi + yj + zk.
 ///
-/// For more info see: https://en.wikipedia.org/wiki/Quaternion
+/// For more info see: <https://en.wikipedia.org/wiki/Quaternion>
 #[derive(Clone, PartialEq, Debug)]
 pub struct Quaternion {
     /// Quaternion entry 0, also denoted as a
@@ -214,19 +214,19 @@ pub struct Quaternion {
     pub z: f32,
 }
 
-impl Into<pb::Quaternion> for Quaternion {
-    fn into(self) -> pb::Quaternion {
-        pb::Quaternion {
-            w: self.w,
-            x: self.x,
-            y: self.y,
-            z: self.z,
+impl From<Quaternion> for pb::Quaternion {
+    fn from(quarternion: Quaternion) -> Self {
+        Self {
+            w: quarternion.w,
+            x: quarternion.x,
+            y: quarternion.y,
+            z: quarternion.z,
         }
     }
 }
 
 #[derive(PartialEq, Clone, Debug, thiserror::Error)]
-pub enum MocapError {
+pub enum Error {
     /// Unknown error
     #[error("Unknown error: {0}")]
     Unknown(String),
@@ -241,13 +241,13 @@ pub enum MocapError {
     InvalidRequestData(String),
 }
 
-impl From<MocapError> for RequestError<MocapError> {
-    fn from(e: MocapError) -> Self {
+impl From<Error> for RequestError<Error> {
+    fn from(e: Error) -> Self {
         Self::Mav(e)
     }
 }
 
-pub type SetVisionPositionEstimateResult = RequestResult<(), MocapError>;
+pub type SetVisionPositionEstimateResult = RequestResult<(), Error>;
 
 impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositionEstimateResult {
     fn from_rpc_response(
@@ -258,24 +258,24 @@ impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositio
         let rpc_mocap_result = rpc_set_vision_position_estimate_response?
             .into_inner()
             .mocap_result
-            .ok_or_else(|| MocapError::Unknown("MocapResult does not received".into()))?;
+            .ok_or_else(|| Error::Unknown("MocapResult does not received".into()))?;
 
         let mocap_result = pb::mocap_result::Result::from_i32(rpc_mocap_result.result)
-            .ok_or_else(|| MocapError::Unknown("Unsupported MocapResult.result value".into()))?;
+            .ok_or_else(|| Error::Unknown("Unsupported MocapResult.result value".into()))?;
 
         match mocap_result {
             pb::mocap_result::Result::Success => Ok(()),
             pb::mocap_result::Result::Unknown => {
-                Err(MocapError::Unknown(rpc_mocap_result.result_str).into())
+                Err(Error::Unknown(rpc_mocap_result.result_str).into())
             }
             pb::mocap_result::Result::NoSystem => {
-                Err(MocapError::NoSystem(rpc_mocap_result.result_str).into())
+                Err(Error::NoSystem(rpc_mocap_result.result_str).into())
             }
             pb::mocap_result::Result::ConnectionError => {
-                Err(MocapError::ConnectionError(rpc_mocap_result.result_str).into())
+                Err(Error::ConnectionError(rpc_mocap_result.result_str).into())
             }
             pb::mocap_result::Result::InvalidRequestData => {
-                Err(MocapError::InvalidRequestData(rpc_mocap_result.result_str).into())
+                Err(Error::InvalidRequestData(rpc_mocap_result.result_str).into())
             }
         }
     }
@@ -306,10 +306,9 @@ impl Mocap {
 
 #[tonic::async_trait]
 impl super::super::Connect for Mocap {
-    async fn connect(url: &String) -> std::result::Result<Mocap, tonic::transport::Error> {
+    async fn connect(url: String) -> std::result::Result<Mocap, tonic::transport::Error> {
         Ok(Mocap {
-            service_client: pb::mocap_service_client::MocapServiceClient::connect(url.clone())
-                .await?,
+            service_client: pb::mocap_service_client::MocapServiceClient::connect(url).await?,
         })
     }
 }

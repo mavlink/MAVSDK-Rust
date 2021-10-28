@@ -46,20 +46,20 @@ impl From<&pb::Version> for Version {
 }
 
 #[derive(PartialEq, Clone, Debug, thiserror::Error)]
-pub enum InfoError {
+pub enum Error {
     #[error("Unknown error: {0}")]
     Unknown(String),
     #[error("Information not yet received: {0}")]
     InformationNotReceivedYet(String),
 }
 
-impl From<InfoError> for RequestError<InfoError> {
-    fn from(e: InfoError) -> Self {
+impl From<Error> for RequestError<Error> {
+    fn from(e: Error) -> Self {
         Self::Mav(e)
     }
 }
 
-pub type GetVersionResult = RequestResult<Version, InfoError>;
+pub type GetVersionResult = RequestResult<Version, Error>;
 
 impl FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
     fn from_rpc_response(rpc_get_version_response: TonicResult<pb::GetVersionResponse>) -> Self {
@@ -67,21 +67,21 @@ impl FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
 
         let rpc_info_result = get_version_response
             .info_result
-            .ok_or_else(|| InfoError::Unknown("InfoResult does not received".into()))?;
+            .ok_or_else(|| Error::Unknown("InfoResult does not received".into()))?;
 
         let info_result = pb::info_result::Result::from_i32(rpc_info_result.result)
-            .ok_or_else(|| InfoError::Unknown("Unsupported InfoResult.result value".into()))?;
+            .ok_or_else(|| Error::Unknown("Unsupported InfoResult.result value".into()))?;
 
         match info_result {
             pb::info_result::Result::Success => match get_version_response.version {
                 Some(ref rpc_version) => Ok(Version::from(rpc_version)),
-                None => Err(InfoError::Unknown("Version does not received".into()).into()),
+                None => Err(Error::Unknown("Version does not received".into()).into()),
             },
             pb::info_result::Result::Unknown => {
-                Err(InfoError::Unknown(rpc_info_result.result_str).into())
+                Err(Error::Unknown(rpc_info_result.result_str).into())
             }
             pb::info_result::Result::InformationNotReceivedYet => {
-                Err(InfoError::InformationNotReceivedYet(rpc_info_result.result_str).into())
+                Err(Error::InformationNotReceivedYet(rpc_info_result.result_str).into())
             }
         }
     }
@@ -102,10 +102,9 @@ impl Info {
 
 #[tonic::async_trait]
 impl super::super::Connect for Info {
-    async fn connect(url: &String) -> std::result::Result<Info, tonic::transport::Error> {
+    async fn connect(url: String) -> std::result::Result<Info, tonic::transport::Error> {
         Ok(Info {
-            service_client: pb::info_service_client::InfoServiceClient::connect(url.clone())
-                .await?,
+            service_client: pb::info_service_client::InfoServiceClient::connect(url).await?,
         })
     }
 }

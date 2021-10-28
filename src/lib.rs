@@ -1,6 +1,5 @@
 #![deny(clippy::all)]
 
-#[allow(clippy::all)]
 mod generated;
 
 use futures_util::future::try_join3;
@@ -37,9 +36,9 @@ impl System {
         let url = url.unwrap_or_else(|| String::from("http://0.0.0.0:50051"));
 
         let (mocap, info, telemetry) = try_join3(
-            mocap::Mocap::connect(&url),
-            info::Info::connect(&url),
-            telemetry::Telemetry::connect(&url),
+            mocap::Mocap::connect(url.clone()),
+            info::Info::connect(url.clone()),
+            telemetry::Telemetry::connect(url),
         )
         .await?;
 
@@ -53,8 +52,7 @@ impl System {
 
 #[tonic::async_trait]
 trait Connect {
-    #[allow(clippy::ptr_arg)]
-    async fn connect(url: &String) -> Result<Self, tonic::transport::Error>
+    async fn connect(url: String) -> Result<Self, tonic::transport::Error>
     where
         Self: Sized;
 }
