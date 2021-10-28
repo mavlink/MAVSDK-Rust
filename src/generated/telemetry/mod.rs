@@ -1,8 +1,7 @@
 use super::super::RequestError;
 use super::super::RequestResult;
-use futures_util::stream::{Stream, StreamExt};
-use std::pin::Pin;
-use std::task::{Context, Poll};
+use futures_util::stream::Stream;
+use futures_util::StreamExt;
 
 mod pb {
     include!("mavsdk.rpc.telemetry.rs");
@@ -228,6 +227,12 @@ pub enum TelemetryError {
     InvalidRequestData(String),
 }
 
+impl From<TelemetryError> for RequestError<TelemetryError> {
+    fn from(e: TelemetryError) -> Self {
+        Self::Mav(e)
+    }
+}
+
 #[doc = ""]
 #[doc = " Allow users to get vehicle telemetry and state information"]
 #[doc = " (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates."]
@@ -236,40 +241,27 @@ pub struct Telemetry {
 }
 
 impl Telemetry {
-    pub async fn subscribe_odometry(&mut self) -> Result<OdometryStream, tonic::Status> {
+    pub async fn subscribe_odometry(
+        &mut self,
+    ) -> Result<impl Stream<Item = OdometryResult> + Unpin, tonic::Status> {
         let request = pb::SubscribeOdometryRequest {};
-        let response = self.service_client.subscribe_odometry(request).await?;
-        Ok(OdometryStream {
-            streaming: response.into_inner(),
-        })
-    }
-}
 
-pub struct OdometryStream {
-    streaming: tonic::codec::Streaming<pb::OdometryResponse>,
+        let stream =
+            self.service_client
+                .subscribe_odometry(request)
+                .await?
+                .into_inner()
+                .map(|rpc_odometry| {
+                    rpc_odometry?.odometry.map(Odometry::from).ok_or_else(|| {
+                        TelemetryError::Unknown(String::from("Unexpected value")).into()
+                    })
+                });
+
+        Ok(stream)
+    }
 }
 
 pub type OdometryResult = RequestResult<Odometry, TelemetryError>;
-
-impl Stream for OdometryStream {
-    type Item = OdometryResult;
-
-    fn poll_next(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>> {
-        match self.streaming.poll_next_unpin(cx) {
-            Poll::Pending => Poll::Pending,
-            Poll::Ready(None) => Poll::Ready(None),
-            Poll::Ready(Some(rpc_result)) => match rpc_result {
-                Ok(odometry_response) => match odometry_response.odometry {
-                    Some(rpc_odometry) => Poll::Ready(Some(Ok(Odometry::from(rpc_odometry)))),
-                    None => Poll::Ready(Some(Err(RequestError::Mav(TelemetryError::Unknown(
-                        "Unexpected value".into(),
-                    ))))),
-                },
-                Err(err) => Poll::Ready(Some(Err(RequestError::Rpc(err)))),
-            },
-        }
-    }
-}
 
 #[tonic::async_trait]
 impl super::super::Connect for Telemetry {
