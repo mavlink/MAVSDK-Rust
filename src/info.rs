@@ -1,7 +1,4 @@
-use crate::FromRpcResponse;
-use crate::RequestError;
-use crate::RequestResult;
-use crate::TonicResult;
+use crate::{FromRpcResponse, RequestError, RequestResult, TonicResult};
 
 mod pb {
     tonic::include_proto!("mavsdk.rpc.info");
@@ -87,7 +84,7 @@ impl FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
     }
 }
 
-#[doc = " Provide infomation about the hardware and/or software of a system."]
+/// Provide infomation about the hardware and/or software of a system.
 pub struct Info {
     service_client: pb::info_service_client::InfoServiceClient<tonic::transport::Channel>,
 }
