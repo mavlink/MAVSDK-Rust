@@ -4,15 +4,18 @@ version = "0.1.0"
 authors = ["Ildar Sadykov <irsdkv@gmail.com>"]
 edition = "2021"
 
+[workspace]
+members = [
+    ".",
+    "mavsdk-bindings",
+]
+
 [dependencies]
 tonic = "0.6.0"
-prost = "0.9.0"
-
 thiserror = "1.0.30"
 futures-util = { version = "0.3.17", default-features = false }
+mavsdk-bindings = { path = "./mavsdk-bindings" }
+prost = "0.9.0"
 
 [dev-dependencies]
 tokio = { version = "1.12.0", features = ["rt-multi-thread", "macros", "time"] }
-
-[build-dependencies]
-tonic-build = "0.6.0"
