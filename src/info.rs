@@ -1,10 +1,10 @@
-use super::super::FromRpcResponse;
-use super::super::RequestError;
-use super::super::RequestResult;
-use super::super::TonicResult;
+use crate::FromRpcResponse;
+use crate::RequestError;
+use crate::RequestResult;
+use crate::TonicResult;
 
 mod pb {
-    include!("mavsdk.rpc.info.rs");
+    tonic::include_proto!("mavsdk.rpc.info");
 }
 
 #[derive(PartialEq, Clone, Default, Debug)]
@@ -101,7 +101,7 @@ impl Info {
 }
 
 #[tonic::async_trait]
-impl super::super::Connect for Info {
+impl crate::Connect for Info {
     async fn connect(url: String) -> std::result::Result<Info, tonic::transport::Error> {
         Ok(Info {
             service_client: pb::info_service_client::InfoServiceClient::connect(url).await?,

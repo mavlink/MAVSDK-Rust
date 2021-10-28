@@ -1,10 +1,9 @@
-use super::super::RequestError;
-use super::super::RequestResult;
-use futures_util::stream::Stream;
-use futures_util::StreamExt;
+use crate::RequestError;
+use crate::RequestResult;
+use futures_util::stream::{Stream, StreamExt};
 
 mod pb {
-    include!("mavsdk.rpc.telemetry.rs");
+    tonic::include_proto!("mavsdk.rpc.telemetry");
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -263,7 +262,7 @@ impl Telemetry {
 pub type OdometryResult = RequestResult<Odometry, Error>;
 
 #[tonic::async_trait]
-impl super::super::Connect for Telemetry {
+impl crate::Connect for Telemetry {
     async fn connect(url: String) -> std::result::Result<Telemetry, tonic::transport::Error> {
         let service_client =
             pb::telemetry_service_client::TelemetryServiceClient::connect(url).await?;

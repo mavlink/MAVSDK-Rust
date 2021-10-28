@@ -1,11 +1,10 @@
-use super::super::FromRpcResponse;
-use super::super::RequestError;
-use super::super::RequestResult;
-use super::super::TonicResult;
-use std::convert::Into;
+use crate::FromRpcResponse;
+use crate::RequestError;
+use crate::RequestResult;
+use crate::TonicResult;
 
 mod pb {
-    include!("mavsdk.rpc.mocap.rs");
+    tonic::include_proto!("mavsdk.rpc.mocap");
 }
 
 /// Global position/attitude estimate from a vision source.
@@ -305,7 +304,7 @@ impl Mocap {
 }
 
 #[tonic::async_trait]
-impl super::super::Connect for Mocap {
+impl crate::Connect for Mocap {
     async fn connect(url: String) -> std::result::Result<Mocap, tonic::transport::Error> {
         Ok(Mocap {
             service_client: pb::mocap_service_client::MocapServiceClient::connect(url).await?,
