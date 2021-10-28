@@ -265,11 +265,9 @@ pub type OdometryResult = RequestResult<Odometry, Error>;
 #[tonic::async_trait]
 impl super::super::Connect for Telemetry {
     async fn connect(url: String) -> std::result::Result<Telemetry, tonic::transport::Error> {
-        match pb::telemetry_service_client::TelemetryServiceClient::connect(url).await {
-            Ok(client) => Ok(Telemetry {
-                service_client: client,
-            }),
-            Err(err) => Err(err),
-        }
+        let service_client =
+            pb::telemetry_service_client::TelemetryServiceClient::connect(url).await?;
+
+        Ok(Telemetry { service_client })
     }
 }
