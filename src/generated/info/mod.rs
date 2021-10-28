@@ -1,5 +1,5 @@
 use super::super::FromRpcResponse;
-use super::super::RequestError::{MavErr, RpcErr};
+use super::super::RequestError;
 use super::super::RequestResult;
 use super::super::TonicResult;
 
@@ -45,42 +45,44 @@ impl From<&pb::Version> for Version {
     }
 }
 
-#[derive(PartialEq, Clone, Debug)]
+#[derive(PartialEq, Clone, Debug, thiserror::Error)]
 pub enum InfoError {
+    #[error("Unknown error: {0}")]
     Unknown(String),
+    #[error("Information not yet received: {0}")]
     InformationNotReceivedYet(String),
+}
+
+impl From<InfoError> for RequestError<InfoError> {
+    fn from(e: InfoError) -> Self {
+        Self::Mav(e)
+    }
 }
 
 pub type GetVersionResult = RequestResult<Version, InfoError>;
 
 impl FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
     fn from_rpc_response(rpc_get_version_response: TonicResult<pb::GetVersionResponse>) -> Self {
-        let get_version_response = rpc_get_version_response.map_err(RpcErr)?.into_inner();
+        let get_version_response = rpc_get_version_response?.into_inner();
 
         let rpc_info_result = get_version_response
             .info_result
-            .ok_or_else(|| MavErr(InfoError::Unknown("InfoResult does not received".into())))?;
+            .ok_or_else(|| InfoError::Unknown("InfoResult does not received".into()))?;
 
-        let info_result =
-            pb::info_result::Result::from_i32(rpc_info_result.result).ok_or_else(|| {
-                MavErr(InfoError::Unknown(
-                    "Unsupported InfoResult.result value".into(),
-                ))
-            })?;
+        let info_result = pb::info_result::Result::from_i32(rpc_info_result.result)
+            .ok_or_else(|| InfoError::Unknown("Unsupported InfoResult.result value".into()))?;
 
         match info_result {
             pb::info_result::Result::Success => match get_version_response.version {
                 Some(ref rpc_version) => Ok(Version::from(rpc_version)),
-                None => Err(MavErr(InfoError::Unknown(
-                    "Version does not received".into(),
-                ))),
+                None => Err(InfoError::Unknown("Version does not received".into()).into()),
             },
             pb::info_result::Result::Unknown => {
-                Err(MavErr(InfoError::Unknown(rpc_info_result.result_str)))
+                Err(InfoError::Unknown(rpc_info_result.result_str).into())
             }
-            pb::info_result::Result::InformationNotReceivedYet => Err(MavErr(
-                InfoError::InformationNotReceivedYet(rpc_info_result.result_str),
-            )),
+            pb::info_result::Result::InformationNotReceivedYet => {
+                Err(InfoError::InformationNotReceivedYet(rpc_info_result.result_str).into())
+            }
         }
     }
 }

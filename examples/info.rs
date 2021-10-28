@@ -1,8 +1,8 @@
-use libmavsdk::{info, RequestError, System};
+use libmavsdk::System;
 use std::io::{self, Write};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = std::env::args().skip(1).collect();
 
     if args.len() > 1 {
@@ -14,22 +14,11 @@ async fn main() {
 
     let url = args.get(0).cloned();
 
-    let mut system = match System::connect(url).await {
-        Ok(system) => system,
-        Err(err) => {
-            println!("Connection error: {:?}", err);
-            return;
-        }
-    };
+    let mut system = System::connect(url).await?;
 
-    match system.info.get_version().await {
-        Ok(v) => println!("Version received: {:?}", v),
-        Err(RequestError::MavErr(info::InfoError::Unknown(s))) => {
-            println!("Unknown MAVLink error ({:?})", s);
-        }
-        Err(RequestError::MavErr(info::InfoError::InformationNotReceivedYet(s))) => {
-            println!("{}", s);
-        }
-        Err(RequestError::RpcErr(rpc_err)) => println!("RPC error: {:?}", rpc_err),
-    };
+    let version = system.info.get_version().await?;
+
+    println!("Version received: {:?}", version);
+
+    Ok(())
 }
