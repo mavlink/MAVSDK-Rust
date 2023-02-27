@@ -6,7 +6,7 @@ edition = "2021"
 
 [dependencies]
 tonic = "0.6.0"
-prost = "0.9.0"
+prost = "0.11.8"
 
 thiserror = "1.0.30"
 futures-util = { version = "0.3.17", default-features = false }
