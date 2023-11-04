@@ -12,6 +12,8 @@ $ rustup update
 
 # Build
 
+*note that building mavsdk-rust requires the [protoc](https://grpc.io/docs/protoc-installation/) compiler to be installed.*
+
 ```bash
 $ cargo build
 ```
