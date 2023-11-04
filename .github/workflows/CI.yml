@@ -33,6 +33,7 @@ jobs:
             os: windows-latest
             rust: stable
     steps:
+      - uses: arduino/setup-protoc@v2
       - uses: actions/checkout@v4
         with:
           submodules: true
