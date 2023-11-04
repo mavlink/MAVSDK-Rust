@@ -47,6 +47,7 @@ jobs:
     name: format
     runs-on: ubuntu-latest
     steps:
+      - uses: arduino/setup-protoc@v2
       - uses: actions/checkout@v4
         with:
           submodules: true
@@ -59,6 +60,7 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
+      - uses: arduino/setup-protoc@v2
       - uses: actions/checkout@v4
         with:
           submodules: true
