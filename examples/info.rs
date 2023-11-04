@@ -12,11 +12,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         std::process::exit(1);
     }
 
-    let url = args.get(0).cloned();
+    let url = args.first().cloned();
 
-    let mut system = System::connect(url).await?;
-
-    let version = system.info.get_version().await?;
+    let version = System::connect(url).await?.info.get_version().await?;
 
     println!("Version received: {:?}", version);
 

@@ -3,6 +3,7 @@ name = "libmavsdk"
 version = "0.1.0"
 authors = ["Ildar Sadykov <irsdkv@gmail.com>"]
 edition = "2021"
+rust-version = "1.56"
 
 [dependencies]
 tonic = "0.6.0"
