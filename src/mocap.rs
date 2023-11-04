@@ -258,8 +258,8 @@ impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositio
             .mocap_result
             .ok_or_else(|| Error::Unknown("MocapResult does not received".into()))?;
 
-        let mocap_result = pb::mocap_result::Result::from_i32(rpc_mocap_result.result)
-            .ok_or_else(|| Error::Unknown("Unsupported MocapResult.result value".into()))?;
+        let mocap_result = pb::mocap_result::Result::try_from(rpc_mocap_result.result)
+            .map_err(|_| Error::Unknown("Unsupported MocapResult.result value".into()))?;
 
         match mocap_result {
             pb::mocap_result::Result::Success => Ok(()),
