@@ -31,7 +31,7 @@ pub struct System {
 }
 
 impl System {
-    pub async fn connect(url: Option<String>) -> Result<System, tonic::transport::Error> {
+    pub async fn connect(url: Option<String>) -> Result<Self, tonic::transport::Error> {
         let url = url.unwrap_or_else(|| String::from("http://0.0.0.0:50051"));
 
         let (mocap, info, telemetry) = try_join3(
@@ -41,7 +41,7 @@ impl System {
         )
         .await?;
 
-        Ok(System {
+        Ok(Self {
             mocap,
             info,
             telemetry,

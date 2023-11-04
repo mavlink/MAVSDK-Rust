@@ -4,7 +4,7 @@ mod pb {
     tonic::include_proto!("mavsdk.rpc.info");
 }
 
-#[derive(PartialEq, Clone, Default, Debug)]
+#[derive(PartialEq, Eq, Clone, Default, Debug)]
 pub struct Version {
     /// Flight software major version
     pub flight_sw_major: i32,
@@ -28,7 +28,7 @@ pub struct Version {
 
 impl From<&pb::Version> for Version {
     fn from(rpc_version: &pb::Version) -> Self {
-        Version {
+        Self {
             flight_sw_major: rpc_version.flight_sw_major,
             flight_sw_minor: rpc_version.flight_sw_minor,
             flight_sw_patch: rpc_version.flight_sw_patch,
@@ -42,7 +42,7 @@ impl From<&pb::Version> for Version {
     }
 }
 
-#[derive(PartialEq, Clone, Debug, thiserror::Error)]
+#[derive(PartialEq, Eq, Clone, Debug, thiserror::Error)]
 pub enum Error {
     #[error("Unknown error: {0}")]
     Unknown(String),
@@ -72,8 +72,8 @@ impl FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
             .ok_or_else(|| Error::Unknown("Unsupported InfoResult.result value".into()))?;
 
         match info_result {
-            pb::info_result::Result::Success => match get_version_response.version {
-                Some(ref rpc_version) => Ok(Version::from(rpc_version)),
+            pb::info_result::Result::Success => match &get_version_response.version {
+                Some(rpc_version) => Ok(Version::from(rpc_version)),
                 None => Err(Error::Unknown("Version does not received".into()).into()),
             },
             pb::info_result::Result::Unknown => {
@@ -104,8 +104,8 @@ impl Info {
 
 #[tonic::async_trait]
 impl crate::Connect for Info {
-    async fn connect(url: String) -> std::result::Result<Info, tonic::transport::Error> {
-        Ok(Info {
+    async fn connect(url: String) -> std::result::Result<Self, tonic::transport::Error> {
+        Ok(Self {
             service_client: pb::info_service_client::InfoServiceClient::connect(url).await?,
         })
     }

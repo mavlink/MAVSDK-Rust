@@ -18,7 +18,7 @@ const PLUGINS: &[&str] = &[
 
 fn main() -> std::io::Result<()> {
     for plugin in PLUGINS {
-        let proto_path = format!("{0}/{1}/{1}.proto", PROTO_INCLUDE_PATH, plugin);
+        let proto_path = format!("{PROTO_INCLUDE_PATH}/{plugin}/{plugin}.proto");
 
         tonic_build::configure()
             .build_server(false)

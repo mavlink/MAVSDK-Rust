@@ -16,7 +16,7 @@ jobs:
         include:
           - build: msrv
             os: ubuntu-latest
-            rust: 1.56
+            rust: 1.65.0
           - build: stable
             os: ubuntu-latest
             rust: stable
@@ -36,16 +36,11 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: ${{ matrix.rust }}
-          override: true
           components: rustfmt
-      - uses: actions-rs/cargo@v1
-        with:
-          command: check
-          args: --all-targets
+      - run: cargo check --all-targets
 
   fmt:
     name: format
@@ -54,16 +49,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@nightly
         with:
-          toolchain: nightly
-          override: true
-          profile: minimal
           components: rustfmt
-      - uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: -- --check
+      - run: cargo fmt -- --check
 
   clippy:
     name: lint
@@ -72,16 +61,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@nightly
         with:
-          toolchain: nightly
-          override: true
-          profile: minimal
           components: clippy, rustfmt
       - uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: --tests --examples
+          args: --all-targets
 
   docs:
     name: docs
@@ -90,12 +76,5 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-          profile: minimal
-      - uses: actions-rs/cargo@v1
-        with:
-          command: doc
-          args: --no-deps
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo doc --no-deps
