@@ -139,8 +139,8 @@ impl From<pb::Odometry> for Odometry {
     fn from(rpc_odometry: pb::Odometry) -> Self {
         Self {
             time_usec: 0,
-            frame_id: MavFrame::from_i32(rpc_odometry.frame_id).unwrap(),
-            child_frame_id: MavFrame::from_i32(rpc_odometry.child_frame_id).unwrap(),
+            frame_id: MavFrame::try_from(rpc_odometry.frame_id).unwrap(),
+            child_frame_id: MavFrame::try_from(rpc_odometry.child_frame_id).unwrap(),
             position_body: PositionBody::from(&rpc_odometry.position_body.unwrap()),
             q: Quaternion::from(&rpc_odometry.q.unwrap()),
             velocity_body: VelocityBody::from(&rpc_odometry.velocity_body.unwrap_or_default()),

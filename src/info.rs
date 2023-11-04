@@ -68,8 +68,8 @@ impl FromRpcResponse<pb::GetVersionResponse> for GetVersionResult {
             .info_result
             .ok_or_else(|| Error::Unknown("InfoResult does not received".into()))?;
 
-        let info_result = pb::info_result::Result::from_i32(rpc_info_result.result)
-            .ok_or_else(|| Error::Unknown("Unsupported InfoResult.result value".into()))?;
+        let info_result = pb::info_result::Result::try_from(rpc_info_result.result)
+            .map_err(|_| Error::Unknown("Unsupported InfoResult.result value".into()))?;
 
         match info_result {
             pb::info_result::Result::Success => match &get_version_response.version {
