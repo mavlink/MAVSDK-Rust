@@ -56,7 +56,7 @@ pub struct PositionBody {
 
 impl From<&pb::PositionBody> for PositionBody {
     fn from(rpc_position_body: &pb::PositionBody) -> Self {
-        PositionBody {
+        Self {
             x_m: rpc_position_body.x_m,
             y_m: rpc_position_body.y_m,
             z_m: rpc_position_body.z_m,
@@ -108,7 +108,7 @@ pub struct AngularVelocityBody {
 
 impl From<&pb::AngularVelocityBody> for AngularVelocityBody {
     fn from(rpc_angular_velocity_body: &pb::AngularVelocityBody) -> Self {
-        AngularVelocityBody {
+        Self {
             roll_rad_s: rpc_angular_velocity_body.roll_rad_s,
             pitch_rad_s: rpc_angular_velocity_body.pitch_rad_s,
             yaw_rad_s: rpc_angular_velocity_body.yaw_rad_s,
@@ -136,8 +136,8 @@ pub struct Covariance {
 }
 
 impl From<pb::Odometry> for Odometry {
-    fn from(rpc_odometry: pb::Odometry) -> Odometry {
-        Odometry {
+    fn from(rpc_odometry: pb::Odometry) -> Self {
+        Self {
             time_usec: 0,
             frame_id: MavFrame::from_i32(rpc_odometry.frame_id).unwrap(),
             child_frame_id: MavFrame::from_i32(rpc_odometry.child_frame_id).unwrap(),
@@ -266,10 +266,10 @@ pub type OdometryResult = RequestResult<Odometry, Error>;
 
 #[tonic::async_trait]
 impl crate::Connect for Telemetry {
-    async fn connect(url: String) -> std::result::Result<Telemetry, tonic::transport::Error> {
+    async fn connect(url: String) -> std::result::Result<Self, tonic::transport::Error> {
         let service_client =
             pb::telemetry_service_client::TelemetryServiceClient::connect(url).await?;
 
-        Ok(Telemetry { service_client })
+        Ok(Self { service_client })
     }
 }

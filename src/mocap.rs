@@ -223,7 +223,7 @@ impl From<Quaternion> for pb::Quaternion {
     }
 }
 
-#[derive(PartialEq, Clone, Debug, thiserror::Error)]
+#[derive(PartialEq, Eq, Clone, Debug, thiserror::Error)]
 pub enum Error {
     /// Unknown error
     #[error("Unknown error: {0}")]
@@ -304,8 +304,8 @@ impl Mocap {
 
 #[tonic::async_trait]
 impl crate::Connect for Mocap {
-    async fn connect(url: String) -> std::result::Result<Mocap, tonic::transport::Error> {
-        Ok(Mocap {
+    async fn connect(url: String) -> std::result::Result<Self, tonic::transport::Error> {
+        Ok(Self {
             service_client: pb::mocap_service_client::MocapServiceClient::connect(url).await?,
         })
     }

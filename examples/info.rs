@@ -16,7 +16,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let version = System::connect(url).await?.info.get_version().await?;
 
-    println!("Version received: {:?}", version);
+    println!("Version received: {version:?}");
 
     Ok(())
 }
