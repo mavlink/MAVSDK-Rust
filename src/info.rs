@@ -1,7 +1,7 @@
 use crate::{FromRpcResponse, RequestError, RequestResult, TonicResult};
 
 mod pb {
-    tonic::include_proto!("mavsdk.rpc.info");
+    pub use mavsdk_bindings::info::*;
 }
 
 #[derive(PartialEq, Clone, Default, Debug)]

@@ -1,7 +1,7 @@
 use crate::{FromRpcResponse, RequestError, RequestResult, TonicResult};
 
 mod pb {
-    tonic::include_proto!("mavsdk.rpc.mocap");
+    pub use mavsdk_bindings::mocap::*;
 }
 
 /// Global position/attitude estimate from a vision source.

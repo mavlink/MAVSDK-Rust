@@ -2,7 +2,7 @@ use crate::{RequestError, RequestResult};
 use futures_util::stream::{Stream, StreamExt};
 
 mod pb {
-    tonic::include_proto!("mavsdk.rpc.telemetry");
+    pub use mavsdk_bindings::telemetry::*;
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
