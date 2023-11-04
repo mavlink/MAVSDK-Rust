@@ -1,5 +1,4 @@
-use crate::RequestError;
-use crate::RequestResult;
+use crate::{RequestError, RequestResult};
 use futures_util::stream::{Stream, StreamExt};
 
 mod pb {
@@ -12,8 +11,8 @@ pub enum MavFrame {
     /// Setpoint in body NED frame. This makes sense if all position control is
     /// externalized - e.g. useful to command 2 m/s^2 acceleration to the right.
     BodyNed = 8,
-    /// Odometry local coordinate frame of data given by a vision estimation system,
-    /// Z-down (x: north, y: east, z: down).
+    /// Odometry local coordinate frame of data given by a vision estimation
+    /// system, Z-down (x: north, y: east, z: down).
     VisionNed = 16,
     /// Odometry local coordinate frame of data given by an estimator running
     /// onboard the vehicle, Z-down (x: north, y: east, z: down).
@@ -27,7 +26,8 @@ pub struct Odometry {
     pub time_usec: u64,
     /// Coordinate frame of reference for the pose data.
     pub frame_id: MavFrame,
-    /// Coordinate frame of reference for the velocity in free space (twist) data.
+    /// Coordinate frame of reference for the velocity in free space (twist)
+    /// data.
     pub child_frame_id: MavFrame,
     /// Position.
     pub position_body: PositionBody,
@@ -165,7 +165,6 @@ impl From<Covariance> for pb::Covariance {
     }
 }
 
-///
 /// Quaternion type.
 ///
 /// All rotations and axis systems follow the right-hand rule.
@@ -234,9 +233,9 @@ impl From<Error> for RequestError<Error> {
     }
 }
 
-#[doc = ""]
-#[doc = " Allow users to get vehicle telemetry and state information"]
-#[doc = " (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry update rates."]
+/// Allow users to get vehicle telemetry and state information
+/// (e.g. battery, GPS, RC connection, flight mode etc.) and set telemetry
+/// update rates.
 pub struct Telemetry {
     service_client: pb::telemetry_service_client::TelemetryServiceClient<tonic::transport::Channel>,
 }

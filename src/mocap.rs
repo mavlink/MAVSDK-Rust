@@ -1,7 +1,4 @@
-use crate::FromRpcResponse;
-use crate::RequestError;
-use crate::RequestResult;
-use crate::TonicResult;
+use crate::{FromRpcResponse, RequestError, RequestResult, TonicResult};
 
 mod pb {
     tonic::include_proto!("mavsdk.rpc.mocap");
@@ -10,7 +7,8 @@ mod pb {
 /// Global position/attitude estimate from a vision source.
 #[derive(Default, Clone, PartialEq, Debug)]
 pub struct VisionPositionEstimate {
-    /// PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+    /// PositionBody frame timestamp UNIX Epoch time (0 to use Backend
+    /// timestamp)
     pub time_usec: u64,
     /// Global position (m)
     pub position_body: PositionBody,
@@ -34,7 +32,8 @@ impl From<VisionPositionEstimate> for pb::VisionPositionEstimate {
 /// Motion capture attitude and position
 #[derive(Clone, PartialEq, Debug)]
 pub struct AttitudePosition {
-    /// PositionBody frame timestamp UNIX Epoch time (0 to use Backend timestamp)
+    /// PositionBody frame timestamp UNIX Epoch time (0 to use Backend
+    /// timestamp)
     pub time_usec: u64,
     /// Attitude quaternion (w, x, y, z order, zero-rotation is 1, 0, 0, 0)
     pub q: Quaternion,
@@ -55,7 +54,8 @@ impl From<AttitudePosition> for pb::AttitudePositionMocap {
     }
 }
 
-/// Odometry message to communicate odometry mocaprmation with an external interface.
+/// Odometry message to communicate odometry mocaprmation with an external
+/// interface.
 #[derive(Clone, PartialEq, Debug)]
 pub struct Odometry {
     /// Timestamp (0 to use Backend timestamp).
@@ -192,7 +192,6 @@ impl From<Covariance> for pb::Covariance {
     }
 }
 
-///
 /// Quaternion type.
 ///
 /// All rotations and axis systems follow the right-hand rule.
@@ -280,9 +279,9 @@ impl FromRpcResponse<pb::SetVisionPositionEstimateResponse> for SetVisionPositio
     }
 }
 
-#[doc = " Motion Capture allow vehicles to navigate when a global"]
-#[doc = " position source is unavailable or unreliable"]
-#[doc = " (e.g. indoors, or when flying under a bridge. etc.)."]
+/// Motion Capture allow vehicles to navigate when a global
+/// position source is unavailable or unreliable
+/// (e.g. indoors, or when flying under a bridge. etc.).
 pub struct Mocap {
     service_client: pb::mocap_service_client::MocapServiceClient<tonic::transport::Channel>,
 }
