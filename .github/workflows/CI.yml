@@ -33,7 +33,7 @@ jobs:
             os: windows-latest
             rust: stable
     steps:
-      - uses: arduino/setup-protoc@v2
+      - uses: arduino/setup-protoc@v3
       - uses: actions/checkout@v4
         with:
           submodules: true
@@ -59,7 +59,7 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: arduino/setup-protoc@v2
+      - uses: arduino/setup-protoc@v3
       - uses: actions/checkout@v4
         with:
           submodules: true
@@ -75,7 +75,7 @@ jobs:
     name: docs
     runs-on: ubuntu-latest
     steps:
-      - uses: arduino/setup-protoc@v2
+      - uses: arduino/setup-protoc@v3
       - uses: actions/checkout@v4
         with:
           submodules: true
